@@ -12,6 +12,8 @@ Route::get('/products', [HomeController::class, 'products'])->name('products');
 
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+
 Route::get('/product-details', [HomeController::class, 'showProductDetails'])->name('product-details');
 
 Route::get('dashboard', function () {

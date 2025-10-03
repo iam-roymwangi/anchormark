@@ -1,29 +1,8 @@
 <template>
   <div class="min-h-screen bg-[#F5F5F0]">
-    <!-- Navigation -->
-    <nav class="bg-[#003366] text-white sticky top-0 z-50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-          <div class="flex items-center space-x-8">
-            <h1 class="text-2xl font-serif font-bold">AnchorMark</h1>
-            <div class="hidden md:flex space-x-6 text-sm">
-              <a href="#" class="hover:text-[#2E8B57] transition-colors">Home</a>
-              <a href="#" class="text-[#2E8B57]">Products</a>
-              <a href="#" class="hover:text-[#2E8B57] transition-colors">About</a>
-            </div>
-          </div>
-          <div class="flex items-center space-x-4">
-            <button class="hover:text-[#2E8B57] transition-colors">
-              <Search :size="20" />
-            </button>
-            <button class="hover:text-[#2E8B57] transition-colors">
-              <ShoppingCart :size="20" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </nav>
+    <PublicLayout>
 
+    
     <!-- Hero Section -->
     <section class="py-16 md:py-24 px-4">
       <div class="max-w-4xl mx-auto text-center">
@@ -152,7 +131,7 @@
           class="aspect-square bg-[#E0E0E0] rounded-lg overflow-hidden group cursor-pointer"
         >
           <img
-            :src="`/placeholder.svg?height=400&width=400&query=hotel room ${i}`"
+            :src="`https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D`"
             :alt="`Gallery ${i}`"
             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           />
@@ -160,56 +139,15 @@
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-[#003366] text-white py-12 px-4">
-      <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div>
-          <h4 class="text-2xl font-serif mb-4">AnchorMark</h4>
-          <p class="text-gray-300 text-sm">
-            Premium hospitality products for exceptional hotel experiences.
-          </p>
-        </div>
-        <div>
-          <h5 class="font-medium mb-4">Products</h5>
-          <ul class="space-y-2 text-sm text-gray-300">
-            <li><a href="#" class="hover:text-[#2E8B57] transition-colors">Beddings</a></li>
-            <li><a href="#" class="hover:text-[#2E8B57] transition-colors">Kitchenware</a></li>
-            <li><a href="#" class="hover:text-[#2E8B57] transition-colors">Furniture</a></li>
-          </ul>
-        </div>
-        <div>
-          <h5 class="font-medium mb-4">Company</h5>
-          <ul class="space-y-2 text-sm text-gray-300">
-            <li><a href="#" class="hover:text-[#2E8B57] transition-colors">About Us</a></li>
-            <li><a href="#" class="hover:text-[#2E8B57] transition-colors">Contact</a></li>
-            <li><a href="#" class="hover:text-[#2E8B57] transition-colors">Careers</a></li>
-          </ul>
-        </div>
-        <div>
-          <h5 class="font-medium mb-4">Follow Us</h5>
-          <div class="flex space-x-4">
-            <a href="#" class="hover:text-[#2E8B57] transition-colors">
-              <Instagram :size="20" />
-            </a>
-            <a href="#" class="hover:text-[#2E8B57] transition-colors">
-              <Facebook :size="20" />
-            </a>
-            <a href="#" class="hover:text-[#2E8B57] transition-colors">
-              <Linkedin :size="20" />
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="max-w-7xl mx-auto mt-8 pt-8 border-t border-gray-700 text-center text-sm text-gray-400">
-        © 2025 AnchorMark. All rights reserved.
-      </div>
-    </footer>
+    </PublicLayout>
+
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { Search, ShoppingCart, Eye, Heart, ArrowRight, Instagram, Facebook, Linkedin } from 'lucide-vue-next'
+import { Eye, Heart, ArrowRight } from 'lucide-vue-next'
+import PublicLayout from '@/layouts/PublicLayout.vue'
 
 interface Category {
   id: string
@@ -239,7 +177,7 @@ const products: Product[] = [
     description: '1000 thread count, hotel-grade bedding',
     price: 'From $299',
     category: 'beddings',
-    image: '/placeholder.svg?height=600&width=600'
+    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D'
   },
   {
     id: 2,
@@ -247,7 +185,7 @@ const products: Product[] = [
     description: 'Hypoallergenic, cloud-like comfort',
     price: 'From $89',
     category: 'beddings',
-    image: '/placeholder.svg?height=600&width=600'
+    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D'
   },
   {
     id: 3,
@@ -255,7 +193,7 @@ const products: Product[] = [
     description: 'Commercial-grade stainless steel',
     price: 'From $599',
     category: 'kitchenware',
-    image: '/placeholder.svg?height=600&width=600'
+    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D'
   },
   {
     id: 4,
@@ -263,7 +201,7 @@ const products: Product[] = [
     description: 'Elegant porcelain dinnerware',
     price: 'From $199',
     category: 'kitchenware',
-    image: '/placeholder.svg?height=600&width=600'
+    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D'
   },
   {
     id: 5,
@@ -271,7 +209,7 @@ const products: Product[] = [
     description: 'Ergonomic leather office seating',
     price: 'From $799',
     category: 'furniture',
-    image: '/placeholder.svg?height=600&width=600'
+    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D'
   },
   {
     id: 6,
@@ -279,7 +217,7 @@ const products: Product[] = [
     description: 'Contemporary design, premium fabric',
     price: 'From $1,899',
     category: 'furniture',
-    image: '/placeholder.svg?height=600&width=600'
+    image: 'https://images.ctfassets.net/h81st780aesh/3p269F8scsqoNoyIonFxTT/4796d33fc3eb4e7deacbec577fe48d06/restaurant-decor-ideas.jpeg'
   },
   {
     id: 7,
@@ -287,7 +225,7 @@ const products: Product[] = [
     description: 'Luxurious mulberry silk bedding',
     price: 'From $449',
     category: 'beddings',
-    image: '/placeholder.svg?height=600&width=600'
+    image: 'https://images.ctfassets.net/h81st780aesh/3p269F8scsqoNoyIonFxTT/4796d33fc3eb4e7deacbec577fe48d06/restaurant-decor-ideas.jpeg'
   },
   {
     id: 8,
@@ -295,7 +233,7 @@ const products: Product[] = [
     description: 'Hand-blown crystal stemware',
     price: 'From $349',
     category: 'kitchenware',
-    image: '/placeholder.svg?height=600&width=600'
+    image: 'https://images.ctfassets.net/h81st780aesh/3p269F8scsqoNoyIonFxTT/4796d33fc3eb4e7deacbec577fe48d06/restaurant-decor-ideas.jpeg'
   },
   {
     id: 9,
@@ -303,7 +241,7 @@ const products: Product[] = [
     description: 'Solid wood with brass accents',
     price: 'From $599',
     category: 'furniture',
-    image: '/placeholder.svg?height=600&width=600'
+    image: 'https://images.ctfassets.net/h81st780aesh/3p269F8scsqoNoyIonFxTT/4796d33fc3eb4e7deacbec577fe48d06/restaurant-decor-ideas.jpeg'
   }
 ]
 
