@@ -4,6 +4,10 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+use App\Enums\Gender;
+use App\Enums\Role;
+use App\Enums\UserStatus;
+
 return new class extends Migration
 {
     /**
@@ -13,10 +17,17 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('email');
             $table->string('password');
+            $table->string('phone_number');
+            $table->enum('gender', Gender::values()); //The need for all users to specify their gender can be argued
+            $table->enum('role', Role::values());
+            $table->boolean('verified')->default(false);
+            $table->boolean('onboarding_complete')->default(false);
+            $table->enum('status', UserStatus::values())->default('active');
+            $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
