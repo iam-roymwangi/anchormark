@@ -11,13 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('order_items', function (Blueprint $table) {
+        Schema::create('order_products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
-            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->foreignId('product_id')->constrained()->onDelete('set null');
             $table->integer('quantity');
-            $table->decimal('price', 10, 2);
-            $table->decimal('subtotal', 10, 2);
+            $table->decimal('price', 10, 2); 
+            /*Price stores the cost of the item at the time it was
+            sold. It won't change. No need for subtotal. Price in products table stores the 
+            current selling price of the product, can change any time. */
+            
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('order_items');
+        Schema::dropIfExists('order_products');
     }
 };
