@@ -1,158 +1,157 @@
 <template>
   <div class="min-h-screen bg-[#F5F5F0]">
     <PublicLayout>
+      <div class="flex pt-8">
+        <!-- Sidebar -->
+        <ProductSidebar
+          :is-open="sidebarOpen"
+          :is-mobile="isMobile"
+          :selected-category="selectedCategory"
+          :categories="categoriesWithProducts"
+          @toggle="sidebarOpen = !sidebarOpen"
+          @select-category="selectCategory"
+          @select-product="scrollToProduct"
+        />
 
-    
-    <!-- Hero Section -->
-    <section class="py-16 md:py-24 px-4">
-      <div class="max-w-4xl mx-auto text-center">
-        <h2 class="text-5xl md:text-7xl font-serif text-[#333333] mb-6 animate-fade-in">
-          Premium Hospitality Products
-        </h2>
-        <p class="text-lg md:text-xl text-[#666666] max-w-2xl mx-auto animate-fade-in-delay">
-          Elevate your hotel experience with our curated collection of luxury beddings, 
-          elegant kitchenware, and sophisticated furniture.
-        </p>
-      </div>
-    </section>
-
-    <!-- Category Filter -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-      <div class="flex flex-wrap justify-center gap-4">
-        <button
-          v-for="category in categories"
-          :key="category.id"
-          @click="selectedCategory = category.id"
-          :class="[
-            'px-6 py-3 rounded-full text-sm font-medium transition-all duration-300',
-            selectedCategory === category.id
-              ? 'bg-[#2E8B57] text-white shadow-lg scale-105'
-              : 'bg-white text-[#333333] hover:bg-[#E0E0E0]'
-          ]"
-        >
-          {{ category.name }}
-        </button>
-      </div>
-    </div>
-
-    <!-- Products Grid -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-      <TransitionGroup
-        name="product"
-        tag="div"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-      >
-        <div
-          v-for="product in filteredProducts"
-          :key="product.id"
-          class="group cursor-pointer"
-          @mouseenter="hoveredProduct = product.id"
-          @mouseleave="hoveredProduct = null"
-        >
-          <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500">
-            <!-- Product Image -->
-            <div class="relative aspect-square bg-[#F5F5F0] overflow-hidden">
-              <img
-                :src="product.image"
-                :alt="product.name"
-                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div
-                :class="[
-                  'absolute inset-0 bg-[#003366] bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-500',
-                  hoveredProduct === product.id ? 'opacity-100' : 'opacity-0'
-                ]"
-              />
-              <!-- Quick View Button -->
-              <div
-                :class="[
-                  'absolute inset-0 flex items-center justify-center transition-all duration-300',
-                  hoveredProduct === product.id ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                ]"
+        <!-- Main Content -->
+        <main class="w-full flex-1 transition-all duration-300">
+          <!-- Hero Section -->
+          <section class="px-4 py-12 sm:px-6 sm:py-16 md:py-20 lg:py-24">
+            <div class="mx-auto max-w-4xl text-center">
+              <h2
+                class="animate-fade-in mb-4 font-serif text-3xl leading-tight text-[#333333] sm:mb-6 sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
               >
-                <button class="bg-[#2E8B57] text-white px-6 py-3 rounded-full font-medium hover:bg-[#267347] transition-colors flex items-center gap-2">
-                  <Eye :size="18" />
-                  Quick View
-                </button>
-              </div>
+                Premium Hospitality Products
+              </h2>
+              <p
+                class="animate-fade-in-delay mx-auto max-w-2xl text-base leading-relaxed text-[#666666] sm:text-lg md:text-xl"
+              >
+                Elevate your hotel experience with our curated collection of luxury beddings, elegant kitchenware, and sophisticated furniture.
+              </p>
             </div>
+          </section>
 
-            <!-- Product Info -->
-            <div class="p-6">
-              <div class="flex items-start justify-between mb-2">
-                <h3 class="text-lg font-serif text-[#333333] group-hover:text-[#2E8B57] transition-colors">
-                  {{ product.name }}
-                </h3>
-                <button class="text-[#666666] hover:text-[#2E8B57] transition-colors">
-                  <Heart :size="20" />
-                </button>
+          <!-- Products Grid -->
+          <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 sm:pb-16 lg:px-8 lg:pb-20">
+            <TransitionGroup
+              name="product"
+              tag="div"
+              class="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3"
+            >
+              <div
+                v-for="product in filteredProducts"
+                :key="product.id"
+                :ref="(el) => (productRefs[product.id] = el)"
+                class="group cursor-pointer"
+                @mouseenter="hoveredProduct = product.id"
+                @mouseleave="hoveredProduct = null"
+              >
+                <div
+                  class="overflow-hidden rounded-lg bg-white shadow-sm transition-all duration-500 hover:shadow-xl"
+                >
+                  <!-- Product Image -->
+                  <div class="relative aspect-square overflow-hidden bg-[#F5F5F0]">
+                    <img
+                      :src="product.image"
+                      :alt="product.name"
+                      class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div
+                      :class="[
+                        'bg-opacity-0 group-hover:bg-opacity-10 absolute inset-0 bg-[#003366] transition-all duration-500',
+                        hoveredProduct === product.id ? 'opacity-100' : 'opacity-0',
+                      ]"
+                    />
+                    <!-- Quick Actions -->
+                    <div
+                      :class="[
+                        'absolute inset-0 flex items-center justify-center gap-3 px-4 transition-all duration-300',
+                        hoveredProduct === product.id ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0',
+                      ]"
+                    >
+                      <button
+                        class="flex items-center gap-2 rounded-full bg-[#2E8B57] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#267347] sm:px-6 sm:py-3 sm:text-base"
+                      >
+                        <Eye :size="16" class="sm:w-[18px] sm:h-[18px]" />
+                        <span class="hidden sm:inline">Quick View</span>
+                        <span class="sm:hidden">View</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Product Info -->
+                  <div class="p-4 sm:p-6">
+                    <div class="mb-2 flex items-start justify-between gap-2">
+                      <h3
+                        class="font-serif text-base text-[#333333] transition-colors group-hover:text-[#2E8B57] sm:text-lg"
+                      >
+                        {{ product.name }}
+                      </h3>
+                      <button
+                        class="flex-shrink-0 text-[#666666] transition-colors hover:text-[#2E8B57]"
+                      >
+                        <Heart :size="18" class="sm:w-5 sm:h-5" />
+                      </button>
+                    </div>
+                    <p class="mb-3 text-xs text-[#666666] sm:mb-4 sm:text-sm">
+                      {{ product.description }}
+                    </p>
+                    <div class="mb-3 flex items-center justify-between sm:mb-4">
+                      <span class="text-base font-medium text-[#333333] sm:text-lg">
+                        {{ product.price }}
+                      </span>
+                      <span
+                        class="bg-opacity-10 rounded-full bg-[#2E8B57] px-2.5 py-1 text-xs text-[#2E8B57] sm:px-3"
+                      >
+                        {{ product.category }}
+                      </span>
+                    </div>
+                    <!-- Add to Cart Button -->
+                    <button
+                      @click="addToCart?.(product)"
+                      class="flex w-full transform items-center justify-center gap-2 rounded-lg bg-[#2E8B57] py-2.5 text-sm font-medium text-white transition-all hover:scale-[1.02] hover:bg-[#267347] active:scale-[0.98] sm:py-3 sm:text-base"
+                    >
+                      <ShoppingCart :size="16" class="sm:w-[18px] sm:h-[18px]" />
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
               </div>
-              <p class="text-sm text-[#666666] mb-4">{{ product.description }}</p>
-              <div class="flex items-center justify-between">
-                <span class="text-[#333333] font-medium">{{ product.price }}</span>
-                <span class="text-xs text-[#2E8B57] bg-[#2E8B57] bg-opacity-10 px-3 py-1 rounded-full">
-                  {{ product.category }}
-                </span>
-              </div>
-            </div>
+            </TransitionGroup>
           </div>
-        </div>
-      </TransitionGroup>
-    </div>
 
-    <!-- Featured Collection Banner -->
-    <section class="bg-[#003366] text-white py-20 px-4 mb-20">
-      <div class="max-w-4xl mx-auto text-center">
-        <h3 class="text-4xl md:text-5xl font-serif mb-6">
-          Discover Our Signature Collection
-        </h3>
-        <p class="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
-          Handpicked products that define luxury and comfort for the modern hotel experience.
-        </p>
-        <button class="bg-[#2E8B57] text-white px-8 py-4 rounded-full font-medium hover:bg-[#267347] transition-all duration-300 hover:scale-105 inline-flex items-center gap-2">
-          Explore Collection
-          <ArrowRight :size="20" />
-        </button>
+          <!-- ? -->
+          <!-- <section class="mb-12 bg-[#003366] px-4 py-12 text-white sm:mb-16 sm:px-6 sm:py-16 lg:mb-20 lg:py-20">
+            <div class="mx-auto max-w-4xl text-center">
+              <h3 class="mb-4 font-serif text-2xl leading-tight sm:mb-6 sm:text-3xl md:text-4xl lg:text-5xl">
+                Discover Our Signature Collection
+              </h3>
+              <p
+                class="mx-auto mb-6 max-w-2xl text-base leading-relaxed text-gray-300 sm:mb-8 sm:text-lg"
+              >
+                Handpicked products that define luxury and comfort for the modern hotel experience.
+              </p>
+              <button
+                class="inline-flex items-center gap-2 rounded-full bg-[#2E8B57] px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:scale-105 hover:bg-[#267347] sm:px-8 sm:py-4 sm:text-base"
+              >
+                Explore Collection
+                <ArrowRight :size="18" class="sm:w-5 sm:h-5" />
+              </button>
+            </div>
+          </section> -->
+        </main>
       </div>
-    </section>
-
-    <!-- Instagram-style Product Grid -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-      <h3 class="text-3xl font-serif text-center text-[#333333] mb-4">
-        Inspiration Gallery
-      </h3>
-      <p class="text-center text-[#666666] mb-12">
-        See our products in real hotel environments
-      </p>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div
-          v-for="i in 8"
-          :key="i"
-          class="aspect-square bg-[#E0E0E0] rounded-lg overflow-hidden group cursor-pointer"
-        >
-          <img
-            :src="`https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D`"
-            :alt="`Gallery ${i}`"
-            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-          />
-        </div>
-      </div>
-    </section>
-
     </PublicLayout>
 
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { Eye, Heart, ArrowRight } from 'lucide-vue-next'
-import PublicLayout from '@/layouts/PublicLayout.vue'
-
-interface Category {
-  id: string
-  name: string
-}
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ShoppingCart, Eye, Heart, Bed, UtensilsCrossed, Armchair } from 'lucide-vue-next'
+import ProductSidebar from '@/components/core/ProductSidebar.vue'
+import PublicLayout from '../layouts/PublicLayout.vue'
+import { inject } from 'vue'
 
 interface Product {
   id: number
@@ -163,96 +162,150 @@ interface Product {
   image: string
 }
 
-const categories: Category[] = [
-  { id: 'all', name: 'All Products' },
-  { id: 'beddings', name: 'Beddings' },
-  { id: 'kitchenware', name: 'Kitchenware' },
-  { id: 'furniture', name: 'Furniture' }
-]
-
 const products: Product[] = [
   {
     id: 1,
     name: 'Luxury Egyptian Cotton Sheets',
     description: '1000 thread count, hotel-grade bedding',
-    price: 'From $299',
+    price: '$299',
     category: 'beddings',
-    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D'
+    image: '/placeholder.svg?height=400&width=400'
   },
   {
     id: 2,
     name: 'Premium Down Pillows',
     description: 'Hypoallergenic, cloud-like comfort',
-    price: 'From $89',
+    price: '$89',
     category: 'beddings',
-    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D'
+    image: '/placeholder.svg?height=400&width=400'
   },
   {
     id: 3,
     name: 'Professional Cookware Set',
     description: 'Commercial-grade stainless steel',
-    price: 'From $599',
+    price: '$599',
     category: 'kitchenware',
-    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D'
+    image: '/placeholder.svg?height=400&width=400'
   },
   {
     id: 4,
     name: 'Fine Dining Plate Collection',
     description: 'Elegant porcelain dinnerware',
-    price: 'From $199',
+    price: '$199',
     category: 'kitchenware',
-    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D'
+    image: '/placeholder.svg?height=400&width=400'
   },
   {
     id: 5,
     name: 'Executive Desk Chair',
     description: 'Ergonomic leather office seating',
-    price: 'From $799',
+    price: '$799',
     category: 'furniture',
-    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D'
+    image: '/placeholder.svg?height=400&width=400'
   },
   {
     id: 6,
     name: 'Modern Lounge Sofa',
     description: 'Contemporary design, premium fabric',
-    price: 'From $1,899',
+    price: '$1,899',
     category: 'furniture',
-    image: 'https://images.ctfassets.net/h81st780aesh/3p269F8scsqoNoyIonFxTT/4796d33fc3eb4e7deacbec577fe48d06/restaurant-decor-ideas.jpeg'
+    image: '/placeholder.svg?height=400&width=400'
   },
   {
     id: 7,
     name: 'Silk Duvet Cover Set',
     description: 'Luxurious mulberry silk bedding',
-    price: 'From $449',
+    price: '$449',
     category: 'beddings',
-    image: 'https://images.ctfassets.net/h81st780aesh/3p269F8scsqoNoyIonFxTT/4796d33fc3eb4e7deacbec577fe48d06/restaurant-decor-ideas.jpeg'
+    image: '/placeholder.svg?height=400&width=400'
   },
   {
     id: 8,
     name: 'Crystal Glassware Set',
     description: 'Hand-blown crystal stemware',
-    price: 'From $349',
+    price: '$349',
     category: 'kitchenware',
-    image: 'https://images.ctfassets.net/h81st780aesh/3p269F8scsqoNoyIonFxTT/4796d33fc3eb4e7deacbec577fe48d06/restaurant-decor-ideas.jpeg'
+    image: '/placeholder.svg?height=400&width=400'
   },
   {
     id: 9,
     name: 'Boutique Nightstand',
     description: 'Solid wood with brass accents',
-    price: 'From $599',
+    price: '$599',
     category: 'furniture',
-    image: 'https://images.ctfassets.net/h81st780aesh/3p269F8scsqoNoyIonFxTT/4796d33fc3eb4e7deacbec577fe48d06/restaurant-decor-ideas.jpeg'
+    image: '/placeholder.svg?height=400&width=400'
   }
 ]
 
 const selectedCategory = ref<string>('all')
 const hoveredProduct = ref<number | null>(null)
+const sidebarOpen = ref(true)
+const isMobile = ref(false)
+const productRefs = ref<Record<number, any>>({})
+
+const categoriesWithProducts = computed(() => [
+  {
+    id: 'beddings',
+    name: 'Beddings',
+    icon: Bed,
+    products: products.filter(p => p.category === 'beddings')
+  },
+  {
+    id: 'kitchenware',
+    name: 'Kitchenware',
+    icon: UtensilsCrossed,
+    products: products.filter(p => p.category === 'kitchenware')
+  },
+  {
+    id: 'furniture',
+    name: 'Furniture',
+    icon: Armchair,
+    products: products.filter(p => p.category === 'furniture')
+  }
+])
 
 const filteredProducts = computed(() => {
   if (selectedCategory.value === 'all') {
     return products
   }
   return products.filter(product => product.category === selectedCategory.value)
+})
+
+const selectCategory = (categoryId: string) => {
+  selectedCategory.value = categoryId
+  if (isMobile.value) {
+    sidebarOpen.value = false
+  }
+}
+
+const scrollToProduct = (product: Product) => {
+  const element = productRefs.value[product.id]
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+  if (isMobile.value) {
+    sidebarOpen.value = false
+  }
+}
+
+const addToCart = inject<(product: Product) => void>('addToCart')
+
+const checkMobile = () => {
+  isMobile.value = window.innerWidth < 1024
+  if (!isMobile.value) {
+    sidebarOpen.value = true
+  } else {
+    sidebarOpen.value = false
+  }
+}
+
+onMounted(() => {
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile)
 })
 </script>
 

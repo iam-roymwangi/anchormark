@@ -7,7 +7,7 @@
                 <!-- Hero Title -->
                 <div class="mb-12 text-center">
                     <h1
-                        class="mb-6 font-serif text-5xl leading-tight text-[#333333] sm:text-6xl lg:text-7xl xl:text-8xl"
+                        class="mb-6 font-serif text-5xl leading-tight text-[#333333] sm:text-6xl lg:text-5xl xl:text-6xl"
                     >
                         Premium hospitality<br />solutions for exceptional<br /><span
                             class="text-[#2E8B57]"

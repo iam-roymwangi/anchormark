@@ -20,6 +20,12 @@
             <button class="bg-[#2E8B57] hover:bg-[#247047] px-6 py-2 rounded-lg transition-colors">
               Get a Quote
             </button>
+            <button @click="cartOpen = true" class="relative p-2 rounded-full hover:bg-white/10 transition-colors">
+              <ShoppingCart class="w-6 h-6" />
+              <span v-if="cartItems.length" class="absolute -top-1 -right-1 bg-[#2E8B57] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                {{ cartItems.length }}
+              </span>
+            </button>
           </div>
 
           <!-- Mobile Menu Button -->
@@ -54,6 +60,17 @@
    
 
    
+
+    <!-- Cart Popup -->
+    <div class="fixed bottom-4 right-4 z-50 p-4 bg-[#003366] rounded-[50%]">
+      <CartPopup
+        :is-open="cartOpen"
+        :cart-items="cartItems"
+        @close="cartOpen = false"
+        @update-quantity="updateCartQuantity"
+        @remove-item="removeFromCart"
+      />
+    </div>
 
     <!-- Footer -->
     <footer class="bg-[#003366] text-white py-12 border-t border-white/10">
@@ -109,16 +126,59 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, provide } from 'vue'
 import { 
   Menu, 
   X, 
   Anchor,
   Mail,
-  Phone
+  Phone,
+  ShoppingCart
 } from 'lucide-vue-next'
+import CartPopup from '@/components/core/CartPopup.vue'
+
+interface Product {
+  id: number
+  name: string
+  description: string
+  price: string
+  category: string
+  image: string
+}
+
+interface CartItem extends Product {
+  quantity: number
+}
 
 const mobileMenuOpen = ref(false)
+const cartOpen = ref(false)
+const cartItems = ref<CartItem[]>([])
+
+const addToCart = (product: Product) => {
+  const existingItem = cartItems.value.find(item => item.id === product.id)
+  if (existingItem) {
+    existingItem.quantity++
+  } else {
+    cartItems.value.push({ ...product, quantity: 1 })
+  }
+  cartOpen.value = true
+}
+
+const updateCartQuantity = ({ id, quantity }: { id: number; quantity: number }) => {
+  const item = cartItems.value.find(item => item.id === id)
+  if (item) {
+    item.quantity = quantity
+  }
+}
+
+const removeFromCart = (id: number) => {
+  const index = cartItems.value.findIndex(item => item.id === id)
+  if (index > -1) {
+    cartItems.value.splice(index, 1)
+  }
+}
+
+provide('addToCart', addToCart)
 
 
 
