@@ -26,18 +26,33 @@ import { LoaderCircle } from 'lucide-vue-next';
         >
             <div class="grid gap-6">
                 <div class="grid gap-2">
-                    <Label for="name">Name</Label>
+                    <Label for="name">First Name</Label>
                     <Input
-                        id="name"
+                        id="first_name"
                         type="text"
                         required
                         autofocus
                         :tabindex="1"
-                        autocomplete="name"
-                        name="name"
-                        placeholder="Full name"
+                        autocomplete="first_name"
+                        name="first_name"
+                        placeholder="First name"
                     />
-                    <InputError :message="errors.name" />
+                    <InputError :message="errors.first_name" />
+                </div>
+
+                <div class="grid gap-2">
+                    <Label for="name">Last Name</Label>
+                    <Input
+                        id="last_name"
+                        type="text"
+                        required
+                        autofocus
+                        :tabindex="1"
+                        autocomplete="last_name"
+                        name="last_name"
+                        placeholder="Last name"
+                    />
+                    <InputError :message="errors.last_name" />
                 </div>
 
                 <div class="grid gap-2">
@@ -82,10 +97,42 @@ import { LoaderCircle } from 'lucide-vue-next';
                     <InputError :message="errors.password_confirmation" />
                 </div>
 
+                <div class="grid gap-2">
+                    <Label for="phone_number">Phone Number</Label>
+                    <Input
+                        id="phone_number"
+                        type="tel"
+                        required
+                        :tabindex="5"
+                        autocomplete="tel"
+                        name="phone_number"
+                        placeholder="+1 (555) 123-4567"
+                    />
+                    <InputError :message="errors.phone_number" />
+                </div>
+
+                <div class="grid gap-2">
+                    <Label for="gender">Gender</Label>
+                    <select
+                        id="gender"
+                        required
+                        :tabindex="6"
+                        name="gender"
+                        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                        <option value="">Select gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                        <option value="prefer_not_to_say">Prefer not to say</option>
+                    </select>
+                    <InputError :message="errors.gender" />
+                </div>
+
                 <Button
                     type="submit"
                     class="mt-2 w-full"
-                    tabindex="5"
+                    tabindex="7"
                     :disabled="processing"
                     data-test="register-user-button"
                 >
@@ -102,7 +149,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                 <TextLink
                     :href="login()"
                     class="underline underline-offset-4"
-                    :tabindex="6"
+                    :tabindex="8"
                     >Log in</TextLink
                 >
             </div>

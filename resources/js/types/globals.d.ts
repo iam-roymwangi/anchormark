@@ -17,6 +17,8 @@ declare module '@inertiajs/core' {
     interface PageProps extends InertiaPageProps, AppPageProps {}
 }
 
+declare function route(name: string, params?: Record<string, any>): string;
+
 declare module 'vue' {
     interface ComponentCustomProperties {
         $inertia: typeof Router;

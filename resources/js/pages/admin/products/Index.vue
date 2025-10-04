@@ -1,5 +1,5 @@
 <template>
-    <AppLayout>
+    
         <div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
             <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
                 <!-- Header -->
@@ -88,7 +88,7 @@
                                 viewMode === 'list'
                                     ? 'bg-blue-500 text-white'
                                     : 'text-slate-600 hover:bg-slate-100',
-                            ]"
+]"
                         >
                             <List class="h-4 w-4" />
                         </button>
@@ -211,7 +211,7 @@
                                         {{ product.stock_quantity }} in stock
                                     </p>
                                     <p class="text-xs text-slate-500">
-                                        Reorder: {{ product.re_order_level }}
+                                        reorder: {{ product.re_order_level }}
                                     </p>
                                 </div>
                             </div>
@@ -374,7 +374,7 @@
                                                 ${{ product.price }}
                                             </p>
                                             <p class="text-xs text-slate-500">
-                                                SKU: {{ product.sku }}
+                                                SKU:  {{ product.sku }}
                                             </p>
                                         </div>
                                         <div class="text-right">
@@ -451,11 +451,29 @@
                 </div>
             </div>
         </div>
-    </AppLayout>
+
+        <!-- View Modal -->
+        <ProductViewModal
+            :isOpen="viewModalOpen"
+            :productId="selectedProductId"
+            @close="closeModals"
+            @edit="editProduct"
+        />
+
+        <!-- Edit Modal -->
+        <ProductEditModal
+            :isOpen="editModalOpen"
+            :product="selectedProduct"
+            :categories="categories"
+            :attributes="[]"
+            @close="closeModals"
+            @save="saveProduct"
+        />
+   
 </template>
 
 <script setup lang="ts">
-import AppLayout from '@/layouts/AppLayout.vue';
+// import AppLayout from '@/layouts/AppLayout.vue';
 import {
     Edit,
     Eye,
@@ -467,8 +485,11 @@ import {
     Tag,
     Trash2,
 } from 'lucide-vue-next';
-import { computed, onMounted, reactive, ref } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
+import { Link, router } from '@inertiajs/vue3';
+import ProductViewModal from '@/components/modals/ProductViewModal.vue';
+import ProductEditModal from '@/components/modals/ProductEditModal.vue';
+
 // Types
 interface ProductImage {
     id: number;
@@ -495,7 +516,7 @@ interface Product {
     name: string;
     slug: string;
     description: string | null;
-    price: string;
+    price: number;
     stock_quantity: number;
     re_order_level: number;
     shelf_life: number;
@@ -513,15 +534,27 @@ interface Category {
     name: string;
 }
 
+// Props
+const props = defineProps<{
+    products: Product[];
+    categories: Category[];
+}>();
+
 // State
-const loading = ref(true);
-const products = ref<Product[]>([]);
-const categories = ref<Category[]>([]);
+const loading = ref(false);
+const products = ref<Product[]>(props.products);
+const categories = ref<Category[]>(props.categories);
 const searchQuery = ref('');
 const selectedCategory = ref('');
 const selectedStatus = ref('');
 const viewMode = ref<'grid' | 'list'>('grid');
 const currentImageIndex = reactive<Record<number, number>>({});
+
+// Modal states
+const viewModalOpen = ref(false);
+const editModalOpen = ref(false);
+const selectedProductId = ref<number | null>(null);
+const selectedProduct = ref<Product | null>(null);
 
 // Computed
 const filteredProducts = computed(() => {
@@ -569,283 +602,72 @@ const formatAttributeValue = (attr: ProductAttribute): string => {
 };
 
 const viewProduct = (product: Product) => {
-    console.log('[v0] View product:', product);
-    // Navigate to product detail page or open modal
-    alert(`Viewing product: ${product.name}`);
+    selectedProductId.value = product.id;
+    viewModalOpen.value = true;
 };
 
-const editProduct = (product: Product) => {
-    console.log('[v0] Edit product:', product);
-    // Navigate to edit page
-    alert(`Editing product: ${product.name}`);
+const editProduct = (product?: Product) => {
+    if (product) {
+        selectedProduct.value = product;
+    }
+    editModalOpen.value = true;
 };
 
 const deleteProduct = (product: Product) => {
     if (confirm(`Are you sure you want to delete "${product.name}"?`)) {
-        console.log('[v0] Delete product:', product);
-        // Call API to delete product
-        alert(`Product "${product.name}" deleted`);
+        router.delete(`/admin/products/${product.id}`, {
+            onSuccess: () => {
+                // Remove product from local list
+                const index = products.value.findIndex(p => p.id === product.id);
+                if (index > -1) {
+                    products.value.splice(index, 1);
+                }
+            }
+        });
     }
 };
 
-const fetchProducts = async () => {
-    loading.value = true;
-    try {
-        // Replace with your actual API endpoint
-        // const response = await fetch('/api/products')
-        // products.value = await response.json()
+const closeModals = () => {
+    viewModalOpen.value = false;
+    editModalOpen.value = false;
+    selectedProductId.value = null;
+    selectedProduct.value = null;
+};
 
-        // Mock data for demonstration
-        products.value = [
-            {
-                id: 1,
-                category_id: 1,
-                category_name: 'Electronics',
-                name: 'Wireless Bluetooth Headphones',
-                slug: 'wireless-bluetooth-headphones',
-                description:
-                    'Premium noise-cancelling headphones with 30-hour battery life',
-                price: '149.99',
-                stock_quantity: 45,
-                re_order_level: 10,
-                shelf_life: 1825,
-                sku: 'WBH-001',
-                specs_json: {
-                    'Battery Life': '30 hours',
-                    'Bluetooth Version': '5.0',
-                    'Noise Cancellation': 'Active',
-                },
-                status: 'active',
-                images: [
-                    {
-                        id: 1,
-                        product_id: 1,
-                        image_url: '/placeholder.svg?height=400&width=400',
-                    },
-                    {
-                        id: 2,
-                        product_id: 1,
-                        image_url: '/placeholder.svg?height=400&width=400',
-                    },
-                ],
-                attributes: [
-                    {
-                        id: 1,
-                        product_id: 1,
-                        attribute_id: 1,
-                        name: 'Color',
-                        data_type: 'string',
-                        value_string: 'Black',
-                        value_number: null,
-                        value_boolean: null,
-                        value_date: null,
-                    },
-                    {
-                        id: 2,
-                        product_id: 1,
-                        attribute_id: 2,
-                        name: 'Weight',
-                        data_type: 'number',
-                        value_string: null,
-                        value_number: 250,
-                        value_boolean: null,
-                        value_date: null,
-                    },
-                    {
-                        id: 3,
-                        product_id: 1,
-                        attribute_id: 3,
-                        name: 'Warranty',
-                        data_type: 'string',
-                        value_string: '2 years',
-                        value_number: null,
-                        value_boolean: null,
-                        value_date: null,
-                    },
-                ],
-                created_at: '2024-01-15T10:00:00Z',
-                updated_at: '2024-01-15T10:00:00Z',
-            },
-            {
-                id: 2,
-                category_id: 2,
-                category_name: 'Home & Kitchen',
-                name: 'Stainless Steel Coffee Maker',
-                slug: 'stainless-steel-coffee-maker',
-                description:
-                    'Programmable 12-cup coffee maker with thermal carafe',
-                price: '89.99',
-                stock_quantity: 8,
-                re_order_level: 15,
-                shelf_life: 3650,
-                sku: 'CM-002',
-                specs_json: {
-                    Capacity: '12 cups',
-                    Material: 'Stainless Steel',
-                    Programmable: 'Yes',
-                },
-                status: 'active',
-                images: [
-                    {
-                        id: 3,
-                        product_id: 2,
-                        image_url: '/placeholder.svg?height=400&width=400',
-                    },
-                ],
-                attributes: [
-                    {
-                        id: 4,
-                        product_id: 2,
-                        attribute_id: 1,
-                        name: 'Color',
-                        data_type: 'string',
-                        value_string: 'Silver',
-                        value_number: null,
-                        value_boolean: null,
-                        value_date: null,
-                    },
-                    {
-                        id: 5,
-                        product_id: 2,
-                        attribute_id: 4,
-                        name: 'Brand',
-                        data_type: 'string',
-                        value_string: 'BrewMaster',
-                        value_number: null,
-                        value_boolean: null,
-                        value_date: null,
-                    },
-                    {
-                        id: 6,
-                        product_id: 2,
-                        attribute_id: 3,
-                        name: 'Warranty',
-                        data_type: 'string',
-                        value_string: '1 year',
-                        value_number: null,
-                        value_boolean: null,
-                        value_date: null,
-                    },
-                ],
-                created_at: '2024-01-16T10:00:00Z',
-                updated_at: '2024-01-16T10:00:00Z',
-            },
-            {
-                id: 3,
-                category_id: 3,
-                category_name: 'Sports & Outdoors',
-                name: 'Yoga Mat Premium',
-                slug: 'yoga-mat-premium',
-                description:
-                    'Extra thick non-slip yoga mat with carrying strap',
-                price: '34.99',
-                stock_quantity: 120,
-                re_order_level: 20,
-                shelf_life: 2190,
-                sku: 'YM-003',
-                specs_json: {
-                    Thickness: '6mm',
-                    Material: 'TPE',
-                    Dimensions: '183cm x 61cm',
-                },
-                status: 'active',
-                images: [
-                    {
-                        id: 4,
-                        product_id: 3,
-                        image_url: '/placeholder.svg?height=400&width=400',
-                    },
-                    {
-                        id: 5,
-                        product_id: 3,
-                        image_url: '/placeholder.svg?height=400&width=400',
-                    },
-                ],
-                attributes: [
-                    {
-                        id: 7,
-                        product_id: 3,
-                        attribute_id: 1,
-                        name: 'Color',
-                        data_type: 'string',
-                        value_string: 'Purple',
-                        value_number: null,
-                        value_boolean: null,
-                        value_date: null,
-                    },
-                    {
-                        id: 8,
-                        product_id: 3,
-                        attribute_id: 5,
-                        name: 'Eco-Friendly',
-                        data_type: 'boolean',
-                        value_string: null,
-                        value_number: null,
-                        value_boolean: true,
-                        value_date: null,
-                    },
-                ],
-                created_at: '2024-01-17T10:00:00Z',
-                updated_at: '2024-01-17T10:00:00Z',
-            },
-            {
-                id: 4,
-                category_id: 1,
-                category_name: 'Electronics',
-                name: 'Smart Watch Pro',
-                slug: 'smart-watch-pro',
-                description: null,
-                price: '299.99',
-                stock_quantity: 3,
-                re_order_level: 10,
-                shelf_life: 1095,
-                sku: 'SW-004',
-                specs_json: null,
-                status: 'inactive',
-                images: [],
-                attributes: [
-                    {
-                        id: 9,
-                        product_id: 4,
-                        attribute_id: 1,
-                        name: 'Color',
-                        data_type: 'string',
-                        value_string: 'Space Gray',
-                        value_number: null,
-                        value_boolean: null,
-                        value_date: null,
-                    },
-                    {
-                        id: 10,
-                        product_id: 4,
-                        attribute_id: 3,
-                        name: 'Warranty',
-                        data_type: 'string',
-                        value_string: '1 year',
-                        value_number: null,
-                        value_boolean: null,
-                        value_date: null,
-                    },
-                ],
-                created_at: '2024-01-18T10:00:00Z',
-                updated_at: '2024-01-18T10:00:00Z',
-            },
-        ];
-
-        categories.value = [
-            { id: 1, name: 'Electronics' },
-            { id: 2, name: 'Home & Kitchen' },
-            { id: 3, name: 'Sports & Outdoors' },
-        ];
-    } catch (error) {
-        console.error('Error fetching products:', error);
-    } finally {
-        loading.value = false;
+const saveProduct =        (productData: any) => {
+    if (selectedProduct.value?.id) {
+        // Update existing product
+        router.put(`/admin/products/${selectedProduct.value.id}`, productData, {
+            onSuccess: () => {
+                // Refresh the products list from server
+                router.reload({ only: ['products'] });
+                closeModals();
+            }
+        });
+    } else {
+        // Create new product
+        router.post('/admin/products', productData, {
+            onSuccess: () => {
+                // Refresh the products list from server
+                router.reload({ only: ['products'] });
+                closeModals();
+            }
+        });
     }
 };
 
+// Watch for prop changes
+watch(() => props.products, (newProducts) => {
+    products.value = newProducts;
+}, { immediate: true });
+
+watch(() => props.categories, (newCategories) => {
+    categories.value = newCategories;
+}, { immediate: true });
+
+// Data is loaded from server via props, no mock data needed
 // Lifecycle
 onMounted(() => {
-    fetchProducts();
+    // Data is already loaded from server via props
 });
 </script>
