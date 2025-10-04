@@ -23,6 +23,11 @@ const mainNavItems: NavItem[] = [
         href: dashboard(),
         icon: LayoutGrid,
     },
+    {
+        title: 'Manage Products',
+        href: '/admin/products/',
+        icon: LayoutGrid,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
