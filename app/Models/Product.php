@@ -11,7 +11,7 @@ class Product extends Model
 
     protected $fillable = [
         'category_id', 'name', 'slug', 'description',
-        'price', 'stock_quantity', 're-order_level', 'shelf_life', 
+        'price', 'stock_quantity', 're_order_level', 'shelf_life', 
         'sku', 'specs_json', 'status'
     ];
 

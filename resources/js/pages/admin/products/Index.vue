@@ -1,5 +1,5 @@
 <template>
-    
+    <AppLayout>
         <div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
             <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
                 <!-- Header -->
@@ -192,7 +192,7 @@
                             <div class="mt-3 flex items-center justify-between">
                                 <div>
                                     <p class="text-2xl font-bold text-blue-600">
-                                        ${{ product.price }}
+                                        KES {{ product.price }}
                                     </p>
                                     <p class="text-xs text-slate-500">
                                         SKU: {{ product.sku }}
@@ -451,6 +451,7 @@
                 </div>
             </div>
         </div>
+           
 
         <!-- View Modal -->
         <ProductViewModal
@@ -469,11 +470,11 @@
             @close="closeModals"
             @save="saveProduct"
         />
+     </AppLayout>
    
 </template>
 
 <script setup lang="ts">
-// import AppLayout from '@/layouts/AppLayout.vue';
 import {
     Edit,
     Eye,
@@ -489,6 +490,7 @@ import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
 import ProductViewModal from '@/components/modals/ProductViewModal.vue';
 import ProductEditModal from '@/components/modals/ProductEditModal.vue';
+import AppLayout from '@/layouts/AppLayout.vue';
 
 // Types
 interface ProductImage {
@@ -606,11 +608,23 @@ const viewProduct = (product: Product) => {
     viewModalOpen.value = true;
 };
 
-const editProduct = (product?: Product) => {
-    if (product) {
-        selectedProduct.value = product;
+const editProduct = (emittedProduct?: any) => {
+    let productToEdit: Product | null = null;
+
+    // Prioritize using the emitted product if it's a valid product object with an ID
+    if (emittedProduct && typeof emittedProduct === 'object' && emittedProduct.id) {
+        productToEdit = products.value.find(p => p.id === emittedProduct.id) || null;
+    } else if (selectedProductId.value !== null) {
+        // Fallback to selectedProductId if emittedProduct is not a full product or not available
+        productToEdit = products.value.find(p => p.id === selectedProductId.value) || null;
     }
-    editModalOpen.value = true;
+
+    if (productToEdit) {
+        selectedProduct.value = productToEdit;
+        editModalOpen.value = true;
+    } else {
+        console.error("Could not find product to edit.");
+    }
 };
 
 const deleteProduct = (product: Product) => {

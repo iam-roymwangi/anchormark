@@ -187,7 +187,7 @@
 
 <script setup lang="ts">
 import { X, ImageIcon } from 'lucide-vue-next';
-import { computed, ref, watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 interface ProductImage {
     id: number;

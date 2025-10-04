@@ -12,7 +12,7 @@
                 <!-- Header -->
                 <div class="flex items-center justify-between p-6 border-b">
                     <h2 class="text-2xl font-bold text-slate-900">
-                        {{ productId ? 'Edit Product' : 'Create Product' }}
+                        {{ product?.id ? 'Edit Product' : 'Create Product' }}
                     </h2>
                     <button
                         @click="closeModal"
@@ -172,7 +172,7 @@
                                     class="flex items-center gap-3"
                                 >
                                     <input
-                                        v-model="form.images[index]"
+                                        v-model="image.image_url"
                                         type="url"
                                         placeholder="Image URL"
                                         class="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
@@ -313,7 +313,13 @@
 
 <script setup lang="ts">
 import { X, Trash2 } from 'lucide-vue-next';
-import { computed, reactive, ref, watch, watchEffect } from 'vue';
+import { reactive, ref, watchEffect } from 'vue';
+
+interface ProductImage {
+    id?: number; // Optional for new images
+    product_id?: number; // Optional for new images
+    image_url: string;
+}
 
 interface ProductAttribute {
     attribute_id: number;
@@ -336,7 +342,7 @@ interface Product {
     sku: string;
     specs_json: Record<string, any> | null;
     status: 'active' | 'inactive' | 'discontinued';
-    images: string[];
+    images: ProductImage[];
     attributes: ProductAttribute[];
 }
 
@@ -366,7 +372,7 @@ const form = reactive({
     sku: '',
     specs_json: null as Record<string, any> | null,
     status: 'active' as const,
-    images: [] as string[],
+    images: [] as ProductImage[],
     attributes: [] as ProductAttribute[],
 });
 
@@ -377,7 +383,7 @@ const closeModal = () => {
 };
 
 const addImage = () => {
-    form.images.push('');
+    form.images.push({ image_url: '' });
 };
 
 const removeImage = (index: number) => {
@@ -412,7 +418,7 @@ const saveProduct = async () => {
         if (specsJsonString.value.trim()) {
             try {
                 form.specs_json = JSON.parse(specsJsonString.value);
-            } catch (error) {
+            } catch {
                 alert('Invalid JSON format in specifications');
                 loading.value = false;
                 return;
@@ -420,11 +426,11 @@ const saveProduct = async () => {
         }
 
         // Filter out empty images and attributes
-        form.images = form.images.filter(img => img.trim());
+        form.images = form.images.filter(img => img.image_url.trim());
         form.attributes = form.attributes.filter(attr => attr.attribute_id > 0);
 
         emit('save', { ...form });
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error saving product:', error);
     } finally {
         loading.value = false;

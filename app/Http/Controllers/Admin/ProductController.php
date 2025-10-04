@@ -15,9 +15,20 @@ class ProductController extends Controller
     {
         $products = Product::with(['category', 'images', 'productAttributes.attribute'])
             ->select([
-                'id', 'category_id', 'name', 'slug', 'description',
-                'price', 'stock_quantity', 're-order_level', 'shelf_life',
-                'sku', 'specs_json', 'status', 'created_at', 'updated_at'
+                'id',
+                'category_id',
+                'name',
+                'slug',
+                'description',
+                'price',
+                'stock_quantity',
+                're_order_level',
+                'shelf_life',
+                'sku',
+                'specs_json',
+                'status',
+                'created_at',
+                'updated_at'
             ])
             ->get()
             ->map(function ($product) {
@@ -32,7 +43,7 @@ class ProductController extends Controller
                     'description' => $product->description,
                     'price' => (float) $product->price,
                     'stock_quantity' => $product->stock_quantity,
-                    're_order_level' => $product->{'re-order_level'},
+                    're_order_level' => $product->{'re_order_level'},
                     'shelf_life' => $product->shelf_life,
                     'sku' => $product->sku,
                     'specs_json' => $product->specs_json,
@@ -114,7 +125,7 @@ class ProductController extends Controller
     {
         $categories = Category::select('id', 'name')->get();
         $attributes = Attribute::select('id', 'name', 'data_type')->get();
-        
+
         return Inertia::render('admin/products/Create', [
             'categories' => $categories,
             'attributes' => $attributes,
@@ -130,15 +141,19 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
-            're-order_level' => 'required|integer|min:0',
+            're_order_level' => 'required|integer|min:0',
             'shelf_life' => 'required|integer|min:1',
             'sku' => 'required|string|max:50|unique:products',
             'status' => 'required|in:active,inactive,discontinued',
-            'specs_json' => 'nullable|array',
+            'specs_json' => 'nullable|json', // Validate as JSON string
             'images' => 'nullable|array',
-            'images.*' => 'url',
-            'attributes' => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Correct validation for file uploads
+            'attributes' => 'nullable|json', // Validate as JSON string
         ]);
+
+        // Laravel's request object should automatically decode JSON fields validated as 'json'
+        $specsJson = $request->input('specs_json');
+        $productAttributes = $request->input('attributes');
 
         $product = Product::create([
             'category_id' => $request->category_id,
@@ -147,23 +162,24 @@ class ProductController extends Controller
             'description' => $request->description,
             'price' => $request->price,
             'stock_quantity' => $request->stock_quantity,
-            're-order_level' => $request->re_order_level,
+            're_order_level' => $request->re_order_level,
             'shelf_life' => $request->shelf_life,
             'sku' => $request->sku,
-            'specs_json' => $request->specs_json,
+            'specs_json' => $specsJson, // Use directly, Laravel handles decoding
             'status' => $request->status,
         ]);
 
         // Save images
-        if ($request->images) {
-            foreach ($request->images as $imageUrl) {
-                $product->images()->create(['image_url' => $imageUrl]);
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $imageFile) {
+                $path = $imageFile->store('products', 'public');
+                $product->images()->create(['image_url' => asset('storage/' . $path)]);
             }
         }
 
         // Save attributes
-        if ($request->attributes) {
-            foreach ($request->attributes as $attribute) {
+        if ($productAttributes) { // Use decoded array
+            foreach ($productAttributes as $attribute) {
                 $product->productAttributes()->create([
                     'attribute_id' => $attribute['attribute_id'],
                     'value_string' => $attribute['value_string'] ?? null,
@@ -182,10 +198,10 @@ class ProductController extends Controller
     {
         $product = Product::with(['category', 'images', 'productAttributes.attribute'])
             ->findOrFail($id);
-        
+
         $categories = Category::select('id', 'name')->get();
         $attributes = Attribute::select('id', 'name', 'data_type')->get();
-        
+
         return Inertia::render('admin/products/Edit', [
             'product' => $product,
             'categories' => $categories,
@@ -204,7 +220,7 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
-            're-order_level' => 'required|integer|min:0',
+            're_order_level' => 'required|integer|min:0',
             'shelf_life' => 'required|integer|min:1',
             'sku' => 'required|string|max:50|unique:products,sku,' . $id,
             'status' => 'required|in:active,inactive,discontinued',
@@ -221,7 +237,7 @@ class ProductController extends Controller
             'description' => $request->description,
             'price' => $request->price,
             'stock_quantity' => $request->stock_quantity,
-            're-order_level' => $request->re_order_level,
+            're_order_level' => $request->re_order_level,
             'shelf_life' => $request->shelf_life,
             'sku' => $request->sku,
             'specs_json' => $request->specs_json,

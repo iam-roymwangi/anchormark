@@ -1,23 +1,23 @@
 <template>
     <AppLayout>
-  <div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 py-4 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-5xl mx-auto">
-       Header 
+  <div class="min-h-screen bg-white dark:bg-[#000000] shadow-sm border py-4 px-4">
+    <div class="mx-auto lg-mx-0">
+       <!-- Header  -->
       <div class="mb-6 sm:mb-8">
         <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2">Add New Product</h1>
         <p class="text-slate-600 dark:text-slate-400">Fill in the details below to add a new product to your inventory</p>
       </div>
 
       <form @submit.prevent="handleSubmit" class="space-y-4 sm:space-y-6">
-         Basic Information Card 
-        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
+         <!-- Basic Information Card  -->
+        <div class="bg-white dark:bg-[#000000] rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
           <h2 class="text-lg sm:text-xl font-semibold text-slate-900 dark:text-white mb-4 sm:mb-6 flex items-center gap-2">
             <Package class="w-5 h-5 text-blue-600 dark:text-blue-400" />
             Basic Information
           </h2>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-             Product Name 
+             <!-- Product Name  -->
             <div class="md:col-span-2">
               <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                 Product Name <span class="text-red-500">*</span>
@@ -32,7 +32,7 @@
               />
             </div>
 
-             Slug 
+             <!-- Slug  -->
             <div class="md:col-span-2">
               <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                 Slug <span class="text-red-500">*</span>
@@ -46,7 +46,7 @@
               />
             </div>
 
-             Category 
+             <!-- Category  -->
             <div>
               <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                 Category <span class="text-red-500">*</span>
@@ -64,7 +64,7 @@
               </select>
             </div>
 
-             SKU 
+             <!-- SKU  -->
             <div>
               <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                 SKU <span class="text-red-500">*</span>
@@ -78,13 +78,13 @@
               />
             </div>
 
-             Price 
+             <!-- Price  -->
             <div>
               <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                Price <span class="text-red-500">*</span>
+                Price (KES) <span class="text-red-500">*</span>
               </label>
               <div class="relative">
-                <DollarSign class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-slate-400 dark:text-slate-500" />
+                <!-- <DollarSign class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-slate-400 dark:text-slate-500" /> -->
                 <input
                   v-model.number="form.price"
                   type="number"
@@ -97,7 +97,7 @@
               </div>
             </div>
 
-             Stock Quantity 
+             <!-- Stock Quantity  -->
             <div>
               <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                 Stock Quantity
@@ -111,7 +111,7 @@
               />
             </div>
 
-             Re-order Level 
+         
             <div>
               <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                 Re-order Level
@@ -125,7 +125,7 @@
               />
             </div>
 
-             Shelf Life 
+             <!-- Shelf Life  -->
             <div>
               <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                 Shelf Life (days)
@@ -139,7 +139,7 @@
               />
             </div>
 
-             Status 
+             <!-- Status  -->
             <div>
               <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                 Status
@@ -154,7 +154,7 @@
               </select>
             </div>
 
-             Description 
+             <!-- Description  -->
             <div class="md:col-span-2">
               <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                 Description
@@ -169,7 +169,7 @@
           </div>
         </div>
 
-         Product Images Card 
+         <!-- Product Images Card  -->
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
           <h2 class="text-lg sm:text-xl font-semibold text-slate-900 dark:text-white mb-4 sm:mb-6 flex items-center gap-2">
             <ImageIcon class="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -193,7 +193,7 @@
                 </button>
               </div>
 
-               Add Image Button 
+               <!-- Add Image Button  -->
               <label class="w-24 h-24 sm:w-32 sm:h-32 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all">
                 <Plus class="w-6 h-6 sm:w-8 sm:h-8 text-slate-400 dark:text-slate-500" />
                 <span class="text-xs text-slate-500 dark:text-slate-400 mt-1 sm:mt-2 hidden sm:block">Add Image</span>
@@ -209,7 +209,7 @@
           </div>
         </div>
 
-         Attributes Card 
+         <!-- Attributes Card  -->
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
           <h2 class="text-lg sm:text-xl font-semibold text-slate-900 dark:text-white mb-4 sm:mb-6 flex items-center gap-2">
             <Tag class="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -229,7 +229,7 @@
               </div>
 
               <div class="md:col-span-2">
-                 String Input 
+                 <!-- String Input  -->
                 <input
                   v-if="attribute.data_type === 'string'"
                   v-model="form.attributes[attribute.id]"
@@ -271,7 +271,7 @@
           </div>
         </div>
 
-         Additional Specs (JSON) Card 
+         <!-- Additional Specs (JSON) Card  -->
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
           <h2 class="text-lg sm:text-xl font-semibold text-slate-900 dark:text-white mb-4 sm:mb-6 flex items-center gap-2">
             <FileText class="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -323,7 +323,7 @@
           </div>
         </div>
 
-         Action Buttons 
+         <!-- Action Buttons  -->
         <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-end">
           <button
             type="button"
@@ -349,7 +349,7 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { Package, ImageIcon, Tag, FileText, DollarSign, Plus, X, Trash2, Save, Loader2 } from 'lucide-vue-next'
+import { Package, ImageIcon, Tag, FileText, Plus, X, Trash2, Save, Loader2 } from 'lucide-vue-next'
 import { router } from '@inertiajs/vue3'
 import AppLayout from '@/layouts/AppLayout.vue'
 
@@ -538,7 +538,7 @@ const removeSpec = (index: number) => {
 
 const handleSubmit = async () => {
   isSubmitting.value = true
-  
+
   try {
     // Prepare specs_json
     const specsJson = form.specs.reduce((acc, spec) => {
@@ -559,38 +559,41 @@ const handleSubmit = async () => {
         }
       })
 
-    const payload = {
-      name: form.name,
-      slug: form.slug,
-      category_id: Number(form.category_id),
-      description: form.description,
-      price: form.price,
-      stock_quantity: form.stock_quantity,
-      re_order_level: form.re_order_level,
-      shelf_life: form.shelf_life,
-      sku: form.sku,
-      status: form.status,
-      specs_json: specsJson,
-      images: form.images,
-      attributes: productAttributes
+    // Use FormData for file uploads
+    const formData = new FormData()
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+    if (csrfToken) {
+      formData.append('_token', csrfToken)
+    }
+    formData.append('name', form.name)
+    formData.append('slug', form.slug)
+    formData.append('category_id', form.category_id)
+    formData.append('description', form.description)
+    formData.append('price', String(form.price ?? ''))
+    formData.append('stock_quantity', String(form.stock_quantity))
+    formData.append('re_order_level', String(form.re_order_level))
+    formData.append('shelf_life', String(form.shelf_life))
+    formData.append('sku', form.sku)
+    formData.append('status', form.status)
+    formData.append('specs_json', JSON.stringify(specsJson))
+    form.images.forEach((file, idx) => {
+      formData.append(`images[${idx}]`, file)
+    })
+    formData.append('attributes', JSON.stringify(productAttributes))
+
+    // Actual API call
+    const response = await fetch('/admin/products', {
+      method: 'POST',
+      body: formData,
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to add product')
     }
 
-    console.log('Submitting product:', payload)
-    
-    // Replace with actual API call
-    // await fetch('/api/products', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(payload)
-    // })
-
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
     alert('Product added successfully!')
     router.visit('/admin/products') // Redirect to product index page
-    
-    // Reset form or redirect
+
   } catch (error) {
     console.error('Error submitting product:', error)
     alert('Failed to add product. Please try again.')
