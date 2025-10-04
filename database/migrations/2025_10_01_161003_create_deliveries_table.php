@@ -4,6 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+use App\Enums\DeliveryStatus;
+
 return new class extends Migration
 {
     /**
@@ -13,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('deliveries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained()->onDelete('cascade');
+            $table->foreignId('order_id')->constrained()->onDelete('set null');
+            $table->foreignId('courier_id')->constrained()->onDelete('set null');
             $table->string('tracking_number')->nullable();
-            $table->string('courier_name')->nullable();
-            $table->date('estimated_delivery_date')->nullable();
-            $table->date('actual_delivery_date')->nullable();
-            $table->enum('status', ['pending', 'shipped', 'out_for_delivery', 'delivered', 'returned'])->default('pending');
+            $table->datetime('estimated_delivery_date_time')->nullable();
+            $table->datetime('actual_delivery_date_time')->nullable();
+            $table->enum('vehicle_type', DeliveryStatus::values())->default('pending');
             $table->timestamps();
         });
     }
