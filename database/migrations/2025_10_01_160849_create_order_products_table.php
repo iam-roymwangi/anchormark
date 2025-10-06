@@ -18,8 +18,9 @@ return new class extends Migration
             $table->integer('quantity');
             $table->decimal('price', 10, 2); 
             /*Price stores the cost of the item at the time it was
-            sold. It won't change. No need for subtotal. Price in products table stores the 
-            current selling price of the product, can change any time. */
+            sold. It won't change in the records of purchase.
+             Price in products table stores the current selling price of the product, can change any time. */
+            $table->decimal('subtotal', 10, 2);
             
             $table->timestamps();
         });
