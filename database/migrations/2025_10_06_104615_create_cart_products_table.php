@@ -21,7 +21,10 @@ return new class extends Migration
            they will be notified of any price change. Current prices are stored in the products table.
            
            Notifications of price changes should happen at refresh, when proceeding to order, or when 
-           removing a product from cart...*/
+           removing a product from cart...
+           
+           Later to allow promotional purposes, we can keep a separate fixed unit price for items that have a fixed discount
+           when added to cart before a specified time...*/
             $table->decimal('subtotal', 10, 2);
             $table->timestamps();
         });
