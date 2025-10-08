@@ -67,4 +67,28 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return "{$this->first_name} {$this->last_name}";
     }
+
+    /**
+     * Get the user's shopper profile.
+     */
+    public function shopper()
+    {
+        return $this->hasOne(Shopper::class);
+    }
+
+    /**
+     * Get the user's wishlists through their shopper profile.
+     */
+    public function wishlists()
+    {
+        return $this->hasManyThrough(Wishlist::class, Shopper::class, 'user_id', 'shopper_id');
+    }
+
+    /**
+     * Check if user is a shopper.
+     */
+    public function isShopper(): bool
+    {
+        return $this->shopper()->exists();
+    }
 }

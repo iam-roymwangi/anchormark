@@ -40,6 +40,13 @@ Route::middleware(['auth'])->group(function () {
         'update' => 'admin.categories.update',
         'destroy' => 'admin.categories.destroy',
     ]);
+
+    // Wishlist routes
+    Route::resource('wishlists', \App\Http\Controllers\WishlistController::class);
+    Route::post('wishlists/{wishlist}/add-product', [\App\Http\Controllers\WishlistController::class, 'addProduct'])->name('wishlists.add-product');
+    Route::delete('wishlists/{wishlist}/remove-product', [\App\Http\Controllers\WishlistController::class, 'removeProduct'])->name('wishlists.remove-product');
+    Route::post('wishlists/{wishlist}/toggle-product', [\App\Http\Controllers\WishlistController::class, 'toggleProduct'])->name('wishlists.toggle-product');
+    Route::post('wishlists/move-product', [\App\Http\Controllers\WishlistController::class, 'moveProduct'])->name('wishlists.move-product');
 });
 
 
