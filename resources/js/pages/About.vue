@@ -1,22 +1,6 @@
 <template>
   <div class="min-h-screen bg-white">
-     <!-- Navigation  -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-[#003366] text-white">
-      <div class="max-w-7xl mx-auto px-6 py-4">
-        <div class="flex items-center justify-between">
-          <div class="text-2xl font-bold">AnchorMark</div>
-          <div class="hidden md:flex items-center gap-8">
-            <a href="#" class="hover:text-[#2E8B57] transition-colors">Home</a>
-            <a href="#" class="hover:text-[#2E8B57] transition-colors">Products</a>
-            <a href="#" class="text-[#2E8B57]">About</a>
-            <a href="#" class="hover:text-[#2E8B57] transition-colors">Contact</a>
-          </div>
-          <button class="bg-[#2E8B57] text-white px-6 py-2 rounded-full hover:bg-[#267347] transition-all">
-            Get Started
-          </button>
-        </div>
-      </div>
-    </nav>
+     <PublicLayout>
 
      <!-- Hero Section with Image Overlay  -->
     <section class="relative h-screen flex items-center justify-center overflow-hidden">
@@ -214,56 +198,14 @@
       </div>
     </section>
 
-     <!-- Footer  -->
-    <footer class="bg-[#003366] text-white py-12 px-6">
-      <div class="max-w-7xl mx-auto">
-        <div class="grid md:grid-cols-4 gap-12 mb-8">
-          <div>
-            <h3 class="text-2xl font-bold mb-4">AnchorMark</h3>
-            <p class="text-gray-300">Elevating hospitality through premium products.</p>
-          </div>
-          <div>
-            <h4 class="font-semibold mb-4">Products</h4>
-            <ul class="space-y-2 text-gray-300">
-              <li><a href="#" class="hover:text-[#2E8B57] transition-colors">Beddings</a></li>
-              <li><a href="#" class="hover:text-[#2E8B57] transition-colors">Kitchenware</a></li>
-              <li><a href="#" class="hover:text-[#2E8B57] transition-colors">Furniture</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="font-semibold mb-4">Company</h4>
-            <ul class="space-y-2 text-gray-300">
-              <li><a href="#" class="hover:text-[#2E8B57] transition-colors">About</a></li>
-              <li><a href="#" class="hover:text-[#2E8B57] transition-colors">Careers</a></li>
-              <li><a href="#" class="hover:text-[#2E8B57] transition-colors">Contact</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="font-semibold mb-4">Connect</h4>
-            <div class="flex gap-4">
-              <a href="#" class="hover:text-[#2E8B57] transition-colors">
-                <Linkedin :size="24" />
-              </a>
-              <a href="#" class="hover:text-[#2E8B57] transition-colors">
-                <Twitter :size="24" />
-              </a>
-              <a href="#" class="hover:text-[#2E8B57] transition-colors">
-                <Instagram :size="24" />
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="border-t border-gray-700 pt-8 text-center text-gray-400">
-          <p>&copy; 2025 AnchorMark. All rights reserved.</p>
-        </div>
-      </div>
-    </footer>
+    </PublicLayout>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { ChevronDown, Linkedin, Twitter, Instagram } from 'lucide-vue-next'
+import { ChevronDown } from 'lucide-vue-next'
+import PublicLayout from '@/layouts/PublicLayout.vue'
 
 const isVisible = ref(false)
 

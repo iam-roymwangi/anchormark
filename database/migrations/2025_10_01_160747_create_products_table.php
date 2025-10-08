@@ -21,7 +21,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->integer('stock_quantity')->default(0);
-            $table->integer('re-order_level')->default(0);
+            $table->integer('re_order_level')->default(0);
             $table->integer('shelf_life')->default(3650);
             $table->string('sku')->unique();
             $table->json('specs_json')->nullable(); // flexible storage

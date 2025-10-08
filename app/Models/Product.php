@@ -11,7 +11,8 @@ class Product extends Model
 
     protected $fillable = [
         'category_id', 'name', 'slug', 'description',
-        'price', 'stock_quantity', 'sku', 'status'
+        'price', 'stock_quantity', 're_order_level', 'shelf_life', 
+        'sku', 'specs_json', 'status'
     ];
 
     public function category()
@@ -33,4 +34,14 @@ class Product extends Model
     {
         return $this->hasMany(Review::class);
     }
+
+    public function productAttributes()
+    {
+        return $this->hasMany(ProductAttribute::class);
+    }
+
+    protected $casts = [
+        'specs_json' => 'array',
+        'price' => 'decimal:2',
+    ];
 }

@@ -1,31 +1,9 @@
 <template>
   <div class="min-h-screen bg-[#F5F5F0]">
-    <!-- Navigation -->
-    <nav class="bg-[#003366] text-white sticky top-0 z-50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-          <div class="flex items-center space-x-8">
-            <h1 class="text-2xl font-serif font-bold">AnchorMark</h1>
-            <div class="hidden md:flex space-x-6">
-              <a href="#" class="hover:text-[#2E8B57] transition-colors">Products</a>
-              <a href="#" class="hover:text-[#2E8B57] transition-colors">About</a>
-              <a href="#" class="hover:text-[#2E8B57] transition-colors">Contact</a>
-            </div>
-          </div>
-          <div class="flex items-center space-x-4">
-            <button class="hover:text-[#2E8B57] transition-colors">
-              <Search :size="20" />
-            </button>
-            <button class="hover:text-[#2E8B57] transition-colors">
-              <ShoppingCart :size="20" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </nav>
+    <PublicLayout>
 
     <!-- Breadcrumb -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 pt-24">
       <div class="flex items-center space-x-2 text-sm text-[#333333]">
         <a href="#" class="hover:text-[#2E8B57] transition-colors">Home</a>
         <ChevronRight :size="16" />
@@ -124,7 +102,7 @@
                   class="px-4 py-2 border-2 rounded-lg transition-all duration-300"
                   :class="selectedSize === size 
                     ? 'border-[#2E8B57] bg-[#2E8B57] text-white' 
-                    : 'border-gray-300 hover:border-[#2E8B57]'"
+                    : 'border-gray-300 hover:border-[#2E8B57] text-black'"
                 >
                   {{ size }}
                 </button>
@@ -153,7 +131,7 @@
               <div class="flex items-center space-x-3">
                 <button
                   @click="decreaseQuantity"
-                  class="w-10 h-10 border-2 border-gray-300 rounded-lg hover:border-[#2E8B57] transition-colors"
+                  class="w-10 h-10 border-2 border-gray-300 rounded-lg hover:border-[#2E8B57] transition-colors text-black"
                 >
                   <Minus :size="16" class="mx-auto" />
                 </button>
@@ -161,11 +139,11 @@
                   v-model.number="quantity"
                   type="number"
                   min="1"
-                  class="w-20 text-center border-2 border-gray-300 rounded-lg py-2 focus:border-[#2E8B57] focus:outline-none"
+                  class="w-20 text-center border-2 border-gray-300 rounded-lg py-2 focus:border-[#2E8B57] focus:outline-none text-black"
                 />
                 <button
                   @click="increaseQuantity"
-                  class="w-10 h-10 border-2 border-gray-300 rounded-lg hover:border-[#2E8B57] transition-colors"
+                  class="w-10 h-10 border-2 border-gray-300 rounded-lg hover:border-[#2E8B57] transition-colors text-black"
                 >
                   <Plus :size="16" class="mx-auto" />
                 </button>
@@ -384,53 +362,17 @@
       </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-[#003366] text-white mt-16">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
-            <h3 class="text-2xl font-serif font-bold mb-4">AnchorMark</h3>
-            <p class="text-gray-300 text-sm">Premium hospitality products for exceptional hotels.</p>
-          </div>
-          <div>
-            <h4 class="font-medium mb-4">Products</h4>
-            <ul class="space-y-2 text-sm text-gray-300">
-              <li><a href="#" class="hover:text-[#2E8B57] transition-colors">Beddings</a></li>
-              <li><a href="#" class="hover:text-[#2E8B57] transition-colors">Kitchenware</a></li>
-              <li><a href="#" class="hover:text-[#2E8B57] transition-colors">Furniture</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="font-medium mb-4">Company</h4>
-            <ul class="space-y-2 text-sm text-gray-300">
-              <li><a href="#" class="hover:text-[#2E8B57] transition-colors">About Us</a></li>
-              <li><a href="#" class="hover:text-[#2E8B57] transition-colors">Contact</a></li>
-              <li><a href="#" class="hover:text-[#2E8B57] transition-colors">Careers</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="font-medium mb-4">Support</h4>
-            <ul class="space-y-2 text-sm text-gray-300">
-              <li><a href="#" class="hover:text-[#2E8B57] transition-colors">Shipping</a></li>
-              <li><a href="#" class="hover:text-[#2E8B57] transition-colors">Returns</a></li>
-              <li><a href="#" class="hover:text-[#2E8B57] transition-colors">FAQ</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-300">
-          <p>&copy; 2025 AnchorMark. All rights reserved.</p>
-        </div>
-      </div>
-    </footer>
+    </PublicLayout>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import { 
-  Search, ShoppingCart, ChevronRight, Star, Minus, Plus, 
+   ChevronRight, Star, Minus, Plus, 
   Truck, Shield, Package, Award, CreditCard, Check 
 } from 'lucide-vue-next'
+import PublicLayout from '@/layouts/PublicLayout.vue'
 
 interface Product {
   id: number
@@ -480,10 +422,10 @@ const product = ref<Product>({
   shortDescription: 'Experience luxury with our premium 100% Egyptian cotton duvet set. Designed for 5-star hotels, this set combines exceptional comfort with timeless elegance.',
   fullDescription: 'Our Premium Cotton Duvet Set represents the pinnacle of hotel bedding excellence. Crafted from the finest 100% Egyptian cotton with a 600 thread count, this duvet set offers unparalleled softness and durability. The breathable fabric ensures optimal temperature regulation throughout the night, while the elegant design complements any hotel room aesthetic. Each set includes a duvet cover and matching pillowcases, all featuring reinforced stitching and easy-care properties.',
   images: [
-    '/placeholder.svg?height=600&width=600',
-    '/placeholder.svg?height=600&width=600',
-    '/placeholder.svg?height=600&width=600',
-    '/placeholder.svg?height=600&width=600'
+    'https://canada.shopmarriott.com/images/products/v2/xlrg/Marriott-innerspring-mattress-box-spring-set-MAR-124_xlrg.webp',
+    'https://canada.shopmarriott.com/images/products/v2/xlrg/Marriott-innerspring-mattress-box-spring-set-MAR-124_xlrg.webp',
+    'https://canada.shopmarriott.com/images/products/v2/xlrg/Marriott-innerspring-mattress-box-spring-set-MAR-124_xlrg.webp',
+    'https://canada.shopmarriott.com/images/products/v2/xlrg/Marriott-innerspring-mattress-box-spring-set-MAR-124_xlrg.webp'
   ],
   sizes: ['Queen', 'King', 'California King'],
   colors: [
@@ -546,28 +488,28 @@ const similarProducts = ref<SimilarProduct[]>([
     name: 'Luxury Silk Pillowcase Set',
     price: 89,
     rating: 4.9,
-    image: '/placeholder.svg?height=400&width=400'
+    image: 'https://images.ctfassets.net/h81st780aesh/3p269F8scsqoNoyIonFxTT/4796d33fc3eb4e7deacbec577fe48d06/restaurant-decor-ideas.jpeg'
   },
   {
     id: 3,
     name: 'Hotel Collection Bed Sheets',
     price: 149,
     rating: 4.7,
-    image: '/placeholder.svg?height=400&width=400'
+    image: 'https://images.ctfassets.net/h81st780aesh/3p269F8scsqoNoyIonFxTT/4796d33fc3eb4e7deacbec577fe48d06/restaurant-decor-ideas.jpeg'
   },
   {
     id: 4,
     name: 'Premium Down Comforter',
     price: 399,
     rating: 4.8,
-    image: '/placeholder.svg?height=400&width=400'
+    image: 'https://images.ctfassets.net/h81st780aesh/3p269F8scsqoNoyIonFxTT/4796d33fc3eb4e7deacbec577fe48d06/restaurant-decor-ideas.jpeg'
   },
   {
     id: 5,
     name: 'Bamboo Mattress Protector',
     price: 79,
     rating: 4.6,
-    image: '/placeholder.svg?height=400&width=400'
+    image: 'https://images.ctfassets.net/h81st780aesh/3p269F8scsqoNoyIonFxTT/4796d33fc3eb4e7deacbec577fe48d06/restaurant-decor-ideas.jpeg'
   }
 ])
 
