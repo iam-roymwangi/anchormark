@@ -3,6 +3,8 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Shopper\WhishlistController;
@@ -18,6 +20,25 @@ Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 
 Route::get('/product-details', [HomeController::class, 'showProductDetails'])->name('product-details');
+
+// Cart routes (public - guest and authenticated users)
+Route::middleware(['cart.session'])->group(function () {
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+    Route::put('/cart/update/{cartProduct}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/remove/{cartProduct}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+    Route::put('/cart/update-prices', [CartController::class, 'updatePrices'])->name('cart.update-prices');
+    Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+    
+    // Checkout routes
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+});
+
+// Authenticated cart operations
+Route::middleware(['auth', 'cart.session'])->group(function () {
+    Route::post('/cart/merge', [CartController::class, 'merge'])->name('cart.merge');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
