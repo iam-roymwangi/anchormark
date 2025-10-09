@@ -16,8 +16,8 @@ return new class extends Migration
     {
         Schema::create('order_payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained()->onDelete('set null');
-            $table->foreignId('shopper_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('order_id')->constrained()->onDelete('cascade');
+            $table->foreignId('shopper_id')->nullable()->constrained()->onDelete('cascade');
             $table->decimal('amount', 10, 2);
             $table->enum('status', PaymentMethod::values())->default('mpesa');
             $table->string('transaction_id')->nullable();

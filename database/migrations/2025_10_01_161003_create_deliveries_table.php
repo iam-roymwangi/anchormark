@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('deliveries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained()->onDelete('set null');
-            $table->foreignId('courier_id')->constrained()->onDelete('set null');
+            $table->foreignId('order_id')->constrained()->onDelete('cascade');
+            $table->foreignId('courier_id')->constrained()->onDelete('cascade');
             $table->string('tracking_number')->nullable();
             $table->datetime('estimated_delivery_date_time')->nullable();
             $table->datetime('actual_delivery_date_time')->nullable();
