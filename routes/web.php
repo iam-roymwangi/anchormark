@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\HomeController;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Shopper\WhishlistController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
@@ -42,11 +44,11 @@ Route::middleware(['auth'])->group(function () {
     ]);
 
     // Wishlist routes
-    Route::resource('wishlists', \App\Http\Controllers\WishlistController::class);
-    Route::post('wishlists/{wishlist}/add-product', [\App\Http\Controllers\WishlistController::class, 'addProduct'])->name('wishlists.add-product');
-    Route::delete('wishlists/{wishlist}/remove-product', [\App\Http\Controllers\WishlistController::class, 'removeProduct'])->name('wishlists.remove-product');
-    Route::post('wishlists/{wishlist}/toggle-product', [\App\Http\Controllers\WishlistController::class, 'toggleProduct'])->name('wishlists.toggle-product');
-    Route::post('wishlists/move-product', [\App\Http\Controllers\WishlistController::class, 'moveProduct'])->name('wishlists.move-product');
+    Route::resource('wishlists', WishlistController::class);
+    Route::post('wishlists/{wishlist}/add-product', [WishlistController::class, 'addProduct'])->name('wishlists.add-product');
+    Route::delete('wishlists/{wishlist}/remove-product', [WishlistController::class, 'removeProduct'])->name('wishlists.remove-product');
+    Route::post('wishlists/{wishlist}/toggle-product', [WishlistController::class, 'toggleProduct'])->name('wishlists.toggle-product');
+    Route::post('wishlists/move-product', [WishlistController::class, 'moveProduct'])->name('wishlists.move-product');
 });
 
 
