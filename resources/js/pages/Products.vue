@@ -31,9 +31,39 @@
             </div>
           </section>
 
+          <!-- Search Bar -->
+          <div class="mx-auto max-w-7xl px-4 pb-6 sm:px-6 lg:px-8">
+            <div class="relative max-w-md mx-auto">
+              <input
+                v-model="searchQuery"
+                type="text"
+                placeholder="Search products..."
+                class="w-full px-4 py-3 pl-10 pr-4 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E8B57] focus:border-transparent"
+              />
+              <div class="absolute inset-y-0 left-0 flex items-center pl-3">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+
           <!-- Products Grid -->
           <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 sm:pb-16 lg:px-8 lg:pb-20">
+            <!-- Loading State -->
+            <div v-if="isLoading" class="flex justify-center items-center py-12">
+              <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2E8B57]"></div>
+            </div>
+
+            <!-- No Products Message -->
+            <div v-else-if="filteredProducts.length === 0" class="text-center py-12">
+              <div class="text-gray-500 text-lg mb-4">No products found</div>
+              <p class="text-gray-400">Try adjusting your search or filter criteria</p>
+            </div>
+
+            <!-- Products Grid -->
             <TransitionGroup
+              v-else
               name="product"
               tag="div"
               class="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3"
@@ -52,7 +82,7 @@
                   <!-- Product Image -->
                   <div class="relative aspect-square overflow-hidden bg-[#F5F5F0]">
                     <img
-                      :src="product.image"
+                      :src="product.images.length > 0 ? product.images[0].image_url : '/placeholder.svg?height=400&width=400'"
                       :alt="product.name"
                       class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
@@ -98,12 +128,12 @@
                     </p>
                     <div class="mb-3 flex items-center justify-between sm:mb-4">
                       <span class="text-base font-medium text-[#333333] sm:text-lg">
-                        {{ product.price }}
+                        ${{ product.price.toFixed(2) }}
                       </span>
                       <span
                         class="bg-opacity-10 rounded-full bg-[#2E8B57] px-2.5 py-1 text-xs text-[#2E8B57] sm:px-3"
                       >
-                        {{ product.category }}
+                        {{ product.category.name }}
                       </span>
                     </div>
                     <!-- Add to Cart Button -->
@@ -118,6 +148,58 @@
                 </div>
               </div>
             </TransitionGroup>
+
+            <!-- Pagination -->
+            <div v-if="!isLoading && pagination.last_page > 1" class="mt-12 flex items-center justify-center">
+              <nav class="flex items-center space-x-2">
+                <!-- Previous Button -->
+                <button
+                  @click="goToPage(pagination.current_page - 1)"
+                  :disabled="pagination.current_page === 1"
+                  class="flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <ChevronLeft :size="16" class="mr-1" />
+                  Previous
+                </button>
+
+                <!-- Page Numbers -->
+                <template v-for="link in paginationLinks" :key="link.label">
+                  <button
+                    v-if="link.url"
+                    @click="goToPage(parseInt(link.label))"
+                    :class="[
+                      'px-3 py-2 text-sm font-medium border rounded-md',
+                      link.active
+                        ? 'text-white bg-[#2E8B57] border-[#2E8B57]'
+                        : 'text-gray-500 bg-white border-gray-300 hover:bg-gray-50'
+                    ]"
+                  >
+                    {{ link.label }}
+                  </button>
+                  <span
+                    v-else
+                    class="px-3 py-2 text-sm font-medium text-gray-400 bg-white border border-gray-300 rounded-md"
+                  >
+                    {{ link.label }}
+                  </span>
+                </template>
+
+                <!-- Next Button -->
+                <button
+                  @click="goToPage(pagination.current_page + 1)"
+                  :disabled="pagination.current_page === pagination.last_page"
+                  class="flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Next
+                  <ChevronRight :size="16" class="ml-1" />
+                </button>
+              </nav>
+            </div>
+
+            <!-- Results Info -->
+            <div v-if="!isLoading" class="mt-6 text-center text-sm text-gray-600">
+              Showing {{ pagination.from }} to {{ pagination.to }} of {{ pagination.total }} results
+            </div>
           </div>
 
           <!-- ? -->
@@ -147,135 +229,129 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { ShoppingCart, Eye, Heart, Bed, UtensilsCrossed, Armchair } from 'lucide-vue-next'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ShoppingCart, Eye, Heart, Bed, UtensilsCrossed, Armchair, ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import ProductSidebar from '@/components/core/ProductSidebar.vue'
 import PublicLayout from '../layouts/PublicLayout.vue'
 import { inject } from 'vue'
+import { router } from '@inertiajs/vue3'
+
+interface ProductImage {
+  id: number
+  product_id: number
+  image_url: string
+}
+
+interface Category {
+  id: number
+  name: string
+  slug: string
+}
 
 interface Product {
   id: number
   name: string
   description: string
-  price: string
-  category: string
-  image: string
+  price: number
+  category: Category
+  images: ProductImage[]
+  slug: string
+  status: string
+  created_at: string
+  updated_at: string
 }
 
-const products: Product[] = [
-  {
-    id: 1,
-    name: 'Luxury Egyptian Cotton Sheets',
-    description: '1000 thread count, hotel-grade bedding',
-    price: '$299',
-    category: 'beddings',
-    image: '/placeholder.svg?height=400&width=400'
-  },
-  {
-    id: 2,
-    name: 'Premium Down Pillows',
-    description: 'Hypoallergenic, cloud-like comfort',
-    price: '$89',
-    category: 'beddings',
-    image: '/placeholder.svg?height=400&width=400'
-  },
-  {
-    id: 3,
-    name: 'Professional Cookware Set',
-    description: 'Commercial-grade stainless steel',
-    price: '$599',
-    category: 'kitchenware',
-    image: '/placeholder.svg?height=400&width=400'
-  },
-  {
-    id: 4,
-    name: 'Fine Dining Plate Collection',
-    description: 'Elegant porcelain dinnerware',
-    price: '$199',
-    category: 'kitchenware',
-    image: '/placeholder.svg?height=400&width=400'
-  },
-  {
-    id: 5,
-    name: 'Executive Desk Chair',
-    description: 'Ergonomic leather office seating',
-    price: '$799',
-    category: 'furniture',
-    image: '/placeholder.svg?height=400&width=400'
-  },
-  {
-    id: 6,
-    name: 'Modern Lounge Sofa',
-    description: 'Contemporary design, premium fabric',
-    price: '$1,899',
-    category: 'furniture',
-    image: '/placeholder.svg?height=400&width=400'
-  },
-  {
-    id: 7,
-    name: 'Silk Duvet Cover Set',
-    description: 'Luxurious mulberry silk bedding',
-    price: '$449',
-    category: 'beddings',
-    image: '/placeholder.svg?height=400&width=400'
-  },
-  {
-    id: 8,
-    name: 'Crystal Glassware Set',
-    description: 'Hand-blown crystal stemware',
-    price: '$349',
-    category: 'kitchenware',
-    image: '/placeholder.svg?height=400&width=400'
-  },
-  {
-    id: 9,
-    name: 'Boutique Nightstand',
-    description: 'Solid wood with brass accents',
-    price: '$599',
-    category: 'furniture',
-    image: '/placeholder.svg?height=400&width=400'
-  }
-]
+interface PaginationData {
+  current_page: number
+  last_page: number
+  per_page: number
+  total: number
+  from: number
+  to: number
+}
 
-const selectedCategory = ref<string>('all')
+interface ProductsResponse {
+  data: Product[]
+  links: Array<{
+    url: string | null
+    label: string
+    active: boolean
+  }>
+  meta: PaginationData
+}
+
+interface Props {
+  products?: ProductsResponse
+  categories?: Category[]
+  filters?: {
+    category: string
+    search: string
+    per_page: number
+  }
+}
+
+const props = defineProps<Props>()
+
+// Reactive state
+const selectedCategory = ref<string>(props.filters?.category || 'all')
 const hoveredProduct = ref<number | null>(null)
 const sidebarOpen = ref(true)
 const isMobile = ref(false)
 const productRefs = ref<Record<number, any>>({})
+const searchQuery = ref(props.filters?.search || '')
+const currentPage = ref(props.products?.meta?.current_page || 1)
+const isLoading = ref(false)
 
-const categoriesWithProducts = computed(() => [
-  {
-    id: 'beddings',
-    name: 'Beddings',
-    icon: Bed,
-    products: products.filter(p => p.category === 'beddings')
-  },
-  {
-    id: 'kitchenware',
-    name: 'Kitchenware',
-    icon: UtensilsCrossed,
-    products: products.filter(p => p.category === 'kitchenware')
-  },
-  {
-    id: 'furniture',
-    name: 'Furniture',
-    icon: Armchair,
-    products: products.filter(p => p.category === 'furniture')
+// Computed properties
+const categoriesWithProducts = computed(() => {
+  const categoryMap: Record<string, any> = {}
+  
+  if (props.categories) {
+    props.categories.forEach(category => {
+      categoryMap[category.slug] = {
+        id: category.slug,
+        name: category.name,
+        icon: getCategoryIcon(category.slug),
+        products: (props.products?.data || []).filter(p => p.category.slug === category.slug)
+      }
+    })
   }
-])
+  
+  return Object.values(categoryMap)
+})
 
 const filteredProducts = computed(() => {
-  if (selectedCategory.value === 'all') {
-    return products
-  }
-  return products.filter(product => product.category === selectedCategory.value)
+  return props.products?.data || []
 })
+
+const pagination = computed(() => props.products?.meta || {
+  current_page: 1,
+  last_page: 1,
+  per_page: 9,
+  total: 0,
+  from: 0,
+  to: 0
+})
+
+const paginationLinks = computed(() => props.products?.links || [])
+
+// Helper function to get category icon
+const getCategoryIcon = (slug: string) => {
+  const iconMap: Record<string, any> = {
+    'beddings': Bed,
+    'kitchenware': UtensilsCrossed,
+    'furniture': Armchair
+  }
+  return iconMap[slug] || Bed
+}
 
 const selectCategory = (categoryId: string) => {
   selectedCategory.value = categoryId
+  currentPage.value = 1
   if (isMobile.value) {
     sidebarOpen.value = false
   }
+  fetchProducts()
 }
 
 const scrollToProduct = (product: Product) => {
@@ -287,6 +363,42 @@ const scrollToProduct = (product: Product) => {
     sidebarOpen.value = false
   }
 }
+
+const fetchProducts = () => {
+  isLoading.value = true
+  router.get('/products', {
+    category: selectedCategory.value,
+    search: searchQuery.value,
+    page: currentPage.value,
+    per_page: props.filters?.per_page || 9
+  }, {
+    preserveState: true,
+    onFinish: () => {
+      isLoading.value = false
+    }
+  })
+}
+
+const goToPage = (page: number) => {
+  if (page >= 1 && page <= pagination.value.last_page) {
+    currentPage.value = page
+    fetchProducts()
+  }
+}
+
+const searchProducts = () => {
+  currentPage.value = 1
+  fetchProducts()
+}
+
+// Watch for search query changes with debounce
+let searchTimeout: number
+watch(searchQuery, () => {
+  clearTimeout(searchTimeout)
+  searchTimeout = setTimeout(() => {
+    searchProducts()
+  }, 500)
+})
 
 const addToCart = inject<(product: Product) => void>('addToCart')
 
