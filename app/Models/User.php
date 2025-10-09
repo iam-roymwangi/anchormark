@@ -91,4 +91,20 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->shopper()->exists();
     }
+
+    /**
+     * Get the user's carts through their shopper profile.
+     */
+    public function carts()
+    {
+        return $this->hasManyThrough(Cart::class, Shopper::class, 'user_id', 'shopper_id');
+    }
+
+    /**
+     * Get the user's active cart through their shopper profile.
+     */
+    public function activeCart()
+    {
+        return $this->carts()->where('cart_status', 'active')->first();
+    }
 }

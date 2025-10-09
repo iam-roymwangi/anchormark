@@ -27,4 +27,14 @@ class Shopper extends Model
     {
         return $this->hasMany(Wishlist::class, 'shopper_id');
     }
+
+    public function carts(): HasMany
+    {
+        return $this->hasMany(Cart::class, 'shopper_id');
+    }
+
+    public function activeCart(): HasMany
+    {
+        return $this->carts()->where('cart_status', 'active');
+    }
 }
