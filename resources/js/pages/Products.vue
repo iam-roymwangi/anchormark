@@ -16,7 +16,7 @@
         <!-- Main Content -->
         <main class="w-full flex-1 transition-all duration-300">
           <!-- Hero Section -->
-          <section class="px-4 py-12 sm:px-6 sm:py-16 md:py-20 lg:py-24">
+           <!-- <section class="px-4 py-12 sm:px-6 sm:py-16 md:py-20 lg:py-24">
             <div class="mx-auto max-w-4xl text-center">
               <h2
                 class="animate-fade-in mb-4 font-serif text-3xl leading-tight text-[#333333] sm:mb-6 sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
@@ -29,16 +29,16 @@
                 Elevate your hotel experience with our curated collection of luxury beddings, elegant kitchenware, and sophisticated furniture.
               </p>
             </div>
-          </section>
+          </section>  -->
 
           <!-- Search Bar -->
-          <div class="mx-auto max-w-7xl px-4 pb-6 sm:px-6 lg:px-8">
+          <div class="mx-auto max-w-7xl px-4 pb-6 sm:px-6 lg:px-8 mt-16">
             <div class="relative max-w-md mx-auto">
               <input
                 v-model="searchQuery"
                 type="text"
                 placeholder="Search products..."
-                class="w-full px-4 py-3 pl-10 pr-4 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E8B57] focus:border-transparent"
+                class="w-full px-4 py-3 pl-10 pr-4 text-sm border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E8B57] focus:border-transparent"
               />
               <div class="absolute inset-y-0 left-0 flex items-center pl-3">
                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

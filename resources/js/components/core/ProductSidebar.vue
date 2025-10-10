@@ -21,7 +21,7 @@
         <Transition name="slide">
             <aside
                 v-if="isOpen || !isMobile"
-                class="fixed top-16 left-0 z-50 h-[calc(100vh-4rem)] w-80 overflow-y-auto bg-[#003366] text-white shadow-2xl lg:sticky lg:z-0 lg:shadow-none"
+                class="fixed top-16 left-0 z-50 h-[calc(100vh-4rem)] w-80 overflow-y-auto bg-[#003366] text-white shadow-2xl lg:sticky lg:z-0 lg:shadow-none lg:mt-8"
             >
                 <!-- Search Bar  -->
                 <div class="border-b border-white/10 p-4">
