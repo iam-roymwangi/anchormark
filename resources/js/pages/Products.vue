@@ -100,6 +100,7 @@
                       ]"
                     >
                       <button
+                        @click="viewProductDetails(product.slug)"
                         class="flex items-center gap-2 rounded-full bg-[#C09930] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#267347] sm:px-6 sm:py-3 sm:text-base"
                       >
                         <Eye :size="16" class="sm:w-[18px] sm:h-[18px]" />
@@ -419,6 +420,10 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('resize', checkMobile)
 })
+
+const viewProductDetails = (slug: string) => {
+  router.get('/product-details', { slug: slug })
+}
 </script>
 
 <style scoped>

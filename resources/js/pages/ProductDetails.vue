@@ -5,11 +5,13 @@
     <!-- Breadcrumb -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 pt-24">
       <div class="flex items-center space-x-2 text-sm text-[#333333]">
-        <a href="#" class="hover:text-[#C09930] transition-colors">Home</a>
+        <a href="/" class="hover:text-[#C09930] transition-colors">Home</a>
+        <template v-if="product && product.category">
+          <ChevronRight :size="16" />
+          <a :href="`/products?category=${product.category.slug}`" class="hover:text-[#C09930] transition-colors">{{ product.category.name }}</a>
+        </template>
         <ChevronRight :size="16" />
-        <a href="#" class="hover:text-[#C09930] transition-colors">Beddings</a>
-        <ChevronRight :size="16" />
-        <span class="text-[#C09930]">Premium Cotton Duvet Set</span>
+        <span class="text-[#C09930]">{{ product.name }}</span>
       </div>
     </div>
 
@@ -153,7 +155,10 @@
 
           <!-- Action Buttons -->
           <div class="space-y-3">
-            <button class="w-full bg-[#C09930] text-white py-4 rounded-lg font-medium hover:bg-[#267347] transition-all duration-300 transform hover:scale-[1.02]">
+            <button 
+              @click="addToCart"
+              class="w-full bg-[#C09930] text-white py-4 rounded-lg font-medium hover:bg-[#267347] transition-all duration-300 transform hover:scale-[1.02]"
+            >
               Add to Cart
             </button>
             <button class="w-full border-2 border-[#C09930] text-[#C09930] py-4 rounded-lg font-medium hover:bg-[#C09930] hover:text-white transition-all duration-300">
@@ -367,14 +372,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { 
    ChevronRight, Star, Minus, Plus, 
   Truck, Shield, Package, Award, CreditCard, Check 
 } from 'lucide-vue-next'
 import PublicLayout from '@/layouts/PublicLayout.vue'
+import { usePage, router } from '@inertiajs/vue3'
 
-interface Product {
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+interface Category {
+  id: number
+  name: string
+  slug: string
+}
+
+interface ProductProp {
   id: number
   name: string
   sku: string
@@ -391,6 +409,7 @@ interface Product {
   features: string[]
   specifications: Record<string, string>
   reviews: Review[]
+  category: Category // Added category
 }
 
 interface Review {
@@ -410,77 +429,14 @@ interface SimilarProduct {
   image: string
 }
 
-const product = ref<Product>({
-  id: 1,
-  name: 'Premium Cotton Duvet Set',
-  sku: 'BED-DUV-001',
-  price: 299,
-  originalPrice: 399,
-  rating: 4.8,
-  reviewCount: 127,
-  badge: 'Best Seller',
-  shortDescription: 'Experience luxury with our premium 100% Egyptian cotton duvet set. Designed for 5-star hotels, this set combines exceptional comfort with timeless elegance.',
-  fullDescription: 'Our Premium Cotton Duvet Set represents the pinnacle of hotel bedding excellence. Crafted from the finest 100% Egyptian cotton with a 600 thread count, this duvet set offers unparalleled softness and durability. The breathable fabric ensures optimal temperature regulation throughout the night, while the elegant design complements any hotel room aesthetic. Each set includes a duvet cover and matching pillowcases, all featuring reinforced stitching and easy-care properties.',
-  images: [
-    'https://canada.shopmarriott.com/images/products/v2/xlrg/Marriott-innerspring-mattress-box-spring-set-MAR-124_xlrg.webp',
-    'https://canada.shopmarriott.com/images/products/v2/xlrg/Marriott-innerspring-mattress-box-spring-set-MAR-124_xlrg.webp',
-    'https://canada.shopmarriott.com/images/products/v2/xlrg/Marriott-innerspring-mattress-box-spring-set-MAR-124_xlrg.webp',
-    'https://canada.shopmarriott.com/images/products/v2/xlrg/Marriott-innerspring-mattress-box-spring-set-MAR-124_xlrg.webp'
-  ],
-  sizes: ['Queen', 'King', 'California King'],
-  colors: [
-    { name: 'White', hex: '#FFFFFF' },
-    { name: 'Ivory', hex: '#FFFFF0' },
-    { name: 'Light Gray', hex: '#D3D3D3' },
-    { name: 'Navy', hex: '#003366' }
-  ],
-  features: [
-    '100% Egyptian Cotton with 600 thread count',
-    'Breathable and temperature-regulating fabric',
-    'Reinforced stitching for enhanced durability',
-    'Easy-care, machine washable',
-    'Hypoallergenic and suitable for sensitive skin',
-    'Includes duvet cover and 2 pillowcases',
-    'Commercial-grade quality for hospitality use',
-    'Available in multiple sizes and colors'
-  ],
-  specifications: {
-    'Material': '100% Egyptian Cotton',
-    'Thread Count': '600',
-    'Weave': 'Sateen',
-    'Care Instructions': 'Machine wash cold, tumble dry low',
-    'Origin': 'Made in Portugal',
-    'Certification': 'OEKO-TEX Standard 100',
-    'Weight': '3.2 lbs',
-    'Warranty': '2 years'
-  },
-  reviews: [
-    {
-      id: 1,
-      author: 'Sarah Johnson',
-      date: 'January 15, 2025',
-      rating: 5,
-      comment: 'Absolutely exceptional quality! We ordered these for our boutique hotel and our guests have been raving about the comfort. The fabric is incredibly soft and has held up beautifully after multiple washes.',
-      verified: true
-    },
-    {
-      id: 2,
-      author: 'Michael Chen',
-      date: 'January 10, 2025',
-      rating: 5,
-      comment: 'Best investment for our hotel rooms. The quality is outstanding and the price point is very competitive for commercial-grade bedding. Highly recommend!',
-      verified: true
-    },
-    {
-      id: 3,
-      author: 'Emma Williams',
-      date: 'January 5, 2025',
-      rating: 4,
-      comment: 'Great product overall. The cotton is luxurious and the stitching is solid. Only minor issue is that it wrinkles a bit more than expected, but nothing an iron can\'t fix.',
-      verified: true
-    }
-  ]
-})
+const page = usePage()
+const user = computed<User | null>(() => page.props.auth?.user as User | null)
+
+const props = defineProps<{
+  product: ProductProp
+}>()
+
+const product = ref<ProductProp>(props.product)
 
 const similarProducts = ref<SimilarProduct[]>([
   {
@@ -513,14 +469,24 @@ const similarProducts = ref<SimilarProduct[]>([
   }
 ])
 
-const selectedImage = ref(product.value.images[0])
-const selectedSize = ref(product.value.sizes[0])
-const selectedColor = ref(product.value.colors[0].name)
+const selectedImage = ref(props.product.images[0] || '')
+const selectedSize = ref(props.product.sizes[0] || '')
+const selectedColor = ref(props.product.colors[0]?.name || '')
 const quantity = ref(1)
 const activeTab = ref('Description')
 const tabs = ['Description', 'Specifications', 'Reviews', 'Shipping']
 const showZoom = ref(false)
 const zoomStyle = ref({})
+
+// Watch for changes in the product prop and update reactive data
+watch(() => props.product, (newProduct) => {
+  product.value = newProduct
+  selectedImage.value = newProduct.images[0] || ''
+  selectedSize.value = newProduct.sizes[0] || ''
+  selectedColor.value = newProduct.colors[0]?.name || ''
+  quantity.value = 1 // Reset quantity when product changes
+  activeTab.value = 'Description' // Reset active tab
+}, { deep: true, immediate: true })
 
 const selectImage = (image: string) => {
   selectedImage.value = image
@@ -563,6 +529,54 @@ const getStarPercentage = (star: number): number => {
 const getStarCount = (star: number): number => {
   const percentage = getStarPercentage(star)
   return Math.round((percentage / 100) * product.value.reviewCount)
+}
+
+const addToCart = async () => {
+  const item = {
+    product_id: product.value.id,
+    name: product.value.name,
+    image: product.value.images[0],
+    price: product.value.price,
+    size: selectedSize.value,
+    color: selectedColor.value,
+    quantity: quantity.value,
+  }
+
+  if (user.value) {
+    // User is logged in, send to backend
+    try {
+      await router.post('/cart/add', item, {
+        onSuccess: () => {
+          console.log('Product added to cart successfully (logged in)')
+          // Optionally, show a success message or update cart UI
+        },
+        onError: (errors) => {
+          console.error('Error adding product to cart (logged in):', errors)
+          // Optionally, show an error message
+        }
+      })
+    } catch (error) {
+      console.error('Network error adding product to cart:', error)
+    }
+  } else {
+    // User is not logged in, add to session storage
+    const guestCart = JSON.parse(localStorage.getItem('guestCart') || '[]')
+    const existingItemIndex = guestCart.findIndex(
+      (cartItem: any) => 
+        cartItem.product_id === item.product_id &&
+        cartItem.size === item.size &&
+        cartItem.color === item.color
+    )
+
+    if (existingItemIndex > -1) {
+      guestCart[existingItemIndex].quantity += item.quantity
+    } else {
+      guestCart.push(item)
+    }
+    localStorage.setItem('guestCart', JSON.stringify(guestCart))
+    console.log('Product added to guest cart successfully:', guestCart)
+    // Optionally, show a success message or update cart UI
+  }
 }
 </script>
 

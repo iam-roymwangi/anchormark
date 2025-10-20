@@ -47,7 +47,7 @@
         <div class="flex-1 overflow-y-auto px-6 py-6">
            <!-- Empty State  -->
           <div
-            v-if="cartItems.length === 0"
+            v-if="cartData.items.length === 0"
             class="flex flex-col items-center justify-center h-full text-center"
           >
             <div class="w-24 h-24 bg-[#E0E0E0] rounded-full flex items-center justify-center mb-6">
@@ -69,7 +69,7 @@
           <div v-else class="space-y-4">
             <TransitionGroup name="list">
               <div
-                v-for="item in cartItems"
+                v-for="item in cartData.items"
                 :key="item.id"
                 class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all"
               >
@@ -131,12 +131,12 @@
         </div>
 
          <!-- Footer  -->
-        <div v-if="cartItems.length > 0" class="border-t border-[#E0E0E0] bg-white px-6 py-6">
+        <div v-if="cartData.items.length > 0" class="border-t border-[#E0E0E0] bg-white px-6 py-6">
            <!-- Subtotal  -->
           <div class="space-y-3 mb-6">
             <div class="flex justify-between text-[#666666]">
               <span>Subtotal</span>
-              <span>${{ subtotal.toFixed(2) }}</span>
+              <span>${{ cartData.totals.amount.toFixed(2) }}</span>
             </div>
             <div class="flex justify-between text-[#666666]">
               <span>Shipping</span>
@@ -185,58 +185,73 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue' // Added watch
 import { ShoppingCart, X, Minus, Plus, Trash2, Shield, Truck } from 'lucide-vue-next'
+import { usePage } from '@inertiajs/vue3' // Removed router import
+import axios from 'axios' // Import axios
+
+const emit = defineEmits(['update:cartItemCount']) // Define emits
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
 
 interface CartItem {
   id: number
+  product_id: number // Added product_id for backend interaction
   name: string
   price: number
   quantity: number
   image: string
-  size: string
-  color: string
+  size: string | null
+  color: string | null
 }
 
 const isOpen = ref(false)
+const page = usePage()
+const user = computed<User | null>(() => page.props.auth?.user as User | null)
 
-// Sample cart items - replace with your actual cart state management
-const cartItems = ref<CartItem[]>([
-  {
-    id: 1,
-    name: 'Premium Cotton Duvet Set',
-    price: 299,
-    quantity: 2,
-    image: '/placeholder.svg?height=200&width=200',
-    size: 'King',
-    color: 'White'
-  },
-  {
-    id: 2,
-    name: 'Luxury Silk Pillowcase Set',
-    price: 89,
-    quantity: 1,
-    image: '/placeholder.svg?height=200&width=200',
-    size: 'Standard',
-    color: 'Ivory'
-  },
-  {
-    id: 3,
-    name: 'Hotel Collection Bed Sheets',
-    price: 149,
-    quantity: 1,
-    image: '/placeholder.svg?height=200&width=200',
-    size: 'Queen',
-    color: 'Light Gray'
-  }
-])
-
-const cartItemCount = computed(() => {
-  return cartItems.value.reduce((total, item) => total + item.quantity, 0)
+const cartData = ref<{ items: CartItem[], totals: { items: number, amount: number } }>({
+  items: [],
+  totals: { items: 0, amount: 0 }
 })
 
+const fetchCart = async () => {
+  if (user.value) {
+    // Fetch from backend for logged-in users
+    try {
+      const response = await axios.get('/cart-data')
+      cartData.value.items = response.data.cart?.items || []
+      cartData.value.totals = response.data.cart?.totals || { items: 0, amount: 0 }
+    } catch (error) {
+      console.error('Error fetching cart data (logged in):', error)
+    }
+  } else {
+    // Fetch from local storage for guest users
+    const guestCart = JSON.parse(localStorage.getItem('guestCart') || '[]') as CartItem[]
+    cartData.value.items = guestCart
+    cartData.value.totals.items = guestCart.reduce((total: number, item: CartItem) => total + item.quantity, 0)
+    cartData.value.totals.amount = guestCart.reduce((total: number, item: CartItem) => total + item.price * item.quantity, 0)
+  }
+}
+
+onMounted(() => {
+  fetchCart()
+})
+
+const cartItemCount = computed(() => {
+  return cartData.value.totals.items
+})
+
+// Watch cartItemCount and emit to parent
+watch(cartItemCount, (newCount: number) => { // Explicitly typed newCount
+  emit('update:cartItemCount', newCount)
+}, { immediate: true }) // Emit immediately on mount
+
 const subtotal = computed(() => {
-  return cartItems.value.reduce((total, item) => total + item.price * item.quantity, 0)
+  return cartData.value.items.reduce((total: number, item: CartItem) => total + item.price * item.quantity, 0)
 })
 
 const shipping = computed(() => {
@@ -251,22 +266,66 @@ const total = computed(() => {
   return subtotal.value + shipping.value + tax.value
 })
 
-const increaseQuantity = (itemId: number) => {
-  const item = cartItems.value.find(i => i.id === itemId)
+const increaseQuantity = async (itemId: number) => {
+  const item = cartData.value.items.find(i => i.id === itemId)
   if (item) {
-    item.quantity++
+    const newQuantity = item.quantity + 1
+    if (user.value) {
+      try {
+        await axios.put(`/cart/update/${item.id}`, { quantity: newQuantity })
+        fetchCart()
+      } catch (errors) {
+        console.error('Error updating cart item quantity (logged in):', errors)
+      }
+    } else {
+      const guestCart = JSON.parse(localStorage.getItem('guestCart') || '[]') as CartItem[]
+      const existingItemIndex = guestCart.findIndex(cartItem => cartItem.id === itemId)
+      if (existingItemIndex > -1) {
+        guestCart[existingItemIndex].quantity = newQuantity
+        localStorage.setItem('guestCart', JSON.stringify(guestCart))
+        fetchCart()
+      }
+    }
   }
 }
 
-const decreaseQuantity = (itemId: number) => {
-  const item = cartItems.value.find(i => i.id === itemId)
+const decreaseQuantity = async (itemId: number) => {
+  const item = cartData.value.items.find(i => i.id === itemId)
   if (item && item.quantity > 1) {
-    item.quantity--
+    const newQuantity = item.quantity - 1
+    if (user.value) {
+      try {
+        await axios.put(`/cart/update/${item.id}`, { quantity: newQuantity })
+        fetchCart()
+      } catch (errors) {
+        console.error('Error updating cart item quantity (logged in):', errors)
+      }
+    } else {
+      const guestCart = JSON.parse(localStorage.getItem('guestCart') || '[]') as CartItem[]
+      const existingItemIndex = guestCart.findIndex(cartItem => cartItem.id === itemId)
+      if (existingItemIndex > -1) {
+        guestCart[existingItemIndex].quantity = newQuantity
+        localStorage.setItem('guestCart', JSON.stringify(guestCart))
+        fetchCart()
+      }
+    }
   }
 }
 
-const removeItem = (itemId: number) => {
-  cartItems.value = cartItems.value.filter(item => item.id !== itemId)
+const removeItem = async (itemId: number) => {
+  if (user.value) {
+    try {
+      await axios.delete(`/cart/remove/${itemId}`)
+      fetchCart()
+    } catch (errors) {
+      console.error('Error removing cart item (logged in):', errors)
+    }
+  } else {
+    const guestCart = JSON.parse(localStorage.getItem('guestCart') || '[]') as CartItem[]
+    const updatedGuestCart = guestCart.filter(item => item.id !== itemId)
+    localStorage.setItem('guestCart', JSON.stringify(updatedGuestCart))
+    fetchCart()
+  }
 }
 </script>
 

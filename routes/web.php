@@ -24,6 +24,7 @@ Route::get('/product-details', [HomeController::class, 'showProductDetails'])->n
 // Cart routes (public - guest and authenticated users)
 Route::middleware(['cart.session'])->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::get('/cart-data', [CartController::class, 'getCartData'])->name('cart.data'); // New route for fetching cart data
     Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
     Route::put('/cart/update/{cartProduct}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{cartProduct}', [CartController::class, 'remove'])->name('cart.remove');

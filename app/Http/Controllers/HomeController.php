@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str; // Import the Str facade
 use Inertia\Inertia;
 
 class HomeController extends Controller
@@ -95,9 +96,61 @@ class HomeController extends Controller
         return Inertia::render('About');
     }
 
-    public function showProductDetails()
+    public function showProductDetails(Request $request)
     {
-        return Inertia::render('ProductDetails');
+        $slug = $request->query('slug');
+
+        if (!$slug) {
+            // Handle case where no slug is provided, e.g., redirect or show error
+            return redirect()->route('products')->with('error', 'Product not found.');
+        }
+
+        $product = Product::with(['category', 'images', 'productAttributes.attribute'])
+            ->where('slug', $slug)
+            ->where('status', 'active')
+            ->firstOrFail();
+
+        // Transform product data for the frontend
+        $transformedProduct = [
+            'id' => $product->id,
+            'name' => $product->name,
+            'sku' => 'PROD-' . str_pad($product->id, 4, '0', STR_PAD_LEFT), // Example SKU generation
+            'price' => (float) $product->price,
+            'originalPrice' => (float) $product->price + 100, // Example original price
+            'rating' => 4.5, // Example rating
+            'reviewCount' => 150, // Example review count
+            'badge' => 'New Arrival', // Example badge
+            'shortDescription' => Str::limit($product->description, 150),
+            'fullDescription' => $product->description,
+            'images' => $product->images->map(fn($image) => $image->image_url)->toArray(),
+            'sizes' => ['Small', 'Medium', 'Large'], // Example sizes
+            'colors' => [ // Example colors
+                ['name' => 'Red', 'hex' => '#FF0000'],
+                ['name' => 'Blue', 'hex' => '#0000FF'],
+                ['name' => 'Green', 'hex' => '#00FF00'],
+            ],
+            'features' => [ // Example features
+                'High-quality material',
+                'Durable design',
+                'Easy to clean',
+                'Eco-friendly production',
+            ],
+            'specifications' => $product->productAttributes->pluck('value', 'attribute.name')->toArray(),
+            'reviews' => [ // Example reviews
+                [
+                    'id' => 1,
+                    'author' => 'John Doe',
+                    'date' => '2023-01-01',
+                    'rating' => 5,
+                    'comment' => 'Excellent product!',
+                    'verified' => true,
+                ],
+            ],
+        ];
+
+        return Inertia::render('ProductDetails', [
+            'product' => $transformedProduct,
+        ]);
     }
 
      public function contact()

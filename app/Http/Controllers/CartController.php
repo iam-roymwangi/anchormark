@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Http\JsonResponse; // Import JsonResponse
 
 class CartController extends Controller
 {
@@ -48,11 +49,15 @@ class CartController extends Controller
     {
         $validated = $request->validate([
             'product_id' => 'required|exists:products,id',
-            'quantity' => 'integer|min:1|max:99'
+            'quantity' => 'integer|min:1|max:99',
+            'size' => 'nullable|string|max:255',
+            'color' => 'nullable|string|max:255',
         ]);
 
         $product = Product::findOrFail($validated['product_id']);
         $quantity = $validated['quantity'] ?? 1;
+        $size = $validated['size'] ?? null;
+        $color = $validated['color'] ?? null;
 
         // Check if product is available
         if (!$product->is_active || $product->stock_quantity <= 0) {
@@ -75,7 +80,7 @@ class CartController extends Controller
         }
 
         try {
-            $cart->addProduct($product, $quantity);
+            $cart->addProduct($product, $quantity, $size, $color);
             
             // Update session for guest carts
             if ($cart->is_guest_cart) {
@@ -273,6 +278,42 @@ class CartController extends Controller
             return redirect()->back()
                 ->with('error', 'Failed to merge cart');
         }
+    }
+
+    /**
+     * Get cart data for the popup (JSON response)
+     */
+    public function getCartData(Request $request): JsonResponse
+    {
+        $cart = $this->getCurrentCart($request);
+
+        $cart->load([
+            'cartProducts.product',
+            'cartProducts.product.images'
+        ]);
+
+        $cartItems = $cart->cartProducts->map(function ($cartProduct) {
+            return [
+                'id' => $cartProduct->id, // Use cart_product ID for unique identification in frontend
+                'product_id' => $cartProduct->product->id,
+                'name' => $cartProduct->product->name,
+                'price' => $cartProduct->unit_price,
+                'quantity' => $cartProduct->quantity,
+                'image' => $cartProduct->product->images->first()->image_path ?? '/placeholder.svg', // Default placeholder
+                'size' => $cartProduct->size, // Assuming size and color are available on CartProduct
+                'color' => $cartProduct->color, // Assuming size and color are available on CartProduct
+            ];
+        });
+
+        return response()->json([
+            'cart' => [
+                'items' => $cartItems,
+                'totals' => [
+                    'items' => $cart->total_items,
+                    'amount' => $cart->total_amount,
+                ],
+            ],
+        ]);
     }
 
     /**

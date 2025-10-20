@@ -19,8 +19,8 @@
             </button>
             <button @click="cartOpen = true" class="relative p-2 rounded-full hover:bg-white/10 transition-colors">
               <ShoppingCart class="w-6 h-6" />
-              <span v-if="cartItems.length" class="absolute -top-1 -right-1 bg-[#C09930] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                {{ cartItems.length }}
+              <span v-if="cartItemCountDisplay > 0" class="absolute -top-1 -right-1 bg-[#C09930] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                {{ cartItemCountDisplay }}
               </span>
             </button>
           </div>
@@ -62,10 +62,8 @@
     <div class="fixed bottom-4 right-4 z-50 p-4 bg-[#003366] rounded-[50%]">
       <CartPopup
         :is-open="cartOpen"
-        :cart-items="cartItems"
         @close="cartOpen = false"
-        @update-quantity="updateCartQuantity"
-        @remove-item="removeFromCart"
+        @update:cartItemCount="cartItemCountDisplay = $event"
       />
     </div>
 
@@ -121,7 +119,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide } from 'vue'
+import { ref, provide, computed } from 'vue' // Added computed
 import { 
   Menu, 
   X, 
@@ -130,46 +128,79 @@ import {
   ShoppingCart
 } from 'lucide-vue-next'
 import CartPopup from '@/components/core/CartPopup.vue'
+import { usePage, router } from '@inertiajs/vue3' // Import usePage and router
 
-interface Product {
-  id: number
-  name: string
-  description: string
-  price: string
-  category: string
-  image: string
+const page = usePage()
+const user = computed<User | null>(() => page.props.auth?.user as User | null) // Define user computed property
+
+interface User { // Define User interface
+  id: number;
+  name: string;
+  email: string;
 }
 
-interface CartItem extends Product {
-  quantity: number
+interface ProductForCart { // Define ProductForCart interface for addToCart
+  id: number
+  name: string
+  price: number
+  image: string
+  size?: string | null
+  color?: string | null
 }
 
 const mobileMenuOpen = ref(false)
 const cartOpen = ref(false)
-const cartItems = ref<CartItem[]>([])
+const cartItemCountDisplay = ref(0) // New ref to display cart item count
 
-const addToCart = (product: Product) => {
-  const existingItem = cartItems.value.find(item => item.id === product.id)
-  if (existingItem) {
-    existingItem.quantity++
+// The global addToCart function to be provided
+const addToCart = async (product: ProductForCart) => {
+  const item = {
+    product_id: product.id,
+    name: product.name,
+    image: product.image,
+    price: product.price,
+    size: product.size || null,
+    color: product.color || null,
+    quantity: 1, // Always add 1 when clicking "Add to Cart" from product listing
+  }
+
+  if (user.value) {
+    // User is logged in, send to backend
+    try {
+      await router.post('/cart/add', item, {
+        onSuccess: () => {
+          console.log('Product added to cart successfully (logged in)')
+          // Optionally, show a success message or update cart UI
+          // The CartPopup will re-fetch its data automatically
+        },
+        onError: (errors) => {
+          console.error('Error adding product to cart (logged in):', errors)
+          // Optionally, show an error message
+        }
+      })
+    } catch (error) {
+      console.error('Network error adding product to cart:', error)
+    }
   } else {
-    cartItems.value.push({ ...product, quantity: 1 })
-  }
-  cartOpen.value = true
-}
+    // User is not logged in, add to local storage
+    const guestCart = JSON.parse(localStorage.getItem('guestCart') || '[]')
+    const existingItemIndex = guestCart.findIndex(
+      (cartItem: any) => 
+        cartItem.product_id === item.product_id &&
+        cartItem.size === item.size &&
+        cartItem.color === item.color
+    )
 
-const updateCartQuantity = ({ id, quantity }: { id: number; quantity: number }) => {
-  const item = cartItems.value.find(item => item.id === id)
-  if (item) {
-    item.quantity = quantity
+    if (existingItemIndex > -1) {
+      guestCart[existingItemIndex].quantity += item.quantity
+    } else {
+      guestCart.push(item)
+    }
+    localStorage.setItem('guestCart', JSON.stringify(guestCart))
+    console.log('Product added to guest cart successfully:', guestCart)
+    // The CartPopup will re-fetch its data automatically
   }
-}
-
-const removeFromCart = (id: number) => {
-  const index = cartItems.value.findIndex(item => item.id === id)
-  if (index > -1) {
-    cartItems.value.splice(index, 1)
-  }
+  cartOpen.value = true // Open cart popup after adding item
 }
 
 provide('addToCart', addToCart)

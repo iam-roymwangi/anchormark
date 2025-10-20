@@ -99,12 +99,19 @@ class Cart extends Model
         );
     }
 
-    public function addProduct(Product $product, int $quantity = 1): CartProduct
+    public function addProduct(Product $product, int $quantity = 1, ?string $size = null, ?string $color = null): CartProduct
     {
         $unitPrice = $product->current_price ?? $product->price;
         
+        // For now, size and color are not stored in the database for logged-in users
+        // due to schema limitations. They are handled in session for guest users.
+        // A migration would be needed to add 'size' and 'color' columns to 'cart_products' table.
+
         $cartProduct = $this->cartProducts()
             ->where('product_id', $product->id)
+            // If size and color were to be stored, the query would need to include them:
+            // ->where('size', $size)
+            // ->where('color', $color)
             ->first();
 
         if ($cartProduct) {
@@ -113,7 +120,10 @@ class Cart extends Model
             $cartProduct->update([
                 'quantity' => $newQuantity,
                 'unit_price' => $unitPrice,
-                'subtotal' => $unitPrice * $newQuantity
+                'subtotal' => $unitPrice * $newQuantity,
+                // If size and color were stored, they would be updated here:
+                // 'size' => $size,
+                // 'color' => $color,
             ]);
         } else {
             // Add new item
@@ -121,7 +131,10 @@ class Cart extends Model
                 'product_id' => $product->id,
                 'quantity' => $quantity,
                 'unit_price' => $unitPrice,
-                'subtotal' => $unitPrice * $quantity
+                'subtotal' => $unitPrice * $quantity,
+                // If size and color were stored, they would be added here:
+                // 'size' => $size,
+                // 'color' => $color,
             ]);
         }
 
