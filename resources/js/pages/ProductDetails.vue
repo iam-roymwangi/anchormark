@@ -5,11 +5,11 @@
     <!-- Breadcrumb -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 pt-24">
       <div class="flex items-center space-x-2 text-sm text-[#333333]">
-        <a href="#" class="hover:text-[#2E8B57] transition-colors">Home</a>
+        <a href="#" class="hover:text-[#C09930] transition-colors">Home</a>
         <ChevronRight :size="16" />
-        <a href="#" class="hover:text-[#2E8B57] transition-colors">Beddings</a>
+        <a href="#" class="hover:text-[#C09930] transition-colors">Beddings</a>
         <ChevronRight :size="16" />
-        <span class="text-[#2E8B57]">Premium Cotton Duvet Set</span>
+        <span class="text-[#C09930]">Premium Cotton Duvet Set</span>
       </div>
     </div>
 
@@ -34,7 +34,7 @@
             />
             <div 
               v-if="product.badge"
-              class="absolute top-4 left-4 bg-[#2E8B57] text-white px-3 py-1 rounded-full text-sm font-medium"
+              class="absolute top-4 left-4 bg-[#C09930] text-white px-3 py-1 rounded-full text-sm font-medium"
             >
               {{ product.badge }}
             </div>
@@ -46,8 +46,8 @@
               v-for="(image, index) in product.images"
               :key="index"
               @click="selectImage(image)"
-              class="aspect-square bg-white rounded-lg overflow-hidden border-2 transition-all duration-300 hover:border-[#2E8B57]"
-              :class="selectedImage === image ? 'border-[#2E8B57]' : 'border-transparent'"
+              class="aspect-square bg-white rounded-lg overflow-hidden border-2 transition-all duration-300 hover:border-[#C09930]"
+              :class="selectedImage === image ? 'border-[#C09930]' : 'border-transparent'"
             >
               <img :src="image" :alt="`Product view ${index + 1}`" class="w-full h-full object-cover" />
             </button>
@@ -70,7 +70,7 @@
                 v-for="i in 5" 
                 :key="i"
                 :size="20"
-                :class="i <= product.rating ? 'fill-[#2E8B57] text-[#2E8B57]' : 'text-gray-300'"
+                :class="i <= product.rating ? 'fill-[#C09930] text-[#C09930]' : 'text-gray-300'"
               />
             </div>
             <span class="text-[#333333]">{{ product.rating }} ({{ product.reviewCount }} reviews)</span>
@@ -78,7 +78,7 @@
 
           <!-- Price -->
           <div class="flex items-baseline space-x-3">
-            <span class="text-4xl font-bold text-[#2E8B57]">${{ product.price }}</span>
+            <span class="text-4xl font-bold text-[#C09930]">${{ product.price }}</span>
             <span v-if="product.originalPrice" class="text-xl text-gray-400 line-through">
               ${{ product.originalPrice }}
             </span>
@@ -101,8 +101,8 @@
                   @click="selectedSize = size"
                   class="px-4 py-2 border-2 rounded-lg transition-all duration-300"
                   :class="selectedSize === size 
-                    ? 'border-[#2E8B57] bg-[#2E8B57] text-white' 
-                    : 'border-gray-300 hover:border-[#2E8B57] text-black'"
+                    ? 'border-[#C09930] bg-[#C09930] text-white' 
+                    : 'border-gray-300 hover:border-[#C09930] text-black'"
                 >
                   {{ size }}
                 </button>
@@ -119,7 +119,7 @@
                   @click="selectedColor = color.name"
                   class="w-10 h-10 rounded-full border-2 transition-all duration-300"
                   :style="{ backgroundColor: color.hex }"
-                  :class="selectedColor === color.name ? 'border-[#2E8B57] ring-2 ring-[#2E8B57] ring-offset-2' : 'border-gray-300'"
+                  :class="selectedColor === color.name ? 'border-[#C09930] ring-2 ring-[#C09930] ring-offset-2' : 'border-gray-300'"
                   :title="color.name"
                 />
               </div>
@@ -131,7 +131,7 @@
               <div class="flex items-center space-x-3">
                 <button
                   @click="decreaseQuantity"
-                  class="w-10 h-10 border-2 border-gray-300 rounded-lg hover:border-[#2E8B57] transition-colors text-black"
+                  class="w-10 h-10 border-2 border-gray-300 rounded-lg hover:border-[#C09930] transition-colors text-black"
                 >
                   <Minus :size="16" class="mx-auto" />
                 </button>
@@ -139,11 +139,11 @@
                   v-model.number="quantity"
                   type="number"
                   min="1"
-                  class="w-20 text-center border-2 border-gray-300 rounded-lg py-2 focus:border-[#2E8B57] focus:outline-none text-black"
+                  class="w-20 text-center border-2 border-gray-300 rounded-lg py-2 focus:border-[#C09930] focus:outline-none text-black"
                 />
                 <button
                   @click="increaseQuantity"
-                  class="w-10 h-10 border-2 border-gray-300 rounded-lg hover:border-[#2E8B57] transition-colors text-black"
+                  class="w-10 h-10 border-2 border-gray-300 rounded-lg hover:border-[#C09930] transition-colors text-black"
                 >
                   <Plus :size="16" class="mx-auto" />
                 </button>
@@ -153,10 +153,10 @@
 
           <!-- Action Buttons -->
           <div class="space-y-3">
-            <button class="w-full bg-[#2E8B57] text-white py-4 rounded-lg font-medium hover:bg-[#267347] transition-all duration-300 transform hover:scale-[1.02]">
+            <button class="w-full bg-[#C09930] text-white py-4 rounded-lg font-medium hover:bg-[#267347] transition-all duration-300 transform hover:scale-[1.02]">
               Add to Cart
             </button>
-            <button class="w-full border-2 border-[#2E8B57] text-[#2E8B57] py-4 rounded-lg font-medium hover:bg-[#2E8B57] hover:text-white transition-all duration-300">
+            <button class="w-full border-2 border-[#C09930] text-[#C09930] py-4 rounded-lg font-medium hover:bg-[#C09930] hover:text-white transition-all duration-300">
               Request Quote
             </button>
           </div>
@@ -164,19 +164,19 @@
           <!-- Features -->
           <div class="grid grid-cols-2 gap-4 pt-6 border-t border-gray-300">
             <div class="flex items-center space-x-2">
-              <Truck :size="20" class="text-[#2E8B57]" />
+              <Truck :size="20" class="text-[#C09930]" />
               <span class="text-sm text-[#666666]">Free Shipping</span>
             </div>
             <div class="flex items-center space-x-2">
-              <Shield :size="20" class="text-[#2E8B57]" />
+              <Shield :size="20" class="text-[#C09930]" />
               <span class="text-sm text-[#666666]">2 Year Warranty</span>
             </div>
             <div class="flex items-center space-x-2">
-              <Package :size="20" class="text-[#2E8B57]" />
+              <Package :size="20" class="text-[#C09930]" />
               <span class="text-sm text-[#666666]">Easy Returns</span>
             </div>
             <div class="flex items-center space-x-2">
-              <Award :size="20" class="text-[#2E8B57]" />
+              <Award :size="20" class="text-[#C09930]" />
               <span class="text-sm text-[#666666]">Premium Quality</span>
             </div>
           </div>
@@ -201,12 +201,12 @@
               :key="tab"
               @click="activeTab = tab"
               class="pb-4 font-medium transition-all duration-300 relative"
-              :class="activeTab === tab ? 'text-[#2E8B57]' : 'text-[#666666] hover:text-[#2E8B57]'"
+              :class="activeTab === tab ? 'text-[#C09930]' : 'text-[#666666] hover:text-[#C09930]'"
             >
               {{ tab }}
               <div
                 v-if="activeTab === tab"
-                class="absolute bottom-0 left-0 right-0 h-0.5 bg-[#2E8B57]"
+                class="absolute bottom-0 left-0 right-0 h-0.5 bg-[#C09930]"
               />
             </button>
           </div>
@@ -221,7 +221,7 @@
             <h3 class="text-2xl font-serif text-[#333333] mt-6 mb-4">Key Features</h3>
             <ul class="space-y-2">
               <li v-for="feature in product.features" :key="feature" class="flex items-start space-x-2">
-                <Check :size="20" class="text-[#2E8B57] mt-1 flex-shrink-0" />
+                <Check :size="20" class="text-[#C09930] mt-1 flex-shrink-0" />
                 <span class="text-[#666666]">{{ feature }}</span>
               </li>
             </ul>
@@ -245,13 +245,13 @@
             <div class="bg-white rounded-lg p-6">
               <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="text-center">
-                  <div class="text-5xl font-bold text-[#2E8B57] mb-2">{{ product.rating }}</div>
+                  <div class="text-5xl font-bold text-[#C09930] mb-2">{{ product.rating }}</div>
                   <div class="flex justify-center mb-2">
                     <Star 
                       v-for="i in 5" 
                       :key="i"
                       :size="20"
-                      :class="i <= product.rating ? 'fill-[#2E8B57] text-[#2E8B57]' : 'text-gray-300'"
+                      :class="i <= product.rating ? 'fill-[#C09930] text-[#C09930]' : 'text-gray-300'"
                     />
                   </div>
                   <p class="text-sm text-[#666666]">Based on {{ product.reviewCount }} reviews</p>
@@ -261,7 +261,7 @@
                     <span class="text-sm text-[#666666] w-12">{{ star }} star</span>
                     <div class="flex-1 bg-gray-200 rounded-full h-2">
                       <div 
-                        class="bg-[#2E8B57] h-2 rounded-full transition-all duration-500"
+                        class="bg-[#C09930] h-2 rounded-full transition-all duration-500"
                         :style="{ width: `${getStarPercentage(star)}%` }"
                       />
                     </div>
@@ -288,12 +288,12 @@
                       v-for="i in 5" 
                       :key="i"
                       :size="16"
-                      :class="i <= review.rating ? 'fill-[#2E8B57] text-[#2E8B57]' : 'text-gray-300'"
+                      :class="i <= review.rating ? 'fill-[#C09930] text-[#C09930]' : 'text-gray-300'"
                     />
                   </div>
                 </div>
                 <p class="text-[#666666] leading-relaxed">{{ review.comment }}</p>
-                <div v-if="review.verified" class="mt-3 flex items-center space-x-1 text-sm text-[#2E8B57]">
+                <div v-if="review.verified" class="mt-3 flex items-center space-x-1 text-sm text-[#C09930]">
                   <Check :size="16" />
                   <span>Verified Purchase</span>
                 </div>
@@ -342,17 +342,17 @@
               />
             </div>
             <div class="p-4">
-              <h3 class="font-medium text-[#333333] mb-2 group-hover:text-[#2E8B57] transition-colors">
+              <h3 class="font-medium text-[#333333] mb-2 group-hover:text-[#C09930] transition-colors">
                 {{ similar.name }}
               </h3>
               <div class="flex items-center justify-between">
-                <span class="text-lg font-bold text-[#2E8B57]">${{ similar.price }}</span>
+                <span class="text-lg font-bold text-[#C09930]">${{ similar.price }}</span>
                 <div class="flex">
                   <Star 
                     v-for="i in 5" 
                     :key="i"
                     :size="14"
-                    :class="i <= similar.rating ? 'fill-[#2E8B57] text-[#2E8B57]' : 'text-gray-300'"
+                    :class="i <= similar.rating ? 'fill-[#C09930] text-[#C09930]' : 'text-gray-300'"
                   />
                 </div>
               </div>

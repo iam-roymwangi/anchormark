@@ -3,12 +3,12 @@
      <!-- Cart Button Trigger  -->
     <button
       @click="isOpen = true"
-      class="relative p-2 hover:text-[#2E8B57] transition-colors"
+      class="relative p-2 hover:text-[#C09930] transition-colors"
     >
       <ShoppingCart :size="24" />
       <span
         v-if="cartItemCount > 0"
-        class="absolute -top-1 -right-1 bg-[#2E8B57] text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center"
+        class="absolute -top-1 -right-1 bg-[#C09930] text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center"
       >
         {{ cartItemCount }}
       </span>
@@ -37,7 +37,7 @@
           </div>
           <button
             @click="isOpen = false"
-            class="hover:text-[#2E8B57] transition-colors p-1"
+            class="hover:text-[#C09930] transition-colors p-1"
           >
             <X :size="24" />
           </button>
@@ -61,7 +61,7 @@
             </p>
             <button
               @click="isOpen = false"
-              class="bg-[#2E8B57] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#267347] transition-all transform hover:scale-105"
+              class="bg-[#C09930] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#267347] transition-all transform hover:scale-105"
             >
               Continue Shopping
             </button>
@@ -92,7 +92,7 @@
                       {{ item.size }} • {{ item.color }}
                     </p>
                     <div class="flex items-center justify-between">
-                      <span class="text-lg font-bold text-[#2E8B57]">
+                      <span class="text-lg font-bold text-[#C09930]">
                         ${{ item.price }}
                       </span>
 
@@ -100,7 +100,7 @@
                       <div class="flex items-center gap-2">
                         <button
                           @click="decreaseQuantity(item.id)"
-                          class="w-8 h-8 border-2 border-[#E0E0E0] rounded-lg hover:border-[#2E8B57] transition-colors flex items-center justify-center"
+                          class="w-8 h-8 border-2 border-[#E0E0E0] rounded-lg hover:border-[#C09930] transition-colors flex items-center justify-center"
                         >
                           <Minus :size="14" />
                         </button>
@@ -109,7 +109,7 @@
                         </span>
                         <button
                           @click="increaseQuantity(item.id)"
-                          class="w-8 h-8 border-2 border-[#E0E0E0] rounded-lg hover:border-[#2E8B57] transition-colors flex items-center justify-center"
+                          class="w-8 h-8 border-2 border-[#E0E0E0] rounded-lg hover:border-[#C09930] transition-colors flex items-center justify-center"
                         >
                           <Plus :size="14" />
                         </button>
@@ -148,20 +148,20 @@
             </div>
             <div class="border-t border-[#E0E0E0] pt-3 flex justify-between text-xl font-bold text-[#333333]">
               <span>Total</span>
-              <span class="text-[#2E8B57]">${{ total.toFixed(2) }}</span>
+              <span class="text-[#C09930]">${{ total.toFixed(2) }}</span>
             </div>
           </div>
 
            <!-- Action Buttons  -->
           <div class="space-y-3">
             <button
-              class="w-full bg-[#2E8B57] text-white py-4 rounded-lg font-semibold hover:bg-[#267347] transition-all transform hover:scale-[1.02] active:scale-[0.98]"
+              class="w-full bg-[#C09930] text-white py-4 rounded-lg font-semibold hover:bg-[#267347] transition-all transform hover:scale-[1.02] active:scale-[0.98]"
             >
               Proceed to Checkout
             </button>
             <button
               @click="isOpen = false"
-              class="w-full border-2 border-[#2E8B57] text-[#2E8B57] py-4 rounded-lg font-semibold hover:bg-[#2E8B57] hover:text-white transition-all"
+              class="w-full border-2 border-[#C09930] text-[#C09930] py-4 rounded-lg font-semibold hover:bg-[#C09930] hover:text-white transition-all"
             >
               Continue Shopping
             </button>
@@ -170,11 +170,11 @@
            <!-- Trust Badges  -->
           <div class="mt-6 flex items-center justify-center gap-4 text-sm text-[#666666]">
             <div class="flex items-center gap-1">
-              <Shield :size="16" class="text-[#2E8B57]" />
+              <Shield :size="16" class="text-[#C09930]" />
               <span>Secure Checkout</span>
             </div>
             <div class="flex items-center gap-1">
-              <Truck :size="16" class="text-[#2E8B57]" />
+              <Truck :size="16" class="text-[#C09930]" />
               <span>Free Shipping</span>
             </div>
           </div>

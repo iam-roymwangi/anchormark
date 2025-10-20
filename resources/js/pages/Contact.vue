@@ -46,7 +46,7 @@
                                         id="name"
                                         v-model="formData.name"
                                         required
-                                        class="w-full rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#2E8B57] focus:outline-none"
+                                        class="w-full rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#C09930] focus:outline-none"
                                         placeholder="John Smith"
                                     />
                                 </div>
@@ -62,7 +62,7 @@
                                         id="email"
                                         v-model="formData.email"
                                         required
-                                        class="w-full rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#2E8B57] focus:outline-none"
+                                        class="w-full rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#C09930] focus:outline-none"
                                         placeholder="john@hotel.com"
                                     />
                                 </div>
@@ -77,7 +77,7 @@
                                         type="tel"
                                         id="phone"
                                         v-model="formData.phone"
-                                        class="w-full rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#2E8B57] focus:outline-none"
+                                        class="w-full rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#C09930] focus:outline-none"
                                         placeholder="+1 (555) 000-0000"
                                     />
                                 </div>
@@ -92,7 +92,7 @@
                                         type="text"
                                         id="company"
                                         v-model="formData.company"
-                                        class="w-full rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#2E8B57] focus:outline-none"
+                                        class="w-full rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#C09930] focus:outline-none"
                                         placeholder="Grand Hotel & Resorts"
                                     />
                                 </div>
@@ -107,7 +107,7 @@
                                         id="subject"
                                         v-model="formData.subject"
                                         required
-                                        class="w-full rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#2E8B57] focus:outline-none"
+                                        class="w-full rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#C09930] focus:outline-none"
                                     >
                                         <option value="">
                                             Select a subject
@@ -139,14 +139,14 @@
                                         v-model="formData.message"
                                         required
                                         rows="6"
-                                        class="w-full resize-none rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#2E8B57] focus:outline-none"
+                                        class="w-full resize-none rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#C09930] focus:outline-none"
                                         placeholder="Tell us about your needs..."
                                     ></textarea>
                                 </div>
 
                                 <button
                                     type="submit"
-                                    class="w-full transform rounded-lg bg-[#2E8B57] px-8 py-4 font-semibold text-white transition-all hover:scale-[1.02] hover:bg-[#267347] active:scale-[0.98]"
+                                    class="w-full transform rounded-lg bg-[#C09930] px-8 py-4 font-semibold text-white transition-all hover:scale-[1.02] hover:bg-[#267347] active:scale-[0.98]"
                                 >
                                     Send Message
                                 </button>
@@ -165,7 +165,7 @@
                             <div class="mb-12 space-y-8">
                                 <div class="flex items-start gap-4">
                                     <div
-                                        class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#2E8B57]"
+                                        class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#C09930]"
                                     >
                                         <Mail class="h-6 w-6 text-white" />
                                     </div>
@@ -177,13 +177,13 @@
                                         </h3>
                                         <a
                                             href="mailto:info@anchormark.com"
-                                            class="text-[#2E8B57] hover:underline"
+                                            class="text-[#C09930] hover:underline"
                                             >info@anchormark.com</a
                                         >
                                         <br />
                                         <a
                                             href="mailto:sales@anchormark.com"
-                                            class="text-[#2E8B57] hover:underline"
+                                            class="text-[#C09930] hover:underline"
                                             >sales@anchormark.com</a
                                         >
                                     </div>
@@ -191,7 +191,7 @@
 
                                 <div class="flex items-start gap-4">
                                     <div
-                                        class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#2E8B57]"
+                                        class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#C09930]"
                                     >
                                         <Phone class="h-6 w-6 text-white" />
                                     </div>
@@ -203,7 +203,7 @@
                                         </h3>
                                         <a
                                             href="tel:+15551234567"
-                                            class="text-[#333333] hover:text-[#2E8B57]"
+                                            class="text-[#333333] hover:text-[#C09930]"
                                             >+1 (555) 123-4567</a
                                         >
                                         <p class="mt-1 text-sm text-[#666666]">
@@ -214,7 +214,7 @@
 
                                 <div class="flex items-start gap-4">
                                     <div
-                                        class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#2E8B57]"
+                                        class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#C09930]"
                                     >
                                         <MapPin class="h-6 w-6 text-white" />
                                     </div>
@@ -234,7 +234,7 @@
 
                                 <div class="flex items-start gap-4">
                                     <div
-                                        class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#2E8B57]"
+                                        class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#C09930]"
                                     >
                                         <Clock class="h-6 w-6 text-white" />
                                     </div>
@@ -262,25 +262,25 @@
                                 <div class="flex gap-4">
                                     <a
                                         href="#"
-                                        class="flex h-10 w-10 items-center justify-center rounded-full bg-[#003366] transition-colors hover:bg-[#2E8B57]"
+                                        class="flex h-10 w-10 items-center justify-center rounded-full bg-[#003366] transition-colors hover:bg-[#C09930]"
                                     >
                                         <Linkedin class="h-5 w-5 text-white" />
                                     </a>
                                     <a
                                         href="#"
-                                        class="flex h-10 w-10 items-center justify-center rounded-full bg-[#003366] transition-colors hover:bg-[#2E8B57]"
+                                        class="flex h-10 w-10 items-center justify-center rounded-full bg-[#003366] transition-colors hover:bg-[#C09930]"
                                     >
                                         <Twitter class="h-5 w-5 text-white" />
                                     </a>
                                     <a
                                         href="#"
-                                        class="flex h-10 w-10 items-center justify-center rounded-full bg-[#003366] transition-colors hover:bg-[#2E8B57]"
+                                        class="flex h-10 w-10 items-center justify-center rounded-full bg-[#003366] transition-colors hover:bg-[#C09930]"
                                     >
                                         <Instagram class="h-5 w-5 text-white" />
                                     </a>
                                     <a
                                         href="#"
-                                        class="flex h-10 w-10 items-center justify-center rounded-full bg-[#003366] transition-colors hover:bg-[#2E8B57]"
+                                        class="flex h-10 w-10 items-center justify-center rounded-full bg-[#003366] transition-colors hover:bg-[#C09930]"
                                     >
                                         <Facebook class="h-5 w-5 text-white" />
                                     </a>
@@ -306,7 +306,7 @@
                             class="transform rounded-lg bg-[#F5F5F0] p-8 transition-all hover:-translate-y-1 hover:shadow-lg"
                         >
                             <div
-                                class="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[#2E8B57]"
+                                class="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[#C09930]"
                             >
                                 <Building2 class="h-8 w-8 text-white" />
                             </div>
@@ -328,7 +328,7 @@
             <section class="relative h-96 overflow-hidden bg-[#E0E0E0]">
                 <div class="absolute inset-0 flex items-center justify-center">
                     <div class="text-center">
-                        <MapPin class="mx-auto mb-4 h-16 w-16 text-[#2E8B57]" />
+                        <MapPin class="mx-auto mb-4 h-16 w-16 text-[#C09930]" />
                         <p class="font-semibold text-[#003366]">
                             Interactive Map
                         </p>
@@ -350,7 +350,7 @@
                         for their hospitality needs.
                     </p>
                     <button
-                        class="transform rounded-lg bg-[#2E8B57] px-8 py-4 font-semibold text-white transition-all hover:scale-105 hover:bg-[#267347]"
+                        class="transform rounded-lg bg-[#C09930] px-8 py-4 font-semibold text-white transition-all hover:scale-105 hover:bg-[#267347]"
                     >
                         Request a Catalog
                     </button>

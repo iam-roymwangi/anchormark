@@ -6,7 +6,7 @@
     <section class="relative h-screen flex items-center justify-center overflow-hidden">
       <div class="absolute inset-0 bg-gradient-to-b from-[#003366]/80 to-[#003366]/60 z-10"></div>
       <img 
-        src="/placeholder.svg?height=1080&width=1920" 
+        src="/assets/images/Hotel-design.webp" 
         alt="Luxury Hotel" 
         class="absolute inset-0 w-full h-full object-cover"
       />
@@ -50,7 +50,7 @@
             :class="{ 'animate-slide-up': isVisible }"
             :style="{ animationDelay: `${index * 100}ms` }"
           >
-            <div class="text-8xl font-bold text-[#2E8B57] opacity-20 mb-4">{{ index + 1 }}</div>
+            <div class="text-8xl font-bold text-[#C09930] opacity-20 mb-4">{{ index + 1 }}</div>
             <h3 class="text-2xl font-bold text-[#003366] mb-4">{{ value.title }}</h3>
             <p class="text-lg text-[#333333] leading-relaxed">{{ value.description }}</p>
           </div>
@@ -83,7 +83,7 @@
             :key="index"
             class="text-center group hover:scale-105 transition-transform duration-300"
           >
-            <div class="text-5xl md:text-6xl font-bold text-[#2E8B57] mb-4">{{ stat.value }}</div>
+            <div class="text-5xl md:text-6xl font-bold text-[#C09930] mb-4">{{ stat.value }}</div>
             <div class="text-xl text-gray-300">{{ stat.label }}</div>
           </div>
         </div>
@@ -135,10 +135,10 @@
             :style="{ animationDelay: `${index * 150}ms` }"
           >
             <div class="flex-shrink-0 w-32 text-right">
-              <div class="text-2xl font-bold text-[#2E8B57]">{{ milestone.year }}</div>
+              <div class="text-2xl font-bold text-[#C09930]">{{ milestone.year }}</div>
             </div>
-            <div class="flex-shrink-0 w-px bg-[#2E8B57] relative">
-              <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-[#2E8B57] rounded-full group-hover:scale-150 transition-transform"></div>
+            <div class="flex-shrink-0 w-px bg-[#C09930] relative">
+              <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-[#C09930] rounded-full group-hover:scale-150 transition-transform"></div>
             </div>
             <div class="flex-1 pb-12">
               <h3 class="text-xl font-bold text-[#003366] mb-2">{{ milestone.title }}</h3>
@@ -173,7 +173,7 @@
               <div class="absolute inset-0 bg-[#003366]/0 group-hover:bg-[#003366]/20 transition-all duration-300"></div>
             </div>
             <h3 class="text-2xl font-bold text-[#003366] mb-2">{{ member.name }}</h3>
-            <p class="text-[#2E8B57] font-semibold mb-3">{{ member.role }}</p>
+            <p class="text-[#C09930] font-semibold mb-3">{{ member.role }}</p>
             <p class="text-[#333333] leading-relaxed">{{ member.bio }}</p>
           </div>
         </div>
@@ -188,7 +188,7 @@
           Partner with AnchorMark and discover how our premium products can transform your guest satisfaction.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <button class="bg-[#2E8B57] text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#267347] transition-all hover:scale-105">
+          <button class="bg-[#C09930] text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#267347] transition-all hover:scale-105">
             Request a Catalog
           </button>
           <button class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-[#003366] transition-all">

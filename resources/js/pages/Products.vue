@@ -38,7 +38,7 @@
                 v-model="searchQuery"
                 type="text"
                 placeholder="Search products..."
-                class="w-full px-4 py-3 pl-10 pr-4 text-sm border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E8B57] focus:border-transparent"
+                class="w-full px-4 py-3 pl-10 pr-4 text-sm border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-[#C09930] focus:border-transparent"
               />
               <div class="absolute inset-y-0 left-0 flex items-center pl-3">
                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -52,7 +52,7 @@
           <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 sm:pb-16 lg:px-8 lg:pb-20">
             <!-- Loading State -->
             <div v-if="isLoading" class="flex justify-center items-center py-12">
-              <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2E8B57]"></div>
+              <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#C09930]"></div>
             </div>
 
             <!-- No Products Message -->
@@ -100,7 +100,7 @@
                       ]"
                     >
                       <button
-                        class="flex items-center gap-2 rounded-full bg-[#2E8B57] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#267347] sm:px-6 sm:py-3 sm:text-base"
+                        class="flex items-center gap-2 rounded-full bg-[#C09930] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#267347] sm:px-6 sm:py-3 sm:text-base"
                       >
                         <Eye :size="16" class="sm:w-[18px] sm:h-[18px]" />
                         <span class="hidden sm:inline">Quick View</span>
@@ -113,12 +113,12 @@
                   <div class="p-4 sm:p-6">
                     <div class="mb-2 flex items-start justify-between gap-2">
                       <h3
-                        class="font-serif text-base text-[#333333] transition-colors group-hover:text-[#2E8B57] sm:text-lg"
+                        class="font-serif text-base text-[#333333] transition-colors group-hover:text-[#C09930] sm:text-lg"
                       >
                         {{ product.name }}
                       </h3>
                       <button
-                        class="flex-shrink-0 text-[#666666] transition-colors hover:text-[#2E8B57]"
+                        class="flex-shrink-0 text-[#666666] transition-colors hover:text-[#C09930]"
                       >
                         <Heart :size="18" class="sm:w-5 sm:h-5" />
                       </button>
@@ -131,7 +131,7 @@
                         ${{ product.price.toFixed(2) }}
                       </span>
                       <span
-                        class="bg-opacity-10 rounded-full bg-[#2E8B57] px-2.5 py-1 text-xs text-[#2E8B57] sm:px-3"
+                        class="bg-opacity-10 rounded-full bg-[#C09930] px-2.5 py-1 text-xs text-[#C09930] sm:px-3"
                       >
                         {{ product.category.name }}
                       </span>
@@ -139,7 +139,7 @@
                     <!-- Add to Cart Button -->
                     <button
                       @click="addToCart?.(product)"
-                      class="flex w-full transform items-center justify-center gap-2 rounded-lg bg-[#2E8B57] py-2.5 text-sm font-medium text-white transition-all hover:scale-[1.02] hover:bg-[#267347] active:scale-[0.98] sm:py-3 sm:text-base"
+                      class="flex w-full transform items-center justify-center gap-2 rounded-lg bg-[#C09930] py-2.5 text-sm font-medium text-white transition-all hover:scale-[1.02] hover:bg-[#267347] active:scale-[0.98] sm:py-3 sm:text-base"
                     >
                       <ShoppingCart :size="16" class="sm:w-[18px] sm:h-[18px]" />
                       Add to Cart
@@ -170,7 +170,7 @@
                     :class="[
                       'px-3 py-2 text-sm font-medium border rounded-md',
                       link.active
-                        ? 'text-white bg-[#2E8B57] border-[#2E8B57]'
+                        ? 'text-white bg-[#C09930] border-[#C09930]'
                         : 'text-gray-500 bg-white border-gray-300 hover:bg-gray-50'
                     ]"
                   >
@@ -214,7 +214,7 @@
                 Handpicked products that define luxury and comfort for the modern hotel experience.
               </p>
               <button
-                class="inline-flex items-center gap-2 rounded-full bg-[#2E8B57] px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:scale-105 hover:bg-[#267347] sm:px-8 sm:py-4 sm:text-base"
+                class="inline-flex items-center gap-2 rounded-full bg-[#C09930] px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:scale-105 hover:bg-[#267347] sm:px-8 sm:py-4 sm:text-base"
               >
                 Explore Collection
                 <ArrowRight :size="18" class="sm:w-5 sm:h-5" />

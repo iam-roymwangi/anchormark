@@ -10,7 +10,7 @@
                         class="mb-6 font-serif text-5xl leading-tight text-[#333333] sm:text-6xl lg:text-5xl xl:text-6xl"
                     >
                         Premium hospitality<br />solutions for exceptional<br /><span
-                            class="text-[#2E8B57]"
+                            class="text-[#C09930]"
                             >hotels</span
                         >
                     </h1>
@@ -60,7 +60,7 @@
                             class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                         <div
-                            class="absolute inset-0 bg-gradient-to-t from-[#2E8B57]/80 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                            class="absolute inset-0 bg-gradient-to-t from-[#C09930]/80 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                         >
                             <div class="absolute bottom-4 left-4 text-white">
                                 <h3 class="font-serif text-lg">Kitchenware</h3>
@@ -79,7 +79,7 @@
                             class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                         <div
-                            class="absolute inset-0 bg-gradient-to-t from-[#2E8B57]/80 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                            class="absolute inset-0 bg-gradient-to-t from-[#C09930]/80 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                         >
                             <div class="absolute bottom-4 left-4 text-white">
                                 <h3 class="font-serif text-lg">Furniture</h3>
@@ -131,7 +131,7 @@
                     class="flex flex-col items-center justify-center gap-4 sm:flex-row"
                 >
                     <button
-                        class="flex items-center justify-center gap-2 rounded-full bg-[#2E8B57] px-10 py-5 text-lg font-medium text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-[#247047] hover:shadow-xl"
+                        class="flex items-center justify-center gap-2 rounded-full bg-[#C09930] px-10 py-5 text-lg font-medium text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-[#247047] hover:shadow-xl"
                     >
                         Explore Our Collection
                         <ArrowRight class="h-5 w-5" />
@@ -146,7 +146,7 @@
                 <!-- Scroll Indicator -->
                 <div class="mt-16 flex justify-center">
                     <div class="animate-bounce">
-                        <ChevronDown class="h-8 w-8 text-[#2E8B57]" />
+                        <ChevronDown class="h-8 w-8 text-[#C09930]" />
                     </div>
                 </div>
             </div>
@@ -162,7 +162,7 @@
                         class="text-center"
                     >
                         <div
-                            class="mb-2 text-4xl font-bold text-[#2E8B57] sm:text-5xl"
+                            class="mb-2 text-4xl font-bold text-[#C09930] sm:text-5xl"
                         >
                             {{ stat.value }}
                         </div>
@@ -217,7 +217,7 @@
                                 {{ category.description }}
                             </p>
                             <button
-                                class="flex items-center gap-2 font-medium text-[#2E8B57] transition-all hover:gap-3"
+                                class="flex items-center gap-2 font-medium text-[#C09930] transition-all hover:gap-3"
                             >
                                 Explore Collection
                                 <ArrowRight class="h-4 w-4" />
@@ -252,7 +252,7 @@
                                 class="flex gap-4"
                             >
                                 <div
-                                    class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-[#2E8B57]"
+                                    class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-[#C09930]"
                                 >
                                     <component
                                         :is="feature.icon"
@@ -291,7 +291,7 @@
                 </p>
                 <div class="flex flex-col justify-center gap-4 sm:flex-row">
                     <button
-                        class="rounded-lg bg-[#2E8B57] px-8 py-4 text-lg font-medium text-white transition-colors hover:bg-[#247047]"
+                        class="rounded-lg bg-[#C09930] px-8 py-4 text-lg font-medium text-white transition-colors hover:bg-[#247047]"
                     >
                         Request a Quote
                     </button>
