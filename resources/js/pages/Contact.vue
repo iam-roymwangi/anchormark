@@ -13,8 +13,8 @@
                     <p
                         class="mx-auto max-w-2xl text-xl leading-relaxed text-[#333333]"
                     >
-                        Let's discuss how AnchorMark can elevate your hotel's
-                        hospitality experience with premium products and
+                        Let's discuss how Anchormark Supplies can elevate your
+                        hotel's hospitality experience with premium products and
                         exceptional service.
                     </p>
                 </div>
@@ -178,14 +178,9 @@
                                         <a
                                             href="mailto:info@anchormark.com"
                                             class="text-[#C09930] hover:underline"
-                                            >info@anchormark.com</a
+                                            >info@anchormark.co.ke</a
                                         >
                                         <br />
-                                        <a
-                                            href="mailto:sales@anchormark.com"
-                                            class="text-[#C09930] hover:underline"
-                                            >sales@anchormark.com</a
-                                        >
                                     </div>
                                 </div>
 
@@ -204,10 +199,10 @@
                                         <a
                                             href="tel:+15551234567"
                                             class="text-[#333333] hover:text-[#C09930]"
-                                            >+1 (555) 123-4567</a
+                                            >+254 723 631 790</a
                                         >
                                         <p class="mt-1 text-sm text-[#666666]">
-                                            Mon-Fri: 8:00 AM - 6:00 PM EST
+                                            Mon-Fri: 8:00 AM - 6:00 PM EAT
                                         </p>
                                     </div>
                                 </div>
@@ -225,9 +220,8 @@
                                             Headquarters
                                         </h3>
                                         <p class="text-[#333333]">
-                                            123 Hospitality Boulevard<br />
-                                            Suite 500<br />
-                                            New York, NY 10001
+                                            Mombasa Road<br />
+                                            Nairobi
                                         </p>
                                     </div>
                                 </div>
@@ -247,7 +241,7 @@
                                         <p class="text-[#333333]">
                                             Monday - Friday: 8:00 AM - 6:00
                                             PM<br />
-                                            Saturday: 9:00 AM - 2:00 PM<br />
+                                            Saturday: 9:00 AM - 5:00 PM<br />
                                             Sunday: Closed
                                         </p>
                                     </div>
@@ -349,11 +343,12 @@
                         Join hundreds of hotels worldwide that trust AnchorMark
                         for their hospitality needs.
                     </p>
-                    <button
-                        class="transform rounded-lg bg-[#C09930] px-8 py-4 font-semibold text-white transition-all hover:scale-105 hover:bg-[#267347]"
+                    <Link
+                        href="/products"
+                        class="rounded-full bg-[#C09930] px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-105 hover:bg-[#267347]"
                     >
-                        Request a Catalog
-                    </button>
+                        Order Now
+                    </Link>
                 </div>
             </section>
         </PublicLayout>
@@ -374,6 +369,7 @@ import {
     Twitter,
 } from 'lucide-vue-next';
 import { ref } from 'vue';
+import { Link } from '@inertiajs/vue3';
 
 interface FormData {
     name: string;
@@ -395,19 +391,9 @@ const formData = ref<FormData>({
 
 const locations = [
     {
-        city: 'New York',
-        address: '123 Hospitality Blvd, Suite 500, NY 10001',
-        phone: '+1 (555) 123-4567',
-    },
-    {
-        city: 'Los Angeles',
-        address: '456 Commerce Ave, Suite 200, CA 90001',
-        phone: '+1 (555) 234-5678',
-    },
-    {
-        city: 'Miami',
-        address: '789 Ocean Drive, Suite 300, FL 33139',
-        phone: '+1 (555) 345-6789',
+        city: 'Nairobi',
+        address: 'Mombasa Road',
+        phone: '+254 723 631 790',
     },
 ];
 

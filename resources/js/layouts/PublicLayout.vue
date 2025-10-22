@@ -11,9 +11,10 @@
 
           <!-- Desktop Navigation -->
           <div class="hidden md:flex items-center gap-8">
-            <a href="/products" class="hover:text-[#C09930] transition-colors">Products</a>
-            <a href="/about" class="hover:text-[#C09930] transition-colors">About</a>
-            <a href="/contact" class="hover:text-[#C09930] transition-colors">Contact</a>
+            <Link href="/" class="hover:text-[#C09930] transition-colors">Home</Link>
+            <Link href="/products" class="hover:text-[#C09930] transition-colors">Products</Link>
+            <Link href="/about" class="hover:text-[#C09930] transition-colors">About</Link>
+            <Link href="/contact" class="hover:text-[#C09930] transition-colors">Contact</Link>
             <button class="bg-[#C09930] hover:bg-[#247047] px-6 py-2 rounded-lg transition-colors">
               Get a Quote
             </button>
@@ -36,9 +37,10 @@
       <!-- Mobile Menu -->
       <div v-if="mobileMenuOpen" class="md:hidden bg-[#003366] border-t border-white/10">
         <div class="px-4 py-4 space-y-3">
-          <a href="#products" class="block hover:text-[#C09930] transition-colors">Products</a>
-          <a href="#about" class="block hover:text-[#C09930] transition-colors">About</a>
-          <a href="#contact" class="block hover:text-[#C09930] transition-colors">Contact</a>
+          <Link href="/" class="block hover:text-[#C09930] transition-colors">Home</Link>
+          <Link href="/products" class="block hover:text-[#C09930] transition-colors">Products</Link>
+          <Link href="/about" class="block hover:text-[#C09930] transition-colors">About</Link>
+          <Link href="/contact" class="block hover:text-[#C09930] transition-colors">Contact</Link>
           <button class="w-full bg-[#C09930] hover:bg-[#247047] px-6 py-2 rounded-lg transition-colors">
             Get a Quote
           </button>
@@ -92,10 +94,10 @@
           <div>
             <h4 class="font-bold mb-4">Company</h4>
             <ul class="space-y-2 text-sm text-white/70">
-              <li><a href="#" class="hover:text-[#C09930] transition-colors">About Us</a></li>
-              <li><a href="#" class="hover:text-[#C09930] transition-colors">Sustainability</a></li>
-              <li><a href="#" class="hover:text-[#C09930] transition-colors">Careers</a></li>
-              <li><a href="#" class="hover:text-[#C09930] transition-colors">Contact</a></li>
+              <li><Link href="/about" class="hover:text-[#C09930] transition-colors">About Us</Link></li>
+              <li><Link href="/products" class="hover:text-[#C09930] transition-colors">Products</Link></li>
+              <li><Link href="#" class="hover:text-[#C09930] transition-colors">Vision</Link></li>
+              <li><Link href="/contact" class="hover:text-[#C09930] transition-colors">Contact</Link></li>
             </ul>
           </div>
           <div>
@@ -111,7 +113,7 @@
           </div>
         </div>
         <div class="border-t border-white/10 pt-8 text-center text-sm text-white/70">
-          <p>&copy; 2025 AnchorMark. All rights reserved.</p>
+          <p>&copy; 2025 Anchormark Supplies. All rights reserved.</p>
         </div>
       </div>
     </footer>
@@ -128,7 +130,7 @@ import {
   ShoppingCart
 } from 'lucide-vue-next'
 import CartPopup from '@/components/core/CartPopup.vue'
-import { usePage, router } from '@inertiajs/vue3' // Import usePage and router
+import { usePage, router, Link } from '@inertiajs/vue3' // Import usePage and router
 
 const page = usePage()
 const user = computed<User | null>(() => page.props.auth?.user as User | null) // Define user computed property
