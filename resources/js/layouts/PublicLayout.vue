@@ -76,7 +76,7 @@
           <div>
             <a href="/" class="flex items-center gap-2 mb-4">
               <img src="/assets/images/anchormark-logo.jpg" alt="AnchorMark Logo" class="w-8 h-8 object-cover rounded" />
-              <span class="text-xl font-bold">AnchorMark</span>
+              <span class="text-xl font-bold">Anchormark Supplies</span>
             </a>
             <p class="text-white/70 text-sm">
               Premium hospitality solutions for exceptional hotels worldwide.
