@@ -430,24 +430,6 @@ const team: TeamMember[] = [
         bio: 'With 20 years in hospitality management, Faith leads Anchormark with a vision for excellence.',
         image: '/assets/images/profiles/Faith.jpg',
     },
-    {
-        name: 'Abraham Ngetich',
-        role: 'Head of Product Development',
-        bio: 'Abraham brings innovative design thinking to every product, ensuring quality and functionality.',
-        image: '/assets/images/profiles/Abraham.jpg',
-    },
-    {
-        name: 'Joseph Irungu',
-        role: 'Head of ICT',
-        bio: 'Joseph builds lasting digital solutions for the company.',
-        image: '/assets/images/profiles/Joseph.jpg',
-    },
-    {
-        name: 'Grace Munyiri',
-        role: 'Head of Data',
-        bio: 'Grace oversees the collection, storage and usage of data across all departments.',
-        image: '/assets/images/profiles/Grace.png',
-    },
 ];
 
 onMounted(() => {
