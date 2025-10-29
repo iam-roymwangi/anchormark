@@ -227,7 +227,7 @@
             </section>
 
             <!-- Team Section  -->
-            <section class="bg-white px-6 py-24">
+            <!-- <section class="bg-white px-6 py-24">
                 <div class="mx-auto max-w-7xl">
                     <div class="mb-16 text-center">
                         <h2
@@ -270,7 +270,7 @@
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> -->
 
             <!-- CTA Section  -->
             <section class="bg-[#003366] px-6 py-24 text-center text-white">
@@ -333,12 +333,12 @@ interface Timeline {
     description: string;
 }
 
-interface TeamMember {
-    name: string;
-    role: string;
-    bio: string;
-    image: string;
-}
+// interface TeamMember {
+//     name: string;
+//     role: string;
+//     bio: string;
+//     image: string;
+// }
 
 const values: Value[] = [
     {
@@ -423,14 +423,14 @@ const timeline: Timeline[] = [
     },
 ];
 
-const team: TeamMember[] = [
-    {
-        name: 'Faith Munyiri',
-        role: 'Chief Executive Officer',
-        bio: 'With 20 years in hospitality management, Faith leads Anchormark with a vision for excellence.',
-        image: '/assets/images/profiles/Faith.jpg',
-    },
-];
+// const team: TeamMember[] = [
+//     {
+//         name: 'Faith Munyiri',
+//         role: 'Chief Executive Officer',
+//         bio: 'With 20 years in hospitality management, Faith leads Anchormark with a vision for excellence.',
+//         image: '/assets/images/profiles/Faith.jpg',
+//     },
+// ];
 
 onMounted(() => {
     isVisible.value = true;
