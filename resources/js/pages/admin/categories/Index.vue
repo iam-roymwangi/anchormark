@@ -74,6 +74,9 @@
             <thead class="bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
               <tr>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  Image
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                   Name
                 </th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -100,12 +103,18 @@
                 class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                      <Tag class="w-5 h-5 text-white" />
-                    </div>
-                    <div class="font-medium text-gray-900 dark:text-white">{{ category.name }}</div>
+                  <div class="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                    <img
+                      v-if="category.image"
+                      :src="category.image"
+                      :alt="category.name"
+                      class="w-full h-full object-cover"
+                    />
+                    <Tag v-else class="w-6 h-6 text-gray-400" />
                   </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="font-medium text-gray-900 dark:text-white">{{ category.name }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <code class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded text-sm">
@@ -156,8 +165,14 @@
           >
             <div class="flex items-start justify-between mb-3">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center flex-shrink-0">
-                  <Tag class="w-5 h-5 text-white" />
+                <div class="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 flex items-center justify-center flex-shrink-0">
+                  <img
+                    v-if="category.image"
+                    :src="category.image"
+                    :alt="category.name"
+                    class="w-full h-full object-cover"
+                  />
+                  <Tag v-else class="w-6 h-6 text-gray-400" />
                 </div>
                 <div>
                   <h3 class="font-medium text-gray-900 dark:text-white">{{ category.name }}</h3>
@@ -264,6 +279,77 @@
                 ></textarea>
               </div>
 
+               <!-- Image Upload  -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Category Image
+                </label>
+                <div class="space-y-3">
+                  <div v-if="imagePreview" class="relative">
+                    <img
+                      :src="imagePreview"
+                      alt="Preview"
+                      class="w-full h-48 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
+                    />
+                    <button
+                      type="button"
+                      @click="removeImage"
+                      class="absolute top-2 right-2 p-2 bg-red-600 hover:bg-red-700 text-white rounded-full transition-colors"
+                    >
+                      <X class="w-4 h-4" />
+                    </button>
+                  </div>
+                  <div v-else-if="form.image && typeof form.image === 'string'" class="relative">
+                    <img
+                      :src="form.image"
+                      alt="Current image"
+                      class="w-full h-48 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
+                    />
+                    <button
+                      type="button"
+                      @click="removeImage"
+                      class="absolute top-2 right-2 p-2 bg-red-600 hover:bg-red-700 text-white rounded-full transition-colors"
+                    >
+                      <X class="w-4 h-4" />
+                    </button>
+                  </div>
+                  <div
+                    v-else
+                    class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-blue-500 dark:hover:border-blue-400 transition-colors"
+                  >
+                    <input
+                      ref="fileInput"
+                      type="file"
+                      accept="image/*"
+                      @change="handleImageSelect"
+                      class="hidden"
+                    />
+                    <div class="flex flex-col items-center gap-2">
+                      <div class="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                        <Tag class="w-6 h-6 text-gray-400" />
+                      </div>
+                      <div>
+                        <button
+                          type="button"
+                          @click="fileInput?.click()"
+                          class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+                        >
+                          Click to upload
+                        </button>
+                        <span class="text-sm text-gray-600 dark:text-gray-400"> or drag and drop</span>
+                      </div>
+                      <p class="text-xs text-gray-500 dark:text-gray-400">
+                        PNG, JPG, GIF, WEBP up to 5MB
+                      </p>
+                    </div>
+                  </div>
+                  <div v-if="compressing" class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                    <Loader2 class="w-4 h-4 animate-spin" />
+                    Compressing image...
+                  </div>
+                </div>
+              </div>
+
                <!-- Modal Footer  -->
               <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
                 <button
@@ -352,6 +438,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useForm, router } from '@inertiajs/vue3'
+import imageCompression from 'browser-image-compression'
 import {
   Plus,
   Search,
@@ -379,6 +466,7 @@ interface Category {
   name: string
   slug: string
   description: string | null
+  image: string | null
   product_count: number
   created_at: string
   updated_at: string
@@ -388,11 +476,12 @@ interface CategoryFormData {
   name: string
   slug: string
   description: string
+  image: File | string | null
 }
 
 // State
 const searchQuery = ref('')
-const loading = ref(false) // Keep for search loading, but not initial fetch
+const loading = ref(false)
 const deleting = ref(false)
 const showModal = ref(false)
 const showDeleteModal = ref(false)
@@ -400,12 +489,16 @@ const isEditMode = ref(false)
 const editingId = ref<number | null>(null)
 const categoryToDelete = ref<Category | null>(null)
 const isDarkMode = ref(false)
+const imagePreview = ref<string | null>(null)
+const compressing = ref(false)
+const fileInput = ref<HTMLInputElement | null>(null)
 
 // Use Inertia's useForm
 const form = useForm<CategoryFormData>({
   name: '',
   slug: '',
-  description: ''
+  description: '',
+  image: null
 })
 
 // Computed
@@ -450,10 +543,72 @@ const formatDate = (dateString: string) => {
   })
 }
 
+const handleImageSelect = async (event: Event) => {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+  
+  if (!file) return
+
+  // Validate file type
+  if (!file.type.startsWith('image/')) {
+    alert('Please select a valid image file')
+    return
+  }
+
+  // Validate file size (before compression)
+  if (file.size > 10 * 1024 * 1024) { // 10MB
+    alert('Image is too large. Please select an image smaller than 10MB')
+    return
+  }
+
+  compressing.value = true
+
+  try {
+    // Compression options
+    const options = {
+      maxSizeMB: 1, // Maximum size in MB
+      maxWidthOrHeight: 1920, // Maximum width or height
+      useWebWorker: true,
+      fileType: file.type,
+    }
+
+    // Compress the image
+    const compressedFile = await imageCompression(file, options)
+    
+    // Create preview
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      imagePreview.value = e.target?.result as string
+    }
+    reader.readAsDataURL(compressedFile)
+
+    // Set the compressed file to the form
+    form.image = compressedFile
+  } catch (error) {
+    console.error('Error compressing image:', error)
+    alert('Failed to compress image. Please try again.')
+  } finally {
+    compressing.value = false
+  }
+}
+
+const removeImage = () => {
+  imagePreview.value = null
+  form.image = null
+  if (fileInput.value) {
+    fileInput.value.value = ''
+  }
+}
+
 const openAddModal = () => {
   isEditMode.value = false
   editingId.value = null
-  form.reset() // Reset form using Inertia's reset
+  imagePreview.value = null
+  form.reset()
+  form.image = null
+  if (fileInput.value) {
+    fileInput.value.value = ''
+  }
   showModal.value = true
 }
 
@@ -463,6 +618,11 @@ const openEditModal = (category: Category) => {
   form.name = category.name
   form.slug = category.slug
   form.description = category.description || ''
+  form.image = category.image || null
+  imagePreview.value = null
+  if (fileInput.value) {
+    fileInput.value.value = ''
+  }
   showModal.value = true
 }
 
@@ -471,7 +631,12 @@ const closeModal = () => {
   setTimeout(() => {
     isEditMode.value = false
     editingId.value = null
-    form.reset() // Reset form
+    imagePreview.value = null
+    form.reset()
+    form.image = null
+    if (fileInput.value) {
+      fileInput.value.value = ''
+    }
   }, 300)
 }
 
@@ -489,7 +654,8 @@ const closeDeleteModal = () => {
 
 const saveCategory = async () => {
   if (isEditMode.value && editingId.value) {
-    form.put(`/admin/categories/${editingId.value}`, {
+    form.post(`/admin/categories/${editingId.value}`, {
+      method: 'put',
       onSuccess: () => {
         closeModal()
       },

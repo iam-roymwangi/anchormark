@@ -157,4 +157,47 @@ class HomeController extends Controller
     {
         return Inertia::render('Contact');
     }
+
+     public function home()
+    {
+        // Fetch categories with active products
+        $categories = Category::select('id', 'name', 'slug', 'description', 'image')
+            ->get()
+            ->map(function ($category) {
+                return [
+                    'id' => $category->id,
+                    'name' => $category->name,
+                    'slug' => $category->slug,
+                    'description' => $category->description ?? '',
+                    'image' => $category->image,
+                ];
+            });
+
+        // Fetch featured products for the bento grid (latest 5 products)
+        $featuredProducts = Product::with(['category', 'images'])
+            ->where('status', 'active')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get()
+            ->map(function ($product) {
+                return [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'slug' => $product->slug,
+                    'description' => $product->description,
+                    'price' => (float) $product->price,
+                    'category' => [
+                        'id' => $product->category->id,
+                        'name' => $product->category->name,
+                        'slug' => $product->category->slug,
+                    ],
+                    'image' => $product->images->first()?->image_url ?? '/assets/images/Hotel-design.webp',
+                ];
+            });
+
+        return Inertia::render('Welcome', [
+            'categories' => $categories,
+            'featuredProducts' => $featuredProducts,
+        ]);
+    }
 }

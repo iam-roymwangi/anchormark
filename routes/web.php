@@ -9,9 +9,7 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Shopper\WhishlistController;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-})->name('home');
+Route::get('/', [HomeController::class, 'home'])->name('home');
 
 Route::get('/products', [HomeController::class, 'products'])->name('products');
 

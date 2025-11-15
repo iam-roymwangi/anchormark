@@ -24,120 +24,85 @@
 
                     <!-- Bento Grid Layout -->
                     <div class="mb-12 grid grid-cols-2 gap-4 md:grid-cols-4">
-                        <!-- Large Image - Luxury Bedding -->
+                        <!-- Large Product - First Product -->
                         <div
+                            v-if="featuredProducts.length > 0"
                             class="group relative col-span-2 row-span-2 cursor-pointer overflow-hidden rounded-2xl"
                             :class="{ 'animate-fade-in': isVisible }"
                         >
                             <img
-                                src="/assets/images/Hotel-design.webp"
-                                alt="Premium hotel bedding"
+                                :src="featuredProducts[0].image"
+                                :alt="featuredProducts[0].name"
                                 class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                             />
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-[#003366]/80 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                             >
                                 <div
-                                    class="absolute bottom-6 left-6 text-white"
+                                    class="absolute bottom-6 left-6 right-6 text-white"
                                 >
                                     <h3 class="mb-2 font-serif text-2xl">
-                                        Premium Bedding
+                                        {{ featuredProducts[0].name }}
                                     </h3>
-                                    <p class="text-sm opacity-90">
-                                        Luxury linens for ultimate comfort
+                                    <p class="mb-4 text-sm opacity-90">
+                                        {{ featuredProducts[0].description ? featuredProducts[0].description.substring(0, 100) + '...' : 'Premium quality product' }}
                                     </p>
+                                    <Link
+                                        :href="`/product-details?slug=${featuredProducts[0].slug}`"
+                                        class="inline-flex items-center gap-2 rounded-full bg-[#C09930] px-6 py-2 text-sm font-medium text-white transition-all duration-300 hover:bg-[#247047] hover:scale-105"
+                                        @click.stop
+                                    >
+                                        View Details
+                                        <ArrowRight class="h-4 w-4" />
+                                    </Link>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Kitchenware Image -->
+                        <!-- Small Products - Remaining 4 Products -->
                         <div
+                            v-for="(product, index) in featuredProducts.slice(1, 5)"
+                            :key="product.id"
                             class="group relative col-span-1 row-span-1 cursor-pointer overflow-hidden rounded-2xl"
-                            :class="{ 'animate-fade-in-delay-1': isVisible }"
+                            :class="{
+                                'animate-fade-in-delay-1': isVisible && index === 0,
+                                'animate-fade-in-delay-2': isVisible && index === 1,
+                                'animate-fade-in-delay-3': isVisible && index === 2,
+                                'animate-fade-in-delay-4': isVisible && index === 3,
+                            }"
                         >
                             <img
-                                src="https://www.cookmanequipments.com/uploaded_files/897750.png"
-                                alt="Premium kitchenware"
+                                :src="product.image"
+                                :alt="product.name"
                                 class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                             />
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-[#C09930]/80 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                             >
                                 <div
-                                    class="absolute bottom-4 left-4 text-white"
+                                    class="absolute bottom-4 left-4 right-4 text-white"
                                 >
-                                    <h3 class="font-serif text-lg">
-                                        Kitchenware
+                                    <h3 class="mb-2 font-serif text-lg">
+                                        {{ product.name }}
                                     </h3>
+                                    <Link
+                                        :href="`/product-details?slug=${product.slug}`"
+                                        class="inline-flex items-center gap-1 rounded-full bg-white/20 backdrop-blur-sm px-4 py-1.5 text-xs font-medium text-white transition-all duration-300 hover:bg-white/30 hover:scale-105"
+                                        @click.stop
+                                    >
+                                        View Details
+                                        <ArrowRight class="h-3 w-3" />
+                                    </Link>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Furniture Image -->
+                        <!-- Fallback: Show placeholder if no products -->
                         <div
-                            class="group relative col-span-1 row-span-1 cursor-pointer overflow-hidden rounded-2xl"
-                            :class="{ 'animate-fade-in-delay-2': isVisible }"
+                            v-if="featuredProducts.length === 0"
+                            class="col-span-2 row-span-2 flex items-center justify-center rounded-2xl bg-gray-100"
                         >
-                            <img
-                                src="https://hotelfurnitureconcept.com/wp-content/uploads/2022/04/hotel-furniture-manufacturers-2.jpg"
-                                alt="Hotel furniture"
-                                class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
-                            <div
-                                class="absolute inset-0 bg-gradient-to-t from-[#C09930]/80 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                            >
-                                <div
-                                    class="absolute bottom-4 left-4 text-white"
-                                >
-                                    <h3 class="font-serif text-lg">
-                                        Furniture
-                                    </h3>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Hotel Room Detail -->
-                        <div
-                            class="group relative col-span-1 row-span-1 cursor-pointer overflow-hidden rounded-2xl"
-                            :class="{ 'animate-fade-in-delay-3': isVisible }"
-                        >
-                            <img
-                                src="/assets/images/Hotel-design.webp"
-                                alt="Hotel bathroom amenities"
-                                class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
-                            <div
-                                class="absolute inset-0 bg-gradient-to-t from-[#003366]/80 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                            >
-                                <div
-                                    class="absolute bottom-4 left-4 text-white"
-                                >
-                                    <h3 class="font-serif text-lg">
-                                        Amenities
-                                    </h3>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Restaurant Setting -->
-                        <div
-                            class="group relative col-span-1 row-span-1 cursor-pointer overflow-hidden rounded-2xl"
-                            :class="{ 'animate-fade-in-delay-4': isVisible }"
-                        >
-                            <img
-                                src="https://images.unsplash.com/photo-1682778418768-16081e4470a1?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVzdGF1cmFudCUyMGJhY2tncm91bmR8ZW58MHx8MHx8fDA%3D"
-                                alt="Restaurant table setting"
-                                class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
-                            <div
-                                class="absolute inset-0 bg-gradient-to-t from-[#003366]/80 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                            >
-                                <div
-                                    class="absolute bottom-4 left-4 text-white"
-                                >
-                                    <h3 class="font-serif text-lg">Dining</h3>
-                                </div>
-                            </div>
+                            <p class="text-gray-500">No featured products available</p>
                         </div>
                     </div>
 
@@ -207,43 +172,65 @@
                         </p>
                     </div>
 
-                    <div class="grid gap-8 md:grid-cols-3">
-                        <div
-                            v-for="category in categories"
-                            :key="category.title"
-                            class="group cursor-pointer overflow-hidden rounded-2xl bg-white shadow-lg transition-shadow hover:shadow-2xl"
-                        >
-                            <div class="relative h-64 overflow-hidden">
-                                <img
-                                    :src="category.image"
-                                    :alt="category.title"
-                                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                />
+                    <div class="relative">
+                        <swiper v-bind="swiperOptions" class="mySwiper">
+                            <swiper-slide
+                                v-for="category in categories"
+                                :key="category.id"
+                            >
                                 <div
-                                    class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
-                                ></div>
-                                <component
-                                    :is="category.icon"
-                                    class="absolute top-4 right-4 h-8 w-8 text-white"
-                                />
-                            </div>
-                            <div class="p-6">
-                                <h3
-                                    class="mb-2 text-2xl font-bold text-[#333333]"
+                                    class="group cursor-pointer overflow-hidden rounded-2xl bg-white shadow-lg transition-shadow hover:shadow-2xl"
                                 >
-                                    {{ category.title }}
-                                </h3>
-                                <p class="mb-4 text-[#333333]/70">
-                                    {{ category.description }}
-                                </p>
-                                <button
-                                    class="flex items-center gap-2 font-medium text-[#C09930] transition-all hover:gap-3"
-                                >
-                                    Explore Collection
-                                    <ArrowRight class="h-4 w-4" />
-                                </button>
-                            </div>
+                                    <Link :href="`/products?category=${category.slug}`">
+                                        <div class="relative h-64 overflow-hidden">
+                                            <img
+                                                :src="category.image"
+                                                :alt="category.title"
+                                                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                            />
+                                            <div
+                                                class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
+                                            ></div>
+                                            <component
+                                                :is="category.icon"
+                                                class="absolute top-4 right-4 h-8 w-8 text-white"
+                                            />
+                                        </div>
+                                        <div class="p-6">
+                                            <h3
+                                                class="mb-2 text-2xl font-bold text-[#333333]"
+                                            >
+                                                {{ category.title }}
+                                            </h3>
+                                            <p class="mb-4 text-[#333333]/70">
+                                                {{ category.description }}
+                                            </p>
+                                            <div
+                                                class="flex items-center gap-2 font-medium text-[#C09930] transition-all hover:gap-3"
+                                            >
+                                                Explore Collection
+                                                <ArrowRight class="h-4 w-4" />
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </div>
+                            </swiper-slide>
+                        </swiper>
+
+                        <!-- Custom Navigation Buttons -->
+                        <div class="swiper-button-prev absolute top-1/2 left-0 z-10 -translate-y-1/2 cursor-pointer rounded-full bg-white/80 p-3 shadow-md transition-all hover:bg-white focus:outline-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-6 w-6 text-gray-800">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                            </svg>
                         </div>
+                        <div class="swiper-button-next absolute top-1/2 right-0 z-10 -translate-y-1/2 cursor-pointer rounded-full bg-white/80 p-3 shadow-md transition-all hover:bg-white focus:outline-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-6 w-6 text-gray-800">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                            </svg>
+                        </div>
+
+                        <!-- Custom Pagination -->
+                        <div class="swiper-pagination mt-8 text-center"></div>
                     </div>
                 </div>
             </section>
@@ -339,8 +326,50 @@ import {
     Truck,
     UtensilsCrossed,
 } from 'lucide-vue-next';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
+
+// Import Swiper Vue.js components
+import { Swiper, SwiperSlide } from 'swiper/vue';
+
+// Import Swiper modules
+import { Navigation, Pagination } from 'swiper/modules';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+interface Category {
+    id: number;
+    name: string;
+    slug: string;
+    description: string;
+    image: string | null;
+}
+
+interface FeaturedProduct {
+    id: number;
+    name: string;
+    slug: string;
+    description: string;
+    price: number;
+    image: string;
+    category: {
+        id: number;
+        name: string;
+        slug: string;
+    };
+}
+
+interface Props {
+    categories?: Category[];
+    featuredProducts?: FeaturedProduct[];
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    categories: () => [],
+    featuredProducts: () => [],
+});
 
 const stats = [
     { value: '500+', label: 'Hotels Served' },
@@ -349,29 +378,39 @@ const stats = [
     { value: '98%', label: 'Client Satisfaction' },
 ];
 
-const categories = [
-    {
-        title: 'Premium Beddings',
-        description:
-            'Luxurious linens, duvets, and pillows crafted for ultimate guest comfort',
-        image: '/assets/images/Hotel-design.webp',
-        icon: Bed,
-    },
-    {
-        title: 'Professional Kitchenware',
-        description:
-            'Commercial-grade cookware and dining essentials for hotel kitchens',
-        image: '/assets/images/Hotel-design.webp',
-        icon: UtensilsCrossed,
-    },
-    {
-        title: 'Designer Furniture',
-        description:
-            'Elegant and durable furniture pieces that define sophisticated spaces',
-        image: '/assets/images/Hotel-design.webp',
-        icon: Armchair,
-    },
-];
+// Icon mapping based on category name
+const getCategoryIcon = (categoryName: string) => {
+    const name = categoryName.toLowerCase();
+    if (name.includes('bed') || name.includes('bedding') || name.includes('linen')) {
+        return Bed;
+    }
+    if (name.includes('kitchen') || name.includes('cookware') || name.includes('dining')) {
+        return UtensilsCrossed;
+    }
+    if (name.includes('furniture') || name.includes('chair') || name.includes('table')) {
+        return Armchair;
+    }
+    // Default icon
+    return Bed;
+};
+
+// Image mapping - use category image from database or fallback to default
+const getCategoryImage = (categoryImage: string | null) => {
+    // Use category image from database if available, otherwise use default
+    return categoryImage ? `/storage/${categoryImage}` : '/assets/images/Hotel-design.webp';
+};
+
+// Transform database categories to component format
+const categories = computed(() => {
+    return props.categories.map((category) => ({
+        id: category.id,
+        title: category.name,
+        description: category.description || `Explore our ${category.name} collection`,
+        image: getCategoryImage(category.image),
+        icon: getCategoryIcon(category.name),
+        slug: category.slug,
+    }));
+});
 
 const features = [
     {
@@ -401,6 +440,32 @@ const features = [
 ];
 
 const isVisible = ref(false);
+
+// Swiper options
+const swiperOptions = {
+    modules: [Navigation, Pagination],
+    slidesPerView: 1,
+    spaceBetween: 24,
+    loop: true,
+    navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+    },
+    pagination: {
+        clickable: true,
+        el: '.swiper-pagination',
+    },
+    breakpoints: {
+        768: {
+            slidesPerView: 2,
+            spaceBetween: 24,
+        },
+        1024: {
+            slidesPerView: 3,
+            spaceBetween: 24,
+        },
+    },
+};
 
 onMounted(() => {
     setTimeout(() => {
