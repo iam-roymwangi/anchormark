@@ -50,6 +50,7 @@ class RegisteredUserController extends Controller
             'verified' => false,
             'onboarding_complete' => false,
             'status' => 'active',
+            'email_verified_at' => now(), // Auto-verify email on registration
         ]);
 
         event(new Registered($user));

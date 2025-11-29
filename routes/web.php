@@ -39,7 +39,7 @@ Route::middleware(['auth', 'cart.session'])->group(function () {
     Route::post('/cart/merge', [CartController::class, 'merge'])->name('cart.merge');
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');

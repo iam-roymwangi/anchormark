@@ -284,13 +284,13 @@
             </section>
 
             <!-- CTA Section -->
-            <section class="bg-[#003366] py-20 text-white">
+            <section class="bg-[#F5F5F0] py-20 text-[#333333]">
                 <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
                     <h2 class="mb-6 font-serif text-4xl sm:text-5xl">
                         Ready to elevate your hospitality experience?
                     </h2>
                     <p
-                        class="mb-8 text-lg leading-relaxed text-white/90 sm:text-xl"
+                        class="mb-8 text-lg leading-relaxed text-[#333333]/90 sm:text-xl"
                     >
                         Join hundreds of hotels worldwide who trust AnchorMark
                         for their premium hospitality needs. Get a personalized
@@ -303,7 +303,7 @@
                             Request a Quote
                         </button>
                         <button
-                            class="rounded-lg border-2 border-white px-8 py-4 text-lg font-medium text-white transition-colors hover:bg-white hover:text-[#003366]"
+                            class="rounded-lg border-2 border-[#333333] px-8 py-4 text-lg font-medium text-[#333333] transition-colors hover:bg-white hover:text-[#003366]"
                         >
                             View Catalog
                         </button>

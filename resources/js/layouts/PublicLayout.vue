@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-white">
     <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-[#003366] text-white">
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-[#F5F5F0] text-[#333333] border-b border-[#333333]/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
           <!-- Logo -->
@@ -15,10 +15,10 @@
             <Link href="/products" class="hover:text-[#C09930] transition-colors">Products</Link>
             <Link href="/about" class="hover:text-[#C09930] transition-colors">About</Link>
             <Link href="/contact" class="hover:text-[#C09930] transition-colors">Contact</Link>
-            <button class="bg-[#C09930] hover:bg-[#247047] px-6 py-2 rounded-lg transition-colors">
+            <button class="bg-[#C09930] hover:bg-[#247047] px-6 py-2 rounded-lg transition-colors text-white">
               Get a Quote
             </button>
-            <button @click="cartOpen = true" class="relative p-2 rounded-full hover:bg-white/10 transition-colors">
+            <button @click="cartOpen = true" class="relative p-2 rounded-full hover:bg-[#333333]/10 transition-colors">
               <ShoppingCart class="w-6 h-6" />
               <span v-if="cartItemCountDisplay > 0" class="absolute -top-1 -right-1 bg-[#C09930] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                 {{ cartItemCountDisplay }}
@@ -35,7 +35,7 @@
       </div>
 
       <!-- Mobile Menu -->
-      <div v-if="mobileMenuOpen" class="md:hidden bg-[#003366] border-t border-white/10">
+      <div v-if="mobileMenuOpen" class="md:hidden bg-[#F5F5F0] border-t border-[#333333]/10">
         <div class="px-4 py-4 space-y-3">
           <Link href="/" class="block hover:text-[#C09930] transition-colors">Home</Link>
           <Link href="/products" class="block hover:text-[#C09930] transition-colors">Products</Link>
@@ -61,7 +61,7 @@
    
 
     <!-- Cart Popup -->
-    <div class="fixed bottom-4 right-4 z-50 p-4 bg-[#003366] rounded-[50%]">
+    <div class="fixed bottom-4 right-4 z-50 p-4 bg-[#F5F5F0] rounded-[50%] border border-[#333333]/10 shadow-lg">
       <CartPopup
         :is-open="cartOpen"
         @close="cartOpen = false"
@@ -70,7 +70,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-[#003366] text-white py-12 border-t border-white/10">
+    <footer class="bg-[#F5F5F0] text-[#333333] py-12 border-t border-[#333333]/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid md:grid-cols-4 gap-8 mb-8">
           <div>
@@ -78,13 +78,13 @@
               <img src="/assets/images/anchormark-logo.jpg" alt="AnchorMark Logo" class="w-8 h-8 object-cover rounded" />
               <span class="text-xl font-bold">Anchormark Supplies</span>
             </a>
-            <p class="text-white/70 text-sm">
+            <p class="text-[#333333]/70 text-sm">
               Premium hospitality solutions for exceptional hotels worldwide.
             </p>
           </div>
           <div>
             <h4 class="font-bold mb-4">Products</h4>
-            <ul class="space-y-2 text-sm text-white/70">
+            <ul class="space-y-2 text-sm text-[#333333]/70">
               <li><a href="#" class="hover:text-[#C09930] transition-colors">Beddings</a></li>
               <li><a href="#" class="hover:text-[#C09930] transition-colors">Kitchenware</a></li>
               <li><a href="#" class="hover:text-[#C09930] transition-colors">Furniture</a></li>
@@ -93,7 +93,7 @@
           </div>
           <div>
             <h4 class="font-bold mb-4">Company</h4>
-            <ul class="space-y-2 text-sm text-white/70">
+            <ul class="space-y-2 text-sm text-[#333333]/70">
               <li><Link href="/about" class="hover:text-[#C09930] transition-colors">About Us</Link></li>
               <li><Link href="/products" class="hover:text-[#C09930] transition-colors">Products</Link></li>
               <li><Link href="#" class="hover:text-[#C09930] transition-colors">Vision</Link></li>
@@ -103,16 +103,16 @@
           <div>
             <h4 class="font-bold mb-4">Connect</h4>
             <div class="flex gap-3">
-              <a href="#" class="w-10 h-10 bg-white/10 hover:bg-[#C09930] rounded-lg flex items-center justify-center transition-colors">
+              <a href="#" class="w-10 h-10 bg-[#333333]/10 hover:bg-[#C09930] hover:text-white rounded-lg flex items-center justify-center transition-colors">
                 <Mail class="w-5 h-5" />
               </a>
-              <a href="#" class="w-10 h-10 bg-white/10 hover:bg-[#C09930] rounded-lg flex items-center justify-center transition-colors">
+              <a href="#" class="w-10 h-10 bg-[#333333]/10 hover:bg-[#C09930] hover:text-white rounded-lg flex items-center justify-center transition-colors">
                 <Phone class="w-5 h-5" />
               </a>
             </div>
           </div>
         </div>
-        <div class="border-t border-white/10 pt-8 text-center text-sm text-white/70">
+        <div class="border-t border-[#333333]/10 pt-8 text-center text-sm text-[#333333]/70">
           <p>&copy; 2025 Anchormark Supplies. All rights reserved.</p>
         </div>
       </div>
