@@ -77,7 +77,7 @@
                             :style="{ animationDelay: `${index * 100}ms` }"
                         >
                             <div
-                                class="mb-4 text-8xl font-bold text-[#C09930] opacity-20"
+                                class="mb-4 text-8xl font-bold text-[#AE8625] opacity-20"
                             >
                                 {{ index + 1 }}
                             </div>
@@ -126,7 +126,7 @@
                             class="group text-center transition-transform duration-300 hover:scale-105"
                         >
                             <div
-                                class="mb-4 text-5xl font-bold text-[#C09930] md:text-6xl"
+                                class="mb-4 text-5xl font-bold text-[#AE8625] md:text-6xl"
                             >
                                 {{ stat.value }}
                             </div>
@@ -200,15 +200,15 @@
                             :style="{ animationDelay: `${index * 150}ms` }"
                         >
                             <div class="w-32 flex-shrink-0 text-right">
-                                <div class="text-2xl font-bold text-[#C09930]">
+                                <div class="text-2xl font-bold text-[#AE8625]">
                                     {{ milestone.year }}
                                 </div>
                             </div>
                             <div
-                                class="relative w-px flex-shrink-0 bg-[#C09930]"
+                                class="relative w-px flex-shrink-0 bg-[#AE8625]"
                             >
                                 <div
-                                    class="absolute top-0 left-1/2 h-4 w-4 -translate-x-1/2 transform rounded-full bg-[#C09930] transition-transform group-hover:scale-150"
+                                    class="absolute top-0 left-1/2 h-4 w-4 -translate-x-1/2 transform rounded-full bg-[#AE8625] transition-transform group-hover:scale-150"
                                 ></div>
                             </div>
                             <div class="flex-1 pb-12">
@@ -261,7 +261,7 @@
                             <h3 class="mb-2 text-2xl font-bold text-[#003366]">
                                 {{ member.name }}
                             </h3>
-                            <p class="mb-3 font-semibold text-[#C09930]">
+                            <p class="mb-3 font-semibold text-[#AE8625]">
                                 {{ member.role }}
                             </p>
                             <p class="leading-relaxed text-[#333333]">
@@ -285,7 +285,7 @@
                     <div class="flex flex-col justify-center gap-4 sm:flex-row">
                         <Link
                             href="/products"
-                            class="rounded-full bg-[#C09930] px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-105 hover:bg-[#267347]"
+                            class="rounded-full bg-[#AE8625] px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-105 hover:bg-[#267347]"
                         >
                             Order Now
                         </Link>

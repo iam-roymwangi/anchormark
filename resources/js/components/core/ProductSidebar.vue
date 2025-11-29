@@ -3,7 +3,7 @@
         <!-- Mobile Toggle Button  -->
         <button
             @click="$emit('toggle')"
-            class="fixed top-24 left-4 z-40 rounded-full bg-[#003366] p-3 text-white shadow-lg transition-colors hover:bg-[#C09930] lg:hidden"
+            class="fixed top-24 left-4 z-40 rounded-full bg-[#003366] p-3 text-white shadow-lg transition-colors hover:bg-[#AE8625] lg:hidden"
         >
             <Menu :size="24" />
         </button>
@@ -34,7 +34,7 @@
                             v-model="searchQuery"
                             type="text"
                             placeholder="Search products..."
-                            class="w-full rounded-lg bg-white/10 py-2 pr-4 pl-10 text-white placeholder-white/50 transition-all focus:ring-2 focus:ring-[#C09930] focus:outline-none"
+                            class="w-full rounded-lg bg-white/10 py-2 pr-4 pl-10 text-white placeholder-white/50 transition-all focus:ring-2 focus:ring-[#AE8625] focus:outline-none"
                         />
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                             :class="[
                                 'group flex w-full items-center justify-between rounded-lg px-4 py-3 text-left transition-all duration-200',
                                 selectedCategory === 'all'
-                                    ? 'bg-[#C09930] text-white'
+                                    ? 'bg-[#AE8625] text-white'
                                     : 'text-white/90 hover:bg-white/10',
                             ]"
                         >
@@ -72,7 +72,7 @@
                                 :class="[
                                     'group flex w-full items-center justify-between rounded-lg px-4 py-3 text-left transition-all duration-200',
                                     selectedCategory === category.id
-                                        ? 'bg-[#C09930] text-white'
+                                        ? 'bg-[#AE8625] text-white'
                                         : 'text-white/90 hover:bg-white/10',
                                 ]"
                             >
@@ -144,7 +144,7 @@
                                 >Price Range</label
                             >
                             <select
-                                class="w-full rounded-lg bg-white/10 px-3 py-2 text-sm text-white focus:ring-2 focus:ring-[#C09930] focus:outline-none"
+                                class="w-full rounded-lg bg-white/10 px-3 py-2 text-sm text-white focus:ring-2 focus:ring-[#AE8625] focus:outline-none"
                             >
                                 <option>All Prices</option>
                                 <option>Under $100</option>
@@ -161,7 +161,7 @@
                             >
                                 <input
                                     type="checkbox"
-                                    class="rounded border-white/20 bg-white/10 text-[#C09930] focus:ring-[#C09930]"
+                                    class="rounded border-white/20 bg-white/10 text-[#AE8625] focus:ring-[#AE8625]"
                                 />
                                 <span>In Stock Only</span>
                             </label>
@@ -174,7 +174,7 @@
                             >
                                 <input
                                     type="checkbox"
-                                    class="rounded border-white/20 bg-white/10 text-[#C09930] focus:ring-[#C09930]"
+                                    class="rounded border-white/20 bg-white/10 text-[#AE8625] focus:ring-[#AE8625]"
                                 />
                                 <span>New Arrivals</span>
                             </label>
@@ -193,7 +193,7 @@
                             solutions.
                         </p>
                         <button
-                            class="flex items-center gap-1 text-sm font-medium text-[#C09930] hover:text-[#267347]"
+                            class="flex items-center gap-1 text-sm font-medium text-[#AE8625] hover:text-[#267347]"
                         >
                             Contact Sales
                             <ArrowRight :size="14" />

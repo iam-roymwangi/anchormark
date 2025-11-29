@@ -10,7 +10,7 @@
                             class="mb-6 font-serif text-5xl leading-tight text-[#333333] sm:text-6xl lg:text-5xl xl:text-6xl"
                         >
                             Premium hospitality<br />solutions for
-                            exceptional<br /><span class="text-[#C09930]"
+                            exceptional<br /><span class="text-[#AE8625]"
                                 >hotels</span
                             >
                         </h1>
@@ -49,7 +49,7 @@
                                     </p>
                                     <Link
                                         :href="`/product-details?slug=${featuredProducts[0].slug}`"
-                                        class="inline-flex items-center gap-2 rounded-full bg-[#C09930] px-6 py-2 text-sm font-medium text-white transition-all duration-300 hover:bg-[#247047] hover:scale-105"
+                                        class="inline-flex items-center gap-2 rounded-full bg-[#AE8625] px-6 py-2 text-sm font-medium text-white transition-all duration-300 hover:bg-[#247047] hover:scale-105"
                                         @click.stop
                                     >
                                         View Details
@@ -77,7 +77,7 @@
                                 class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                             />
                             <div
-                                class="absolute inset-0 bg-gradient-to-t from-[#C09930]/80 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                                class="absolute inset-0 bg-gradient-to-t from-[#AE8625]/80 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                             >
                                 <div
                                     class="absolute bottom-4 left-4 right-4 text-white"
@@ -112,7 +112,7 @@
                     >
                         <Link
                             href="/products"
-                            class="flex items-center justify-center gap-2 rounded-full bg-[#C09930] px-10 py-5 text-lg font-medium text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-[#247047] hover:shadow-xl"
+                            class="flex items-center justify-center gap-2 rounded-full bg-[#AE8625] px-10 py-5 text-lg font-medium text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-[#247047] hover:shadow-xl"
                         >
                             Explore Our Collection
                             <ArrowRight class="h-5 w-5" />
@@ -129,7 +129,7 @@
                     <!-- Scroll Indicator -->
                     <div class="mt-16 flex justify-center">
                         <div class="animate-bounce">
-                            <ChevronDown class="h-8 w-8 text-[#C09930]" />
+                            <ChevronDown class="h-8 w-8 text-[#AE8625]" />
                         </div>
                     </div>
                 </div>
@@ -145,7 +145,7 @@
                             class="text-center"
                         >
                             <div
-                                class="mb-2 text-4xl font-bold text-[#C09930] sm:text-5xl"
+                                class="mb-2 text-4xl font-bold text-[#AE8625] sm:text-5xl"
                             >
                                 {{ stat.value }}
                             </div>
@@ -206,7 +206,7 @@
                                                 {{ category.description }}
                                             </p>
                                             <div
-                                                class="flex items-center gap-2 font-medium text-[#C09930] transition-all hover:gap-3"
+                                                class="flex items-center gap-2 font-medium text-[#AE8625] transition-all hover:gap-3"
                                             >
                                                 Explore Collection
                                                 <ArrowRight class="h-4 w-4" />
@@ -248,7 +248,7 @@
                         </div>
                         <div class="order-1 lg:order-2">
                             <h2
-                                class="mb-6 font-serif text-4xl text-[#333333] sm:text-5xl"
+                                class="mb-6 font-serif text-xl text-[#333333] sm:text-3xl"
                             >
                                 Why leading hotels choose AnchorMark
                             </h2>
@@ -259,7 +259,7 @@
                                     class="flex gap-4"
                                 >
                                     <div
-                                        class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-[#C09930]"
+                                        class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-[#AE8625]"
                                     >
                                         <component
                                             :is="feature.icon"
@@ -298,7 +298,7 @@
                     </p>
                     <div class="flex flex-col justify-center gap-4 sm:flex-row">
                         <button
-                            class="rounded-lg bg-[#C09930] px-8 py-4 text-lg font-medium text-white transition-colors hover:bg-[#247047]"
+                            class="rounded-lg bg-[#AE8625] px-8 py-4 text-lg font-medium text-white transition-colors hover:bg-[#247047]"
                         >
                             Request a Quote
                         </button>
@@ -475,14 +475,22 @@ onMounted(() => {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap');
 
 .font-serif {
     font-family: 'Playfair Display', serif;
 }
 
 * {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    letter-spacing: 0.02em;
 }
 
 @keyframes fadeIn {

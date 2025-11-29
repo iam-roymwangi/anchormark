@@ -11,16 +11,16 @@
 
           <!-- Desktop Navigation -->
           <div class="hidden md:flex items-center gap-8">
-            <Link href="/" class="hover:text-[#C09930] transition-colors">Home</Link>
-            <Link href="/products" class="hover:text-[#C09930] transition-colors">Products</Link>
-            <Link href="/about" class="hover:text-[#C09930] transition-colors">About</Link>
-            <Link href="/contact" class="hover:text-[#C09930] transition-colors">Contact</Link>
-            <button class="bg-[#C09930] hover:bg-[#247047] px-6 py-2 rounded-lg transition-colors text-white">
+            <Link href="/" class="hover:text-[#AE8625] transition-colors">Home</Link>
+            <Link href="/products" class="hover:text-[#AE8625] transition-colors">Products</Link>
+            <Link href="/about" class="hover:text-[#AE8625] transition-colors">About</Link>
+            <Link href="/contact" class="hover:text-[#AE8625] transition-colors">Contact</Link>
+            <button class="bg-[#AE8625] hover:bg-[#247047] px-6 py-2 rounded-lg transition-colors text-white">
               Get a Quote
             </button>
             <button @click="cartOpen = true" class="relative p-2 rounded-full hover:bg-[#333333]/10 transition-colors">
               <ShoppingCart class="w-6 h-6" />
-              <span v-if="cartItemCountDisplay > 0" class="absolute -top-1 -right-1 bg-[#C09930] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+              <span v-if="cartItemCountDisplay > 0" class="absolute -top-1 -right-1 bg-[#AE8625] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                 {{ cartItemCountDisplay }}
               </span>
             </button>
@@ -37,11 +37,11 @@
       <!-- Mobile Menu -->
       <div v-if="mobileMenuOpen" class="md:hidden bg-[#F5F5F0] border-t border-[#333333]/10">
         <div class="px-4 py-4 space-y-3">
-          <Link href="/" class="block hover:text-[#C09930] transition-colors">Home</Link>
-          <Link href="/products" class="block hover:text-[#C09930] transition-colors">Products</Link>
-          <Link href="/about" class="block hover:text-[#C09930] transition-colors">About</Link>
-          <Link href="/contact" class="block hover:text-[#C09930] transition-colors">Contact</Link>
-          <button class="w-full bg-[#C09930] hover:bg-[#247047] px-6 py-2 rounded-lg transition-colors">
+          <Link href="/" class="block hover:text-[#AE8625] transition-colors">Home</Link>
+          <Link href="/products" class="block hover:text-[#AE8625] transition-colors">Products</Link>
+          <Link href="/about" class="block hover:text-[#AE8625] transition-colors">About</Link>
+          <Link href="/contact" class="block hover:text-[#AE8625] transition-colors">Contact</Link>
+          <button class="w-full bg-[#AE8625] hover:bg-[#247047] px-6 py-2 rounded-lg transition-colors">
             Get a Quote
           </button>
         </div>
@@ -85,28 +85,28 @@
           <div>
             <h4 class="font-bold mb-4">Products</h4>
             <ul class="space-y-2 text-sm text-[#333333]/70">
-              <li><a href="#" class="hover:text-[#C09930] transition-colors">Beddings</a></li>
-              <li><a href="#" class="hover:text-[#C09930] transition-colors">Kitchenware</a></li>
-              <li><a href="#" class="hover:text-[#C09930] transition-colors">Furniture</a></li>
-              <li><a href="#" class="hover:text-[#C09930] transition-colors">Accessories</a></li>
+              <li><a href="#" class="hover:text-[#AE8625] transition-colors">Beddings</a></li>
+              <li><a href="#" class="hover:text-[#AE8625] transition-colors">Kitchenware</a></li>
+              <li><a href="#" class="hover:text-[#AE8625] transition-colors">Furniture</a></li>
+              <li><a href="#" class="hover:text-[#AE8625] transition-colors">Accessories</a></li>
             </ul>
           </div>
           <div>
             <h4 class="font-bold mb-4">Company</h4>
             <ul class="space-y-2 text-sm text-[#333333]/70">
-              <li><Link href="/about" class="hover:text-[#C09930] transition-colors">About Us</Link></li>
-              <li><Link href="/products" class="hover:text-[#C09930] transition-colors">Products</Link></li>
-              <li><Link href="#" class="hover:text-[#C09930] transition-colors">Vision</Link></li>
-              <li><Link href="/contact" class="hover:text-[#C09930] transition-colors">Contact</Link></li>
+              <li><Link href="/about" class="hover:text-[#AE8625] transition-colors">About Us</Link></li>
+              <li><Link href="/products" class="hover:text-[#AE8625] transition-colors">Products</Link></li>
+              <li><Link href="#" class="hover:text-[#AE8625] transition-colors">Vision</Link></li>
+              <li><Link href="/contact" class="hover:text-[#AE8625] transition-colors">Contact</Link></li>
             </ul>
           </div>
           <div>
             <h4 class="font-bold mb-4">Connect</h4>
             <div class="flex gap-3">
-              <a href="#" class="w-10 h-10 bg-[#333333]/10 hover:bg-[#C09930] hover:text-white rounded-lg flex items-center justify-center transition-colors">
+              <a href="#" class="w-10 h-10 bg-[#333333]/10 hover:bg-[#AE8625] hover:text-white rounded-lg flex items-center justify-center transition-colors">
                 <Mail class="w-5 h-5" />
               </a>
-              <a href="#" class="w-10 h-10 bg-[#333333]/10 hover:bg-[#C09930] hover:text-white rounded-lg flex items-center justify-center transition-colors">
+              <a href="#" class="w-10 h-10 bg-[#333333]/10 hover:bg-[#AE8625] hover:text-white rounded-lg flex items-center justify-center transition-colors">
                 <Phone class="w-5 h-5" />
               </a>
             </div>
@@ -212,13 +212,21 @@ provide('addToCart', addToCart)
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap');
 
 .font-serif {
   font-family: 'Playfair Display', serif;
 }
 
 * {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 </style>

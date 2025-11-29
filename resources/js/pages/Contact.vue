@@ -46,7 +46,7 @@
                                         id="name"
                                         v-model="formData.name"
                                         required
-                                        class="w-full rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#C09930] focus:outline-none"
+                                        class="w-full rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#AE8625] focus:outline-none"
                                         placeholder="John Smith"
                                     />
                                 </div>
@@ -62,7 +62,7 @@
                                         id="email"
                                         v-model="formData.email"
                                         required
-                                        class="w-full rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#C09930] focus:outline-none"
+                                        class="w-full rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#AE8625] focus:outline-none"
                                         placeholder="john@hotel.com"
                                     />
                                 </div>
@@ -77,7 +77,7 @@
                                         type="tel"
                                         id="phone"
                                         v-model="formData.phone"
-                                        class="w-full rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#C09930] focus:outline-none"
+                                        class="w-full rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#AE8625] focus:outline-none"
                                         placeholder="+1 (555) 000-0000"
                                     />
                                 </div>
@@ -92,7 +92,7 @@
                                         type="text"
                                         id="company"
                                         v-model="formData.company"
-                                        class="w-full rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#C09930] focus:outline-none"
+                                        class="w-full rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#AE8625] focus:outline-none"
                                         placeholder="Grand Hotel & Resorts"
                                     />
                                 </div>
@@ -107,7 +107,7 @@
                                         id="subject"
                                         v-model="formData.subject"
                                         required
-                                        class="w-full rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#C09930] focus:outline-none"
+                                        class="w-full rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#AE8625] focus:outline-none"
                                     >
                                         <option value="">
                                             Select a subject
@@ -139,14 +139,14 @@
                                         v-model="formData.message"
                                         required
                                         rows="6"
-                                        class="w-full resize-none rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#C09930] focus:outline-none"
+                                        class="w-full resize-none rounded-lg border border-[#E0E0E0] bg-white px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-[#AE8625] focus:outline-none"
                                         placeholder="Tell us about your needs..."
                                     ></textarea>
                                 </div>
 
                                 <button
                                     type="submit"
-                                    class="w-full transform rounded-lg bg-[#C09930] px-8 py-4 font-semibold text-white transition-all hover:scale-[1.02] hover:bg-[#267347] active:scale-[0.98]"
+                                    class="w-full transform rounded-lg bg-[#AE8625] px-8 py-4 font-semibold text-white transition-all hover:scale-[1.02] hover:bg-[#267347] active:scale-[0.98]"
                                 >
                                     Send Message
                                 </button>
@@ -165,7 +165,7 @@
                             <div class="mb-12 space-y-8">
                                 <div class="flex items-start gap-4">
                                     <div
-                                        class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#C09930]"
+                                        class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#AE8625]"
                                     >
                                         <Mail class="h-6 w-6 text-white" />
                                     </div>
@@ -177,7 +177,7 @@
                                         </h3>
                                         <a
                                             href="mailto:info@anchormark.com"
-                                            class="text-[#C09930] hover:underline"
+                                            class="text-[#AE8625] hover:underline"
                                             >info@anchormark.co.ke</a
                                         >
                                         <br />
@@ -186,7 +186,7 @@
 
                                 <div class="flex items-start gap-4">
                                     <div
-                                        class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#C09930]"
+                                        class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#AE8625]"
                                     >
                                         <Phone class="h-6 w-6 text-white" />
                                     </div>
@@ -198,7 +198,7 @@
                                         </h3>
                                         <a
                                             href="tel:+15551234567"
-                                            class="text-[#333333] hover:text-[#C09930]"
+                                            class="text-[#333333] hover:text-[#AE8625]"
                                             >+254 723 631 790</a
                                         >
                                         <p class="mt-1 text-sm text-[#666666]">
@@ -209,7 +209,7 @@
 
                                 <div class="flex items-start gap-4">
                                     <div
-                                        class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#C09930]"
+                                        class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#AE8625]"
                                     >
                                         <MapPin class="h-6 w-6 text-white" />
                                     </div>
@@ -228,7 +228,7 @@
 
                                 <div class="flex items-start gap-4">
                                     <div
-                                        class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#C09930]"
+                                        class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#AE8625]"
                                     >
                                         <Clock class="h-6 w-6 text-white" />
                                     </div>
@@ -256,25 +256,25 @@
                                 <div class="flex gap-4">
                                     <a
                                         href="#"
-                                        class="flex h-10 w-10 items-center justify-center rounded-full bg-[#003366] transition-colors hover:bg-[#C09930]"
+                                        class="flex h-10 w-10 items-center justify-center rounded-full bg-[#003366] transition-colors hover:bg-[#AE8625]"
                                     >
                                         <Linkedin class="h-5 w-5 text-white" />
                                     </a>
                                     <a
                                         href="#"
-                                        class="flex h-10 w-10 items-center justify-center rounded-full bg-[#003366] transition-colors hover:bg-[#C09930]"
+                                        class="flex h-10 w-10 items-center justify-center rounded-full bg-[#003366] transition-colors hover:bg-[#AE8625]"
                                     >
                                         <Twitter class="h-5 w-5 text-white" />
                                     </a>
                                     <a
                                         href="#"
-                                        class="flex h-10 w-10 items-center justify-center rounded-full bg-[#003366] transition-colors hover:bg-[#C09930]"
+                                        class="flex h-10 w-10 items-center justify-center rounded-full bg-[#003366] transition-colors hover:bg-[#AE8625]"
                                     >
                                         <Instagram class="h-5 w-5 text-white" />
                                     </a>
                                     <a
                                         href="#"
-                                        class="flex h-10 w-10 items-center justify-center rounded-full bg-[#003366] transition-colors hover:bg-[#C09930]"
+                                        class="flex h-10 w-10 items-center justify-center rounded-full bg-[#003366] transition-colors hover:bg-[#AE8625]"
                                     >
                                         <Facebook class="h-5 w-5 text-white" />
                                     </a>
@@ -300,7 +300,7 @@
                             class="transform rounded-lg bg-[#F5F5F0] p-8 transition-all hover:-translate-y-1 hover:shadow-lg"
                         >
                             <div
-                                class="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[#C09930]"
+                                class="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[#AE8625]"
                             >
                                 <Building2 class="h-8 w-8 text-white" />
                             </div>
@@ -322,7 +322,7 @@
             <section class="relative h-96 overflow-hidden bg-[#E0E0E0]">
                 <div class="absolute inset-0 flex items-center justify-center">
                     <div class="text-center">
-                        <MapPin class="mx-auto mb-4 h-16 w-16 text-[#C09930]" />
+                        <MapPin class="mx-auto mb-4 h-16 w-16 text-[#AE8625]" />
                         <p class="font-semibold text-[#003366]">
                             Interactive Map
                         </p>
@@ -345,7 +345,7 @@
                     </p>
                     <Link
                         href="/products"
-                        class="rounded-full bg-[#C09930] px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-105 hover:bg-[#267347]"
+                        class="rounded-full bg-[#AE8625] px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-105 hover:bg-[#267347]"
                     >
                         Order Now
                     </Link>
@@ -413,13 +413,21 @@ const handleSubmit = () => {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap');
 
 .font-serif {
     font-family: 'Playfair Display', serif;
 }
 
-.font-sans {
-    font-family: 'Inter', sans-serif;
+* {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    letter-spacing: 0.02em;
 }
 </style>
