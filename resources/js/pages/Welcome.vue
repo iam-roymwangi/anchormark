@@ -2,54 +2,119 @@
     <div class="min-h-screen bg-white">
         <!-- Navigation -->
         <PublicLayout>
-            <section class="bg-[#F5F5F0] px-4 pt-32 pb-20 sm:px-6 lg:px-8">
-                <div class="mx-auto max-w-7xl">
-                    <!-- Hero Title -->
-                    <div class="mb-12 text-center">
+            <section class="relative px-4 pt-40 pb-32 sm:px-6 lg:px-8 overflow-hidden">
+                <!-- Background Image -->
+                <div class="absolute inset-0 z-0">
+                    <img 
+                        src="/assets/images/Hotel-design.webp" 
+                        alt="Luxury Hotel Background" 
+                        class="w-full h-full object-cover"
+                    />
+                    <!-- Dark Overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/50"></div>
+                </div>
+
+                <!-- Decorative Background Elements -->
+                <div class="absolute inset-0 overflow-hidden pointer-events-none z-10">
+                    <div class="absolute top-20 left-10 w-72 h-72 bg-[#AE8625]/10 rounded-full blur-3xl"></div>
+                    <div class="absolute bottom-20 right-10 w-96 h-96 bg-[#AE8625]/8 rounded-full blur-3xl"></div>
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#AE8625]/5 rounded-full blur-3xl"></div>
+                </div>
+
+                <div class="relative mx-auto max-w-7xl z-20">
+                    <!-- Hero Title Section -->
+                    <div class="mb-16 text-center">
+                        <!-- Decorative Divider -->
+                        <div class="flex items-center justify-center gap-4 mb-8">
+                            <div class="h-px w-16 bg-gradient-to-r from-transparent via-[#AE8625]/50 to-[#AE8625]"></div>
+                            <div class="w-2 h-2 rounded-full bg-[#AE8625] shadow-lg shadow-[#AE8625]/50"></div>
+                            <div class="h-px w-16 bg-gradient-to-l from-transparent via-[#AE8625]/50 to-[#AE8625]"></div>
+                        </div>
+
+                        <!-- Main Heading -->
                         <h1
-                            class="mb-6 font-serif text-5xl leading-tight text-[#333333] sm:text-6xl lg:text-5xl xl:text-6xl"
+                            class="mb-8 font-serif text-3xl leading-[1.1] text-white sm:text-4xl lg:text-5xl xl:text-5xl tracking-tight drop-shadow-2xl"
+                            :class="{ 'animate-fade-in': isVisible }"
                         >
-                            Premium hospitality<br />solutions for
-                            exceptional<br /><span class="text-[#AE8625]"
-                                >hotels</span
-                            >
+                            <span class="block">Premium</span>
+                            <span class="block italic font-light text-[#AE8625] drop-shadow-lg">hospitality</span>
+                            <span class="block">solutions for</span>
+                            <span class="block italic font-light">exceptional</span>
+                            <span class="block text-[#AE8625] drop-shadow-lg">hotels</span>
                         </h1>
+
+                        <!-- Subtitle -->
                         <p
-                            class="mx-auto max-w-3xl text-lg leading-relaxed text-[#333333]/70 sm:text-xl"
+                            class="mx-auto max-w-2xl text-xl leading-relaxed text-white/90 sm:text-2xl mb-12 font-light tracking-wide drop-shadow-lg"
+                            :class="{ 'animate-fade-in-delay-1': isVisible }"
                         >
-                            Transform your guest experience with Anchormark's
-                            curated collection of premium supplies.
+                            Transform your guest experience with our
+                            <span class="italic text-[#AE8625]">curated collection</span>
+                            of premium hospitality supplies.
                         </p>
+
+                        <!-- CTA Buttons - Premium Style -->
+                        <div
+                            class="flex flex-col items-center justify-center gap-6 sm:flex-row mb-16"
+                            :class="{ 'animate-fade-in-delay-2': isVisible }"
+                        >
+                            <Link
+                                href="/products"
+                                class="group relative flex items-center justify-center gap-3 px-12 py-5 text-lg font-medium text-white bg-[#AE8625] rounded-full shadow-xl shadow-[#AE8625]/20 transition-all duration-500 hover:scale-105 hover:bg-[#9A7520] hover:shadow-2xl hover:shadow-[#AE8625]/30 overflow-hidden"
+                            >
+                                <span class="absolute inset-0 bg-gradient-to-r from-[#AE8625] to-[#9A7520] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
+                                <span class="relative z-10 flex items-center gap-3">
+                                    Explore Our Collection
+                                    <ArrowRight class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                                </span>
+                            </Link>
+
+                            <Link
+                                href="/contact"
+                                class="group relative flex items-center justify-center gap-3 px-12 py-5 text-lg font-medium text-white bg-transparent border-2 border-white/30 rounded-full shadow-lg transition-all duration-500 hover:scale-105 hover:border-[#AE8625] hover:text-[#AE8625] hover:shadow-xl hover:bg-white/10 backdrop-blur-sm"
+                            >
+                                <span>Contact Us</span>
+                            </Link>
+                        </div>
+
+                        <!-- Decorative Divider -->
+                        <div class="flex items-center justify-center gap-4">
+                            <div class="h-px w-16 bg-gradient-to-r from-transparent via-[#AE8625]/50 to-[#AE8625]"></div>
+                            <div class="w-2 h-2 rounded-full bg-[#AE8625] shadow-lg shadow-[#AE8625]/50"></div>
+                            <div class="h-px w-16 bg-gradient-to-l from-transparent via-[#AE8625]/50 to-[#AE8625]"></div>
+                        </div>
                     </div>
 
-                    <!-- Bento Grid Layout -->
-                    <div class="mb-12 grid grid-cols-2 gap-4 md:grid-cols-4">
+                    <!-- Featured Products Grid - Enhanced -->
+                    <div class="mb-20 grid grid-cols-2 gap-6 md:grid-cols-4">
                         <!-- Large Product - First Product -->
                         <div
                             v-if="featuredProducts.length > 0"
-                            class="group relative col-span-2 row-span-2 cursor-pointer overflow-hidden rounded-2xl"
-                            :class="{ 'animate-fade-in': isVisible }"
+                            class="group relative col-span-2 row-span-2 cursor-pointer overflow-hidden rounded-3xl shadow-2xl"
+                            :class="{ 'animate-fade-in-delay-3': isVisible }"
                         >
+                            <div class="absolute inset-0 bg-gradient-to-br from-[#AE8625]/10 to-transparent z-10"></div>
                             <img
                                 :src="featuredProducts[0].image"
                                 :alt="featuredProducts[0].name"
                                 class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                             />
                             <div
-                                class="absolute inset-0 bg-gradient-to-t from-[#003366]/80 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                                class="absolute inset-0 bg-gradient-to-t from-[#333333]/90 via-[#333333]/50 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                             >
                                 <div
-                                    class="absolute bottom-6 left-6 right-6 text-white"
+                                    class="absolute bottom-8 left-8 right-8 text-white"
                                 >
-                                    <h3 class="mb-2 font-serif text-2xl">
+                                    <div class="mb-3 text-xs font-light tracking-widest uppercase text-[#AE8625] opacity-90">Featured</div>
+                                    <h3 class="mb-3 font-serif text-3xl font-light">
                                         {{ featuredProducts[0].name }}
                                     </h3>
-                                    <p class="mb-4 text-sm opacity-90">
-                                        {{ featuredProducts[0].description ? featuredProducts[0].description.substring(0, 100) + '...' : 'Premium quality product' }}
+                                    <p class="mb-6 text-sm opacity-90 font-light leading-relaxed">
+                                        {{ featuredProducts[0].description ? featuredProducts[0].description.substring(0, 120) + '...' : 'Premium quality product' }}
                                     </p>
                                     <Link
                                         :href="`/product-details?slug=${featuredProducts[0].slug}`"
-                                        class="inline-flex items-center gap-2 rounded-full bg-[#AE8625] px-6 py-2 text-sm font-medium text-white transition-all duration-300 hover:bg-[#247047] hover:scale-105"
+                                        class="inline-flex items-center gap-2 rounded-full bg-[#AE8625] px-8 py-3 text-sm font-medium text-white transition-all duration-300 hover:bg-[#9A7520] hover:scale-105 shadow-lg"
                                         @click.stop
                                     >
                                         View Details
@@ -63,31 +128,32 @@
                         <div
                             v-for="(product, index) in featuredProducts.slice(1, 5)"
                             :key="product.id"
-                            class="group relative col-span-1 row-span-1 cursor-pointer overflow-hidden rounded-2xl"
+                            class="group relative col-span-1 row-span-1 cursor-pointer overflow-hidden rounded-3xl shadow-xl"
                             :class="{
-                                'animate-fade-in-delay-1': isVisible && index === 0,
-                                'animate-fade-in-delay-2': isVisible && index === 1,
-                                'animate-fade-in-delay-3': isVisible && index === 2,
-                                'animate-fade-in-delay-4': isVisible && index === 3,
+                                'animate-fade-in-delay-4': isVisible && index === 0,
+                                'animate-fade-in-delay-5': isVisible && index === 1,
+                                'animate-fade-in-delay-6': isVisible && index === 2,
+                                'animate-fade-in-delay-7': isVisible && index === 3,
                             }"
                         >
+                            <div class="absolute inset-0 bg-gradient-to-br from-[#AE8625]/5 to-transparent z-10"></div>
                             <img
                                 :src="product.image"
                                 :alt="product.name"
                                 class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                             />
                             <div
-                                class="absolute inset-0 bg-gradient-to-t from-[#AE8625]/80 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                                class="absolute inset-0 bg-gradient-to-t from-[#AE8625]/90 via-[#AE8625]/60 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                             >
                                 <div
-                                    class="absolute bottom-4 left-4 right-4 text-white"
+                                    class="absolute bottom-5 left-5 right-5 text-white"
                                 >
-                                    <h3 class="mb-2 font-serif text-lg">
+                                    <h3 class="mb-3 font-serif text-lg font-light">
                                         {{ product.name }}
                                     </h3>
                                     <Link
                                         :href="`/product-details?slug=${product.slug}`"
-                                        class="inline-flex items-center gap-1 rounded-full bg-white/20 backdrop-blur-sm px-4 py-1.5 text-xs font-medium text-white transition-all duration-300 hover:bg-white/30 hover:scale-105"
+                                        class="inline-flex items-center gap-1 rounded-full bg-white/20 backdrop-blur-sm px-4 py-2 text-xs font-medium text-white transition-all duration-300 hover:bg-white/30 hover:scale-105 border border-white/20"
                                         @click.stop
                                     >
                                         View Details
@@ -100,36 +166,17 @@
                         <!-- Fallback: Show placeholder if no products -->
                         <div
                             v-if="featuredProducts.length === 0"
-                            class="col-span-2 row-span-2 flex items-center justify-center rounded-2xl bg-gray-100"
+                            class="col-span-2 row-span-2 flex items-center justify-center rounded-3xl bg-gradient-to-br from-gray-100 to-gray-50 border border-gray-200"
                         >
-                            <p class="text-gray-500">No featured products available</p>
+                            <p class="text-gray-400 font-light">No featured products available</p>
                         </div>
                     </div>
 
-                    <!-- CTA Buttons -->
-                    <div
-                        class="flex flex-col items-center justify-center gap-4 sm:flex-row"
-                    >
-                        <Link
-                            href="/products"
-                            class="flex items-center justify-center gap-2 rounded-full bg-[#AE8625] px-10 py-5 text-lg font-medium text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-[#247047] hover:shadow-xl"
-                        >
-                            Explore Our Collection
-                            <ArrowRight class="h-5 w-5" />
-                        </Link>
-
-                        <Link
-                            href="/contact"
-                            class="rounded-full border-2 border-[#003366] px-10 py-5 text-lg font-medium text-[#003366] shadow-lg transition-all duration-300 hover:scale-105 hover:bg-[#003366] hover:text-white hover:shadow-xl"
-                        >
-                            Contact Us
-                        </Link>
-                    </div>
-
-                    <!-- Scroll Indicator -->
-                    <div class="mt-16 flex justify-center">
+                    <!-- Scroll Indicator - Enhanced -->
+                    <div class="flex flex-col items-center justify-center gap-3">
+                        <span class="text-xs font-light tracking-widest uppercase text-white/60 drop-shadow-md">Scroll</span>
                         <div class="animate-bounce">
-                            <ChevronDown class="h-8 w-8 text-[#AE8625]" />
+                            <ChevronDown class="h-6 w-6 text-[#AE8625] drop-shadow-lg" />
                         </div>
                     </div>
                 </div>
@@ -321,6 +368,7 @@ import {
     ArrowRight,
     Award,
     Bed,
+    ChevronDown,
     Shield,
     Sparkles,
     Truck,
@@ -525,6 +573,21 @@ h1, h2, h3, h4, h5, h6 {
 
 .animate-fade-in-delay-4 {
     animation: fadeIn 0.8s ease-out 0.8s forwards;
+    opacity: 0;
+}
+
+.animate-fade-in-delay-5 {
+    animation: fadeIn 0.8s ease-out 1s forwards;
+    opacity: 0;
+}
+
+.animate-fade-in-delay-6 {
+    animation: fadeIn 0.8s ease-out 1.2s forwards;
+    opacity: 0;
+}
+
+.animate-fade-in-delay-7 {
+    animation: fadeIn 0.8s ease-out 1.4s forwards;
     opacity: 0;
 }
 </style>
