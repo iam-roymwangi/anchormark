@@ -2,76 +2,107 @@
     <div class="min-h-screen bg-white">
         <!-- Navigation -->
         <PublicLayout>
-            <section class="relative px-4 pt-40 pb-32 sm:px-6 lg:px-8 overflow-hidden">
+            <section
+                class="relative overflow-hidden px-4 pt-40 pb-32 sm:px-6 lg:px-8"
+            >
                 <!-- Background Image -->
                 <div class="absolute inset-0 z-0">
-                    <img 
-                        src="/assets/images/Hotel-design.webp" 
-                        alt="Luxury Hotel Background" 
-                        class="w-full h-full object-cover"
+                    <img
+                        src="/assets/images/Hotel-design.webp"
+                        alt="Luxury Hotel Background"
+                        class="h-full w-full object-cover"
                     />
                     <!-- Dark Overlay -->
-                    <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/50"></div>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/50"
+                    ></div>
                 </div>
 
                 <!-- Decorative Background Elements -->
-                <div class="absolute inset-0 overflow-hidden pointer-events-none z-10">
-                    <div class="absolute top-20 left-10 w-72 h-72 bg-[#AE8625]/10 rounded-full blur-3xl"></div>
-                    <div class="absolute bottom-20 right-10 w-96 h-96 bg-[#AE8625]/8 rounded-full blur-3xl"></div>
-                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#AE8625]/5 rounded-full blur-3xl"></div>
+                <div
+                    class="pointer-events-none absolute inset-0 z-10 overflow-hidden"
+                >
+                    <div
+                        class="absolute top-20 left-10 h-72 w-72 rounded-full bg-[#AE8625]/10 blur-3xl"
+                    ></div>
+                    <div
+                        class="absolute right-10 bottom-20 h-96 w-96 rounded-full bg-[#AE8625]/8 blur-3xl"
+                    ></div>
+                    <div
+                        class="absolute top-1/2 left-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#AE8625]/5 blur-3xl"
+                    ></div>
                 </div>
 
-                <div class="relative mx-auto max-w-7xl z-20">
+                <div class="relative z-20 mx-auto max-w-7xl">
                     <!-- Hero Title Section -->
                     <div class="mb-16 text-center">
                         <!-- Decorative Divider -->
-                        <div class="flex items-center justify-center gap-4 mb-8">
-                            <div class="h-px w-16 bg-gradient-to-r from-transparent via-[#AE8625]/50 to-[#AE8625]"></div>
-                            <div class="w-2 h-2 rounded-full bg-[#AE8625] shadow-lg shadow-[#AE8625]/50"></div>
-                            <div class="h-px w-16 bg-gradient-to-l from-transparent via-[#AE8625]/50 to-[#AE8625]"></div>
+                        <div
+                            class="mb-8 flex items-center justify-center gap-4"
+                        >
+                            <div
+                                class="h-px w-16 bg-gradient-to-r from-transparent via-[#AE8625]/50 to-[#AE8625]"
+                            ></div>
+                            <div
+                                class="h-2 w-2 rounded-full bg-[#AE8625] shadow-lg shadow-[#AE8625]/50"
+                            ></div>
+                            <div
+                                class="h-px w-16 bg-gradient-to-l from-transparent via-[#AE8625]/50 to-[#AE8625]"
+                            ></div>
                         </div>
 
                         <!-- Main Heading -->
                         <h1
-                            class="mb-8 font-serif text-3xl leading-[1.1] text-white sm:text-4xl lg:text-5xl xl:text-5xl tracking-tight drop-shadow-2xl"
+                            class="mb-8 font-serif text-3xl leading-[1.1] tracking-tight text-white drop-shadow-2xl sm:text-4xl lg:text-5xl xl:text-5xl"
                             :class="{ 'animate-fade-in': isVisible }"
                         >
-                            <span class="block">Premium</span>
-                            <span class="block italic font-light text-[#AE8625] drop-shadow-lg">hospitality</span>
-                            <span class="block">solutions for</span>
-                            <span class="block italic font-light">exceptional</span>
-                            <span class="block text-[#AE8625] drop-shadow-lg">hotels</span>
+                            <span
+                                class="shimmer-text relative block inline-block font-bold italic"
+                            >
+                                Anchormark
+                                <span class="shimmer"></span>
+                            </span>
+
+                            <span class="block">Supplies</span>
                         </h1>
 
                         <!-- Subtitle -->
                         <p
-                            class="mx-auto max-w-2xl text-xl leading-relaxed text-white/90 sm:text-2xl mb-12 font-light tracking-wide drop-shadow-lg"
+                            class="mx-auto mb-12 max-w-2xl text-xl leading-relaxed font-light tracking-wide text-white/90 drop-shadow-lg sm:text-2xl"
                             :class="{ 'animate-fade-in-delay-1': isVisible }"
                         >
                             Transform your guest experience with our
-                            <span class="italic text-[#AE8625]">curated collection</span>
+                            <span class="text-[#AE8625] italic"
+                                >curated collection</span
+                            >
                             of premium hospitality supplies.
                         </p>
 
                         <!-- CTA Buttons - Premium Style -->
                         <div
-                            class="flex flex-col items-center justify-center gap-6 sm:flex-row mb-16"
+                            class="mb-16 flex flex-col items-center justify-center gap-6 sm:flex-row"
                             :class="{ 'animate-fade-in-delay-2': isVisible }"
                         >
                             <Link
                                 href="/products"
-                                class="group relative flex items-center justify-center gap-3 px-12 py-5 text-lg font-medium text-white bg-[#AE8625] rounded-full shadow-xl shadow-[#AE8625]/20 transition-all duration-500 hover:scale-105 hover:bg-[#9A7520] hover:shadow-2xl hover:shadow-[#AE8625]/30 overflow-hidden"
+                                class="group relative flex items-center justify-center gap-3 overflow-hidden rounded-full bg-[#AE8625] px-12 py-5 text-lg font-medium text-white shadow-xl shadow-[#AE8625]/20 transition-all duration-500 hover:scale-105 hover:bg-[#9A7520] hover:shadow-2xl hover:shadow-[#AE8625]/30"
                             >
-                                <span class="absolute inset-0 bg-gradient-to-r from-[#AE8625] to-[#9A7520] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
-                                <span class="relative z-10 flex items-center gap-3">
+                                <span
+                                    class="absolute inset-0 bg-gradient-to-r from-[#AE8625] to-[#9A7520] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                                ></span>
+                                <span
+                                    class="relative z-10 flex items-center gap-3"
+                                >
                                     Explore Our Collection
-                                    <ArrowRight class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                                    <ArrowRight
+                                        class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
+                                    />
                                 </span>
                             </Link>
 
                             <Link
                                 href="/contact"
-                                class="group relative flex items-center justify-center gap-3 px-12 py-5 text-lg font-medium text-white bg-transparent border-2 border-white/30 rounded-full shadow-lg transition-all duration-500 hover:scale-105 hover:border-[#AE8625] hover:text-[#AE8625] hover:shadow-xl hover:bg-white/10 backdrop-blur-sm"
+                                class="group relative flex items-center justify-center gap-3 rounded-full border-2 border-white/30 bg-transparent px-12 py-5 text-lg font-medium text-white shadow-lg backdrop-blur-sm transition-all duration-500 hover:scale-105 hover:border-[#AE8625] hover:bg-white/10 hover:text-[#AE8625] hover:shadow-xl"
                             >
                                 <span>Contact Us</span>
                             </Link>
@@ -79,104 +110,158 @@
 
                         <!-- Decorative Divider -->
                         <div class="flex items-center justify-center gap-4">
-                            <div class="h-px w-16 bg-gradient-to-r from-transparent via-[#AE8625]/50 to-[#AE8625]"></div>
-                            <div class="w-2 h-2 rounded-full bg-[#AE8625] shadow-lg shadow-[#AE8625]/50"></div>
-                            <div class="h-px w-16 bg-gradient-to-l from-transparent via-[#AE8625]/50 to-[#AE8625]"></div>
+                            <div
+                                class="h-px w-16 bg-gradient-to-r from-transparent via-[#AE8625]/50 to-[#AE8625]"
+                            ></div>
+                            <div
+                                class="h-2 w-2 rounded-full bg-[#AE8625] shadow-lg shadow-[#AE8625]/50"
+                            ></div>
+                            <div
+                                class="h-px w-16 bg-gradient-to-l from-transparent via-[#AE8625]/50 to-[#AE8625]"
+                            ></div>
                         </div>
                     </div>
 
-                    <!-- Featured Products Grid - Enhanced -->
-                    <div class="mb-20 grid grid-cols-2 gap-6 md:grid-cols-4">
-                        <!-- Large Product - First Product -->
-                        <div
-                            v-if="featuredProducts.length > 0"
-                            class="group relative col-span-2 row-span-2 cursor-pointer overflow-hidden rounded-3xl shadow-2xl"
-                            :class="{ 'animate-fade-in-delay-3': isVisible }"
-                        >
-                            <div class="absolute inset-0 bg-gradient-to-br from-[#AE8625]/10 to-transparent z-10"></div>
-                            <img
-                                :src="featuredProducts[0].image"
-                                :alt="featuredProducts[0].name"
-                                class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
-                            <div
-                                class="absolute inset-0 bg-gradient-to-t from-[#333333]/90 via-[#333333]/50 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                    <!-- Most Commonly Purchased Products Slider -->
+                    <div class="relative mb-20">
+                        <swiper v-bind="swiperProductOptions" class="mySwiper">
+                            <swiper-slide
+                                v-for="(product, index) in featuredProducts"
+                                :key="product.id"
                             >
                                 <div
-                                    class="absolute bottom-8 left-8 right-8 text-white"
+                                    class="group relative h-full w-full cursor-pointer overflow-hidden rounded-3xl shadow-xl"
+                                    @click="goToProductDetails(product.slug)"
                                 >
-                                    <div class="mb-3 text-xs font-light tracking-widest uppercase text-[#AE8625] opacity-90">Featured</div>
-                                    <h3 class="mb-3 font-serif text-3xl font-light">
-                                        {{ featuredProducts[0].name }}
-                                    </h3>
-                                    <p class="mb-6 text-sm opacity-90 font-light leading-relaxed">
-                                        {{ featuredProducts[0].description ? featuredProducts[0].description.substring(0, 120) + '...' : 'Premium quality product' }}
+                                    <div
+                                        class="absolute inset-0 z-10 bg-gradient-to-br from-[#AE8625]/5 to-transparent"
+                                    ></div>
+                                    <img
+                                        :src="product.image"
+                                        :alt="product.name"
+                                        class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    />
+                                    <div
+                                        class="absolute inset-0 bg-gradient-to-t from-[#AE8625]/40 via-[#AE8625]/20 to-transparent opacity-100 transition-opacity duration-500 lg:opacity-0 lg:group-hover:opacity-100"
+                                    >
+                                        <div
+                                            class="absolute right-5 bottom-5 left-5 text-white"
+                                        >
+                                            <div
+                                                class="mb-3 text-xs font-light tracking-widest text-[#AE8625] uppercase opacity-90"
+                                                v-if="index === 0"
+                                            >
+                                                Featured
+                                            </div>
+                                            <h3
+                                                class="mb-3 font-serif text-lg font-light"
+                                                :class="{
+                                                    'text-3xl': index === 0,
+                                                }"
+                                            >
+                                                {{ product.name }}
+                                            </h3>
+                                            <p
+                                                class="mb-6 text-sm leading-relaxed font-light opacity-90"
+                                                v-if="index === 0"
+                                            >
+                                                {{
+                                                    product.description
+                                                        ? product.description.substring(
+                                                              0,
+                                                              120,
+                                                          ) + '...'
+                                                        : 'Premium quality product'
+                                                }}
+                                            </p>
+                                            <div
+                                                class="inline-flex items-center gap-1 rounded-full border border-white/20 bg-white/20 px-4 py-2 text-xs font-medium text-white backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:bg-white/30"
+                                                :class="{
+                                                    'gap-2 bg-[#AE8625] px-8 py-3 text-sm hover:bg-[#9A7520]':
+                                                        index === 0,
+                                                }"
+                                            >
+                                                View Details
+                                                <ArrowRight
+                                                    class="h-3 w-3"
+                                                    :class="{
+                                                        'h-4 w-4': index === 0,
+                                                    }"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </swiper-slide>
+
+                            <!-- Fallback: Show placeholder if no products -->
+                            <swiper-slide v-if="featuredProducts.length === 0">
+                                <div
+                                    class="flex h-full items-center justify-center rounded-3xl border border-gray-200 bg-gradient-to-br from-gray-100 to-gray-50 p-6"
+                                >
+                                    <p class="font-light text-gray-400">
+                                        No commonly purchased products available
                                     </p>
-                                    <Link
-                                        :href="`/product-details?slug=${featuredProducts[0].slug}`"
-                                        class="inline-flex items-center gap-2 rounded-full bg-[#AE8625] px-8 py-3 text-sm font-medium text-white transition-all duration-300 hover:bg-[#9A7520] hover:scale-105 shadow-lg"
-                                        @click.stop
-                                    >
-                                        View Details
-                                        <ArrowRight class="h-4 w-4" />
-                                    </Link>
                                 </div>
-                            </div>
-                        </div>
+                            </swiper-slide>
+                        </swiper>
 
-                        <!-- Small Products - Remaining 4 Products -->
+                        <!-- Custom Navigation Buttons -->
                         <div
-                            v-for="(product, index) in featuredProducts.slice(1, 5)"
-                            :key="product.id"
-                            class="group relative col-span-1 row-span-1 cursor-pointer overflow-hidden rounded-3xl shadow-xl"
-                            :class="{
-                                'animate-fade-in-delay-4': isVisible && index === 0,
-                                'animate-fade-in-delay-5': isVisible && index === 1,
-                                'animate-fade-in-delay-6': isVisible && index === 2,
-                                'animate-fade-in-delay-7': isVisible && index === 3,
-                            }"
+                            class="swiper-button-prev-products absolute top-1/2 left-0 z-10 -translate-y-1/2 cursor-pointer rounded-full bg-white/80 p-3 shadow-md transition-all hover:bg-white focus:outline-none"
                         >
-                            <div class="absolute inset-0 bg-gradient-to-br from-[#AE8625]/5 to-transparent z-10"></div>
-                            <img
-                                :src="product.image"
-                                :alt="product.name"
-                                class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
-                            <div
-                                class="absolute inset-0 bg-gradient-to-t from-[#AE8625]/90 via-[#AE8625]/60 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="2"
+                                stroke="currentColor"
+                                class="h-6 w-6 text-gray-800"
                             >
-                                <div
-                                    class="absolute bottom-5 left-5 right-5 text-white"
-                                >
-                                    <h3 class="mb-3 font-serif text-lg font-light">
-                                        {{ product.name }}
-                                    </h3>
-                                    <Link
-                                        :href="`/product-details?slug=${product.slug}`"
-                                        class="inline-flex items-center gap-1 rounded-full bg-white/20 backdrop-blur-sm px-4 py-2 text-xs font-medium text-white transition-all duration-300 hover:bg-white/30 hover:scale-105 border border-white/20"
-                                        @click.stop
-                                    >
-                                        View Details
-                                        <ArrowRight class="h-3 w-3" />
-                                    </Link>
-                                </div>
-                            </div>
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M15.75 19.5L8.25 12l7.5-7.5"
+                                />
+                            </svg>
+                        </div>
+                        <div
+                            class="swiper-button-next-products absolute top-1/2 right-0 z-10 -translate-y-1/2 cursor-pointer rounded-full bg-white/80 p-3 shadow-md transition-all hover:bg-white focus:outline-none"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="2"
+                                stroke="currentColor"
+                                class="h-6 w-6 text-gray-800"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                                />
+                            </svg>
                         </div>
 
-                        <!-- Fallback: Show placeholder if no products -->
+                        <!-- Custom Pagination -->
                         <div
-                            v-if="featuredProducts.length === 0"
-                            class="col-span-2 row-span-2 flex items-center justify-center rounded-3xl bg-gradient-to-br from-gray-100 to-gray-50 border border-gray-200"
-                        >
-                            <p class="text-gray-400 font-light">No featured products available</p>
-                        </div>
+                            class="swiper-pagination-products mt-8 text-center"
+                        ></div>
                     </div>
 
                     <!-- Scroll Indicator - Enhanced -->
-                    <div class="flex flex-col items-center justify-center gap-3">
-                        <span class="text-xs font-light tracking-widest uppercase text-white/60 drop-shadow-md">Scroll</span>
+                    <div
+                        class="flex flex-col items-center justify-center gap-3"
+                    >
+                        <span
+                            class="text-xs font-light tracking-widest text-white/60 uppercase drop-shadow-md"
+                            >Scroll</span
+                        >
                         <div class="animate-bounce">
-                            <ChevronDown class="h-6 w-6 text-[#AE8625] drop-shadow-lg" />
+                            <ChevronDown
+                                class="h-6 w-6 text-[#AE8625] drop-shadow-lg"
+                            />
                         </div>
                     </div>
                 </div>
@@ -228,8 +313,12 @@
                                 <div
                                     class="group cursor-pointer overflow-hidden rounded-2xl bg-white shadow-lg transition-shadow hover:shadow-2xl"
                                 >
-                                    <Link :href="`/products?category=${category.slug}`">
-                                        <div class="relative h-64 overflow-hidden">
+                                    <Link
+                                        :href="`/products?category=${category.slug}`"
+                                    >
+                                        <div
+                                            class="relative h-64 overflow-hidden"
+                                        >
                                             <img
                                                 :src="category.image"
                                                 :alt="category.title"
@@ -265,14 +354,40 @@
                         </swiper>
 
                         <!-- Custom Navigation Buttons -->
-                        <div class="swiper-button-prev absolute top-1/2 left-0 z-10 -translate-y-1/2 cursor-pointer rounded-full bg-white/80 p-3 shadow-md transition-all hover:bg-white focus:outline-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-6 w-6 text-gray-800">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                        <div
+                            class="swiper-button-prev absolute top-1/2 left-0 z-10 -translate-y-1/2 cursor-pointer rounded-full bg-white/80 p-3 shadow-md transition-all hover:bg-white focus:outline-none"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="2"
+                                stroke="currentColor"
+                                class="h-6 w-6 text-gray-800"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M15.75 19.5L8.25 12l7.5-7.5"
+                                />
                             </svg>
                         </div>
-                        <div class="swiper-button-next absolute top-1/2 right-0 z-10 -translate-y-1/2 cursor-pointer rounded-full bg-white/80 p-3 shadow-md transition-all hover:bg-white focus:outline-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-6 w-6 text-gray-800">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        <div
+                            class="swiper-button-next absolute top-1/2 right-0 z-10 -translate-y-1/2 cursor-pointer rounded-full bg-white/80 p-3 shadow-md transition-all hover:bg-white focus:outline-none"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="2"
+                                stroke="currentColor"
+                                class="h-6 w-6 text-gray-800"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                                />
                             </svg>
                         </div>
 
@@ -363,6 +478,7 @@
 
 <script setup lang="ts">
 import PublicLayout from '@/layouts/PublicLayout.vue';
+import { Link } from '@inertiajs/vue3';
 import {
     Armchair,
     ArrowRight,
@@ -375,7 +491,7 @@ import {
     UtensilsCrossed,
 } from 'lucide-vue-next';
 import { computed, onMounted, ref } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
 
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue';
@@ -429,13 +545,25 @@ const stats = [
 // Icon mapping based on category name
 const getCategoryIcon = (categoryName: string) => {
     const name = categoryName.toLowerCase();
-    if (name.includes('bed') || name.includes('bedding') || name.includes('linen')) {
+    if (
+        name.includes('bed') ||
+        name.includes('bedding') ||
+        name.includes('linen')
+    ) {
         return Bed;
     }
-    if (name.includes('kitchen') || name.includes('cookware') || name.includes('dining')) {
+    if (
+        name.includes('kitchen') ||
+        name.includes('cookware') ||
+        name.includes('dining')
+    ) {
         return UtensilsCrossed;
     }
-    if (name.includes('furniture') || name.includes('chair') || name.includes('table')) {
+    if (
+        name.includes('furniture') ||
+        name.includes('chair') ||
+        name.includes('table')
+    ) {
         return Armchair;
     }
     // Default icon
@@ -445,7 +573,9 @@ const getCategoryIcon = (categoryName: string) => {
 // Image mapping - use category image from database or fallback to default
 const getCategoryImage = (categoryImage: string | null) => {
     // Use category image from database if available, otherwise use default
-    return categoryImage ? `/storage/${categoryImage}` : '/assets/images/Hotel-design.webp';
+    return categoryImage
+        ? `/storage/${categoryImage}`
+        : '/assets/images/Hotel-design.webp';
 };
 
 // Transform database categories to component format
@@ -453,7 +583,8 @@ const categories = computed(() => {
     return props.categories.map((category) => ({
         id: category.id,
         title: category.name,
-        description: category.description || `Explore our ${category.name} collection`,
+        description:
+            category.description || `Explore our ${category.name} collection`,
         image: getCategoryImage(category.image),
         icon: getCategoryIcon(category.name),
         slug: category.slug,
@@ -515,11 +646,47 @@ const swiperOptions = {
     },
 };
 
+// Swiper options for featured products
+const swiperProductOptions = {
+    modules: [Navigation, Pagination],
+    slidesPerView: 1,
+    spaceBetween: 24,
+    loop: true,
+    grabCursor: false,
+    preventClicks: false,
+    navigation: {
+        nextEl: '.swiper-button-next-products',
+        prevEl: '.swiper-button-prev-products',
+    },
+    pagination: {
+        clickable: true,
+        el: '.swiper-pagination-products',
+    },
+    breakpoints: {
+        768: {
+            slidesPerView: 2,
+            spaceBetween: 24,
+        },
+        1024: {
+            slidesPerView: 3,
+            spaceBetween: 24,
+        },
+        1280: {
+            slidesPerView: 4,
+            spaceBetween: 24,
+        },
+    },
+};
+
 onMounted(() => {
     setTimeout(() => {
         isVisible.value = true;
     }, 100);
 });
+
+const goToProductDetails = (slug: string) => {
+    router.visit(`/product-details?slug=${slug}`);
+};
 </script>
 
 <style scoped>
@@ -535,7 +702,12 @@ onMounted(() => {
     letter-spacing: 0.01em;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: 'Playfair Display', serif;
     font-weight: 600;
     letter-spacing: 0.02em;
@@ -566,28 +738,52 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 0;
 }
 
-.animate-fade-in-delay-3 {
-    animation: fadeIn 0.8s ease-out 0.6s forwards;
-    opacity: 0;
+
+
+/* Metallic gold gradient */
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    #a67c00,
+    #bf9b30,
+    #ffdf00,
+    #bf9b30,
+    #a67c00
+  );
+  -webkit-background-clip: text;
+  color: transparent;
+  position: relative;
+  overflow: hidden;
 }
 
-.animate-fade-in-delay-4 {
-    animation: fadeIn 0.8s ease-out 0.8s forwards;
-    opacity: 0;
+/* Shimmer spark */
+.shimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  animation: shimmer-move 2.5s ease-in-out infinite;
 }
 
-.animate-fade-in-delay-5 {
-    animation: fadeIn 0.8s ease-out 1s forwards;
-    opacity: 0;
+/* Animation from left → right */
+@keyframes shimmer-move {
+  0% {
+    left: -100%;
+  }
+  60% {
+    left: 120%;
+  }
+  100% {
+    left: 120%;
+  }
 }
 
-.animate-fade-in-delay-6 {
-    animation: fadeIn 0.8s ease-out 1.2s forwards;
-    opacity: 0;
-}
-
-.animate-fade-in-delay-7 {
-    animation: fadeIn 0.8s ease-out 1.4s forwards;
-    opacity: 0;
-}
 </style>

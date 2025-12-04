@@ -387,12 +387,6 @@ interface ProductForm {
   specs: Spec[]
 }
 
-interface CompressedImage {
-  file: File
-  compressedDataUrl: string
-  name: string
-}
-
 // Props and reactive data
 const props = defineProps<{
   categories: Category[]
@@ -403,68 +397,75 @@ const categories = ref<Category[]>(props.categories || [])
 const availableAttributes = ref<Attribute[]>(props.attributes || [])
 
 // Image compression utility
-const compressImage = (file: File, maxWidth: number = 800, quality: number = 0.8): Promise<string> => {
+const compressImage = (file: File, maxWidth: number = 800, quality: number = 0.8): Promise<File> => {
   return new Promise((resolve, reject) => {
-    const canvas = document.createElement('canvas')
-    const ctx = canvas.getContext('2d')
-    const img = new Image()
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target?.result as string;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
 
-    img.onload = () => {
-      // Calculate new dimensions
-      const { width, height } = img
-      const aspectRatio = width / height
-      
-      let newWidth = width
-      let newHeight = height
-      
-      if (width > maxWidth) {
-        newWidth = maxWidth
-        newHeight = newWidth / aspectRatio
-      }
-      
-      // Set canvas dimensions
-      canvas.width = newWidth
-      canvas.height = newHeight
-      
-      // Draw and compress
-      ctx!.drawImage(img, 0, 0, newWidth, newHeight)
-      const compressedDataUrl = canvas.toDataURL('image/jpeg', quality)
-      resolve(compressedDataUrl)
-    }
+        let newWidth = img.width;
+        let newHeight = img.height;
 
-    img.onerror = reject
-    img.src = URL.createObjectURL(file)
-  })
-}
+        if (img.width > maxWidth) {
+          newWidth = maxWidth;
+          newHeight = (img.height * maxWidth) / img.width;
+        }
 
-const compressMultipleImages = async (files: File[]): Promise<CompressedImage[]> => {
-  const compressedImages: CompressedImage[] = []
-  
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+
+        ctx?.drawImage(img, 0, 0, newWidth, newHeight);
+
+        // Convert to WebP
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const compressedFile = new File([blob], file.name.split('.')[0] + '.webp', {
+              type: 'image/webp',
+              lastModified: Date.now(),
+            });
+            resolve(compressedFile);
+          } else {
+            reject(new Error('Canvas toBlob failed'));
+          }
+        }, 'image/webp', quality);
+      };
+      img.onerror = (error) => reject(error);
+    };
+    reader.onerror = (error) => reject(error);
+  });
+};
+
+const compressAndProcessImages = async (files: File[]): Promise<{ compressedFiles: File[], compressedDataUrls: string[] }> => {
+  const compressedFiles: File[] = [];
+  const compressedDataUrls: string[] = [];
+
   for (const file of files) {
     try {
-      const compressedDataUrl = await compressImage(file)
-      compressedImages.push({
-        file,
-        compressedDataUrl,
-        name: file.name
-      })
+      const compressedFile = await compressImage(file);
+      compressedFiles.push(compressedFile);
+
+      // Create data URL for preview
+      const reader = new FileReader();
+      reader.readAsDataURL(compressedFile);
+      await new Promise<void>((resolve) => {
+        reader.onload = (e) => {
+          compressedDataUrls.push(e.target?.result as string);
+          resolve();
+        };
+      });
     } catch (error) {
-      console.error(`Failed to compress ${file.name}:`, error)
-      // Add uncompressed image as fallback
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        compressedImages.push({
-          file,
-          compressedDataUrl: e.target?.result as string,
-          name: file.name
-        })
-      }
-      reader.readAsDataURL(file)
+      console.error(`Failed to compress or convert ${file.name}:`, error);
+      alert(`Failed to process image ${file.name}. Please try again.`);
     }
   }
-  
-  return compressedImages
-}
+
+  return { compressedFiles, compressedDataUrls };
+};
 
 // Form state
 const form = reactive<ProductForm>({
@@ -505,17 +506,15 @@ const handleImageUpload = async (event: Event) => {
   
   if (files && files.length > 0) {
     try {
-      const compressedImages = await compressMultipleImages(Array.from(files))
+      const { compressedFiles, compressedDataUrls } = await compressAndProcessImages(Array.from(files))
       
       // Store original files and compressed data URLs
-      compressedImages.forEach(compressed => {
-        form.images.push(compressed.file)
-        form.compressedImages.push(compressed.compressedDataUrl)
-      })
+      compressedFiles.forEach((file: File) => form.images.push(file))
+      compressedDataUrls.forEach((dataUrl: string) => form.compressedImages.push(dataUrl))
       
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error processing images:', error)
-      alert('Error processing images. Please try again.')
+      alert(error.message || 'Error processing images. Please try again.')
     }
     
     // Clear the file input
@@ -585,18 +584,28 @@ const handleSubmit = async () => {
     const response = await fetch('/admin/products', {
       method: 'POST',
       body: formData,
+      headers: {
+        'Accept': 'application/json',
+      },
     })
 
     if (!response.ok) {
-      throw new Error('Failed to add product')
+      const errorData = await response.json()
+      let errorMessage = 'Failed to add product.'
+      if (errorData && errorData.errors) {
+        errorMessage += '\n' + Object.values(errorData.errors).flat().join('\n')
+      } else if (errorData && errorData.message) {
+        errorMessage += '\n' + errorData.message
+      }
+      throw new Error(errorMessage)
     }
 
     alert('Product added successfully!')
     router.visit('/admin/products') // Redirect to product index page
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error submitting product:', error)
-    alert('Failed to add product. Please try again.')
+    alert(error.message || 'Failed to add product. Please try again.')
   } finally {
     isSubmitting.value = false
   }

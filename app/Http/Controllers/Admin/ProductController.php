@@ -147,13 +147,13 @@ class ProductController extends Controller
             'status' => 'required|in:active,inactive,discontinued',
             'specs_json' => 'nullable|json', // Validate as JSON string
             'images' => 'nullable|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Correct validation for file uploads
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048', // Correct validation for file uploads, added webp
             'attributes' => 'nullable|json', // Validate as JSON string
         ]);
 
-        // Laravel's request object should automatically decode JSON fields validated as 'json'
-        $specsJson = $request->input('specs_json');
-        $productAttributes = $request->input('attributes');
+        // Explicitly decode JSON fields from the request
+        $specsJson = json_decode($request->input('specs_json'), true);
+        $productAttributes = json_decode($request->input('attributes'), true);
 
         $product = Product::create([
             'category_id' => $request->category_id,
