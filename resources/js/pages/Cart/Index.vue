@@ -8,28 +8,37 @@
       </div>
 
       <!-- Cart Content -->
-      <div v-if="cart && cart.total_items > 0" class="bg-white rounded-lg shadow">
+      <div v-if="hasItems" class="bg-white rounded-lg shadow">
         <!-- Cart Items -->
         <div class="px-6 py-4 border-b border-gray-200">
-          <h2 class="text-lg font-medium text-gray-900">Cart Items ({{ totals.items }})</h2>
+          <h2 class="text-lg font-medium text-gray-900">Cart Items ({{ displayTotals.items }})</h2>
         </div>
 
         <div class="divide-y divide-gray-200">
-          <div v-for="item in items" :key="item.id" class="px-6 py-4">
+          <div v-for="item in displayItems" :key="item.id" class="px-6 py-4">
             <div class="flex items-center justify-between">
               <div class="flex items-center space-x-4">
                 <div class="flex-shrink-0">
-                  <div class="w-16 h-16 bg-gray-200 rounded-md"></div>
+                  <img 
+                    v-if="item.image" 
+                    :src="item.image" 
+                    :alt="item.product?.name || item.name"
+                    class="w-16 h-16 object-cover rounded-md"
+                  />
+                  <div v-else class="w-16 h-16 bg-gray-200 rounded-md"></div>
                 </div>
                 <div>
-                  <h3 class="text-sm font-medium text-gray-900">{{ item.product?.name || 'Product Name' }}</h3>
+                  <h3 class="text-sm font-medium text-gray-900">{{ item.product?.name || item.name }}</h3>
+                  <p v-if="item.size || item.color" class="text-sm text-gray-500">
+                    {{ item.size }} {{ item.color ? '• ' + item.color : '' }}
+                  </p>
                   <p class="text-sm text-gray-500">Quantity: {{ item.quantity }}</p>
-                  <p class="text-sm text-gray-900">${{ item.formatted_unit_price }}</p>
+                  <p class="text-sm text-gray-900">{{ item.formatted_unit_price || `$${item.price.toFixed(2)}` }}</p>
                 </div>
               </div>
               <div class="flex items-center space-x-4">
                 <div class="text-right">
-                  <p class="text-sm font-medium text-gray-900">${{ item.formatted_subtotal }}</p>
+                  <p class="text-sm font-medium text-gray-900">{{ item.formatted_subtotal || `$${(item.price * item.quantity).toFixed(2)}` }}</p>
                 </div>
                 <button class="text-red-600 hover:text-red-800 text-sm">
                   Remove
@@ -43,11 +52,11 @@
         <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
           <div class="flex justify-between items-center">
             <div>
-              <p class="text-lg font-medium text-gray-900">Total: ${{ totals.formatted_amount }}</p>
-              <p class="text-sm text-gray-500">{{ totals.items }} items</p>
+              <p class="text-lg font-medium text-gray-900">Total: {{ displayTotals.formatted_amount || `$${displayTotals.amount.toFixed(2)}` }}</p>
+              <p class="text-sm text-gray-500">{{ displayTotals.items }} items</p>
             </div>
             <div class="space-x-4">
-              <button class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+              <button v-if="user" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
                 Update Prices
               </button>
               <button class="px-6 py-2 bg-blue-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700">
@@ -92,21 +101,120 @@
   </div>
 </template>
 
-<script>
-import { Head } from '@inertiajs/vue3'
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+import { Head, usePage } from '@inertiajs/vue3'
 
-export default {
-  name: 'CartIndex',
-  components: {
-    Head
-  },
-  props: {
-    cart: Object,
-    items: Array,
-    priceChanges: Array,
-    totals: Object,
-    canCheckout: Boolean
-  },
-  layout: 'public' // or whatever layout you're using
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+interface CartItem {
+  id: number | string
+  product_id: number
+  name: string
+  price: number
+  quantity: number
+  image?: string
+  size?: string | null
+  color?: string | null
+  product?: {
+    name: string
+  }
+  formatted_unit_price?: string
+  formatted_subtotal?: string
+}
+
+const page = usePage()
+const user = computed<User | null>(() => page.props.auth?.user as User | null)
+
+const props = defineProps<{
+  cart?: Object
+  items?: CartItem[]
+  priceChanges?: Array<any>
+  totals?: {
+    items: number
+    amount: number
+    formatted_amount?: string
+  }
+  canCheckout?: Boolean
+}>()
+
+// For guest users, also check localStorage
+const guestCartItems = ref<CartItem[]>([])
+const displayItems = computed(() => {
+  // If user is logged in, use backend items
+  if (user.value && props.items) {
+    return props.items
+  }
+  // For guest users, use localStorage items
+  return guestCartItems.value.length > 0 ? guestCartItems.value : (props.items || [])
+})
+
+const displayTotals = computed(() => {
+  if (user.value && props.totals) {
+    return props.totals
+  }
+  // Calculate totals from guest cart
+  const items = guestCartItems.value
+  const itemCount = items.reduce((total, item) => total + item.quantity, 0)
+  const amount = items.reduce((total, item) => total + (item.price * item.quantity), 0)
+  return {
+    items: itemCount,
+    amount: amount,
+    formatted_amount: `$${amount.toFixed(2)}`
+  }
+})
+
+const hasItems = computed(() => {
+  if (user.value) {
+    return props.cart && (props.cart as any).total_items > 0
+  }
+  return guestCartItems.value.length > 0
+})
+
+onMounted(() => {
+  // Load guest cart from localStorage if user is not logged in
+  if (!user.value) {
+    try {
+      const guestCart = JSON.parse(localStorage.getItem('guestCart') || '[]') as CartItem[]
+      // Ensure all items have required fields and format them
+      guestCartItems.value = guestCart.map((item, index) => ({
+        ...item,
+        id: item.id || `guest-${Date.now()}-${index}`,
+        formatted_unit_price: `$${item.price.toFixed(2)}`,
+        formatted_subtotal: `$${(item.price * item.quantity).toFixed(2)}`,
+        product: {
+          name: item.name
+        }
+      }))
+    } catch (error) {
+      console.error('Error loading guest cart:', error)
+    }
+  }
+  
+  // Listen for cart updates
+  window.addEventListener('cartUpdated', handleCartUpdate)
+})
+
+const handleCartUpdate = () => {
+  if (!user.value) {
+    try {
+      const guestCart = JSON.parse(localStorage.getItem('guestCart') || '[]') as CartItem[]
+      guestCartItems.value = guestCart.map((item, index) => ({
+        ...item,
+        id: item.id || `guest-${Date.now()}-${index}`,
+        formatted_unit_price: `$${item.price.toFixed(2)}`,
+        formatted_subtotal: `$${(item.price * item.quantity).toFixed(2)}`,
+        product: {
+          name: item.name
+        }
+      }))
+    } catch (error) {
+      console.error('Error updating guest cart:', error)
+    }
+  }
 }
 </script>

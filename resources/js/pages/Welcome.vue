@@ -126,11 +126,11 @@
                     <div class="relative mb-20">
                         <swiper v-bind="swiperProductOptions" class="mySwiper">
                             <swiper-slide
-                                v-for="(product, index) in featuredProducts"
+                                v-for="product in featuredProducts"
                                 :key="product.id"
                             >
                                 <div
-                                    class="group relative h-full w-full cursor-pointer overflow-hidden rounded-3xl shadow-xl"
+                                    class="group relative h-[500px] w-full cursor-pointer overflow-hidden rounded-3xl shadow-xl"
                                     @click="goToProductDetails(product.slug)"
                                 >
                                     <div
@@ -147,23 +147,13 @@
                                         <div
                                             class="absolute right-5 bottom-5 left-5 text-white"
                                         >
-                                            <div
-                                                class="mb-3 text-xs font-light tracking-widest text-[#AE8625] uppercase opacity-90"
-                                                v-if="index === 0"
-                                            >
-                                                Featured
-                                            </div>
                                             <h3
                                                 class="mb-3 font-serif text-lg font-light"
-                                                :class="{
-                                                    'text-3xl': index === 0,
-                                                }"
                                             >
                                                 {{ product.name }}
                                             </h3>
                                             <p
                                                 class="mb-6 text-sm leading-relaxed font-light opacity-90"
-                                                v-if="index === 0"
                                             >
                                                 {{
                                                     product.description
@@ -176,17 +166,10 @@
                                             </p>
                                             <div
                                                 class="inline-flex items-center gap-1 rounded-full border border-white/20 bg-white/20 px-4 py-2 text-xs font-medium text-white backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:bg-white/30"
-                                                :class="{
-                                                    'gap-2 bg-[#AE8625] px-8 py-3 text-sm hover:bg-[#9A7520]':
-                                                        index === 0,
-                                                }"
                                             >
                                                 View Details
                                                 <ArrowRight
                                                     class="h-3 w-3"
-                                                    :class="{
-                                                        'h-4 w-4': index === 0,
-                                                    }"
                                                 />
                                             </div>
                                         </div>
@@ -197,7 +180,7 @@
                             <!-- Fallback: Show placeholder if no products -->
                             <swiper-slide v-if="featuredProducts.length === 0">
                                 <div
-                                    class="flex h-full items-center justify-center rounded-3xl border border-gray-200 bg-gradient-to-br from-gray-100 to-gray-50 p-6"
+                                    class="flex h-[500px] items-center justify-center rounded-3xl border border-gray-200 bg-gradient-to-br from-gray-100 to-gray-50 p-6"
                                 >
                                     <p class="font-light text-gray-400">
                                         No commonly purchased products available

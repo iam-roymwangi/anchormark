@@ -2,8 +2,8 @@
   <div>
      <!-- Cart Button Trigger  -->
     <button
-      @click="isOpen = true"
-      class="relative p-2 hover:text-[#AE8625] transition-colors"
+      @click="openCart"
+      class="relative p-2 text-black hover:text-[#AE8625] transition-colors"
     >
       <ShoppingCart :size="24" />
       <span
@@ -45,6 +45,14 @@
 
          <!-- Cart Items  -->
         <div class="flex-1 overflow-y-auto px-6 py-6">
+           <!-- Debug Info (remove in production) -->
+          <div v-if="false" class="mb-4 p-2 bg-gray-100 text-xs">
+            <p>User: {{ user ? 'Logged in' : 'Guest' }}</p>
+            <p>Items count: {{ cartData.items.length }}</p>
+            <p>Totals: {{ JSON.stringify(cartData.totals) }}</p>
+            <p>Items: {{ JSON.stringify(cartData.items) }}</p>
+          </div>
+          
            <!-- Empty State  -->
           <div
             v-if="cartData.items.length === 0"
@@ -100,7 +108,7 @@
                       <div class="flex items-center gap-2">
                         <button
                           @click="decreaseQuantity(item.id)"
-                          class="w-8 h-8 border-2 border-[#E0E0E0] rounded-lg hover:border-[#AE8625] transition-colors flex items-center justify-center"
+                          class="w-8 h-8 border-2 border-[#E0E0E0] text-black rounded-lg hover:border-[#AE8625] transition-colors flex items-center justify-center"
                         >
                           <Minus :size="14" />
                         </button>
@@ -109,7 +117,7 @@
                         </span>
                         <button
                           @click="increaseQuantity(item.id)"
-                          class="w-8 h-8 border-2 border-[#E0E0E0] rounded-lg hover:border-[#AE8625] transition-colors flex items-center justify-center"
+                          class="w-8 h-8 border-2 border-[#E0E0E0] text-black rounded-lg hover:border-[#AE8625] transition-colors flex items-center justify-center"
                         >
                           <Plus :size="14" />
                         </button>
@@ -185,7 +193,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue' // Added watch
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { ShoppingCart, X, Minus, Plus, Trash2, Shield, Truck } from 'lucide-vue-next'
 import { usePage } from '@inertiajs/vue3' // Removed router import
 import axios from 'axios' // Import axios
@@ -199,7 +207,7 @@ interface User {
 }
 
 interface CartItem {
-  id: number
+  id: number | string
   product_id: number // Added product_id for backend interaction
   name: string
   price: number
@@ -223,22 +231,87 @@ const fetchCart = async () => {
     // Fetch from backend for logged-in users
     try {
       const response = await axios.get('/cart-data')
-      cartData.value.items = response.data.cart?.items || []
+      console.log('Cart API response:', response.data)
+      const items = response.data.cart?.items || []
+      // Transform backend items to match CartItem interface
+      cartData.value.items = items.map((item: any) => ({
+        id: item.id,
+        product_id: item.product_id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        image: item.image || '/placeholder.svg',
+        size: item.size || null,
+        color: item.color || null
+      }))
       cartData.value.totals = response.data.cart?.totals || { items: 0, amount: 0 }
+      console.log('Cart fetched (logged in):', cartData.value)
     } catch (error) {
       console.error('Error fetching cart data (logged in):', error)
+      cartData.value.items = []
+      cartData.value.totals = { items: 0, amount: 0 }
     }
   } else {
     // Fetch from local storage for guest users
-    const guestCart = JSON.parse(localStorage.getItem('guestCart') || '[]') as CartItem[]
-    cartData.value.items = guestCart
-    cartData.value.totals.items = guestCart.reduce((total: number, item: CartItem) => total + item.quantity, 0)
-    cartData.value.totals.amount = guestCart.reduce((total: number, item: CartItem) => total + item.price * item.quantity, 0)
+    try {
+      const guestCartStr = localStorage.getItem('guestCart')
+      console.log('Raw guest cart from localStorage:', guestCartStr)
+      const guestCart = guestCartStr ? JSON.parse(guestCartStr) as CartItem[] : []
+      console.log('Parsed guest cart:', guestCart)
+      
+      if (!Array.isArray(guestCart)) {
+        console.error('Guest cart is not an array:', guestCart)
+        cartData.value.items = []
+        cartData.value.totals = { items: 0, amount: 0 }
+        return
+      }
+      
+      // Ensure all items have IDs (for backward compatibility)
+      const cartWithIds: CartItem[] = guestCart.map((item, index) => ({
+        ...item,
+        id: item.id || `guest-${Date.now()}-${index}`
+      }))
+      cartData.value.items = cartWithIds
+      cartData.value.totals.items = cartWithIds.reduce((total: number, item: CartItem) => total + item.quantity, 0)
+      cartData.value.totals.amount = cartWithIds.reduce((total: number, item: CartItem) => total + item.price * item.quantity, 0)
+      console.log('Cart fetched (guest):', cartData.value)
+    } catch (error) {
+      console.error('Error parsing guest cart:', error)
+      cartData.value.items = []
+      cartData.value.totals = { items: 0, amount: 0 }
+    }
   }
+}
+
+const handleCartUpdate = () => {
+  // Refresh cart data when cart is updated
+  console.log('Cart update event received, refreshing cart...')
+  fetchCart()
+}
+
+const openCart = () => {
+  // Refresh cart when opening
+  fetchCart()
+  isOpen.value = true
 }
 
 onMounted(() => {
   fetchCart()
+  
+  // Listen for cart updates from other components
+  window.addEventListener('cartUpdated', handleCartUpdate)
+  
+  // Also listen for storage changes (for guest cart updates from other tabs)
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'guestCart' && !user.value) {
+      handleCartUpdate()
+    }
+  })
+})
+
+onUnmounted(() => {
+  window.removeEventListener('cartUpdated', handleCartUpdate)
+  window.removeEventListener('storage', handleCartUpdate)
 })
 
 const cartItemCount = computed(() => {
@@ -266,7 +339,7 @@ const total = computed(() => {
   return subtotal.value + shipping.value + tax.value
 })
 
-const increaseQuantity = async (itemId: number) => {
+const increaseQuantity = async (itemId: number | string) => {
   const item = cartData.value.items.find(i => i.id === itemId)
   if (item) {
     const newQuantity = item.quantity + 1
@@ -289,7 +362,7 @@ const increaseQuantity = async (itemId: number) => {
   }
 }
 
-const decreaseQuantity = async (itemId: number) => {
+const decreaseQuantity = async (itemId: number | string) => {
   const item = cartData.value.items.find(i => i.id === itemId)
   if (item && item.quantity > 1) {
     const newQuantity = item.quantity - 1
@@ -312,7 +385,7 @@ const decreaseQuantity = async (itemId: number) => {
   }
 }
 
-const removeItem = async (itemId: number) => {
+const removeItem = async (itemId: number | string) => {
   if (user.value) {
     try {
       await axios.delete(`/cart/remove/${itemId}`)

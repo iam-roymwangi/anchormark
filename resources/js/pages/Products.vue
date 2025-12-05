@@ -139,11 +139,11 @@
                     </div>
                     <!-- Add to Cart Button -->
                     <button
-                      @click="addToCart?.(product)"
+                      @click="viewProductDetails(product.slug)"
                       class="flex w-full transform items-center justify-center gap-2 rounded-lg bg-[#AE8625] py-2.5 text-sm font-medium text-white transition-all hover:scale-[1.02] hover:bg-[#267347] active:scale-[0.98] sm:py-3 sm:text-base"
                     >
                       <ShoppingCart :size="16" class="sm:w-[18px] sm:h-[18px]" />
-                      Add to Cart
+                      View Product
                     </button>
                   </div>
                 </div>
@@ -234,7 +234,6 @@ import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { ShoppingCart, Eye, Heart, Bed, UtensilsCrossed, Armchair, ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import ProductSidebar from '@/components/core/ProductSidebar.vue'
 import PublicLayout from '../layouts/PublicLayout.vue'
-import { inject } from 'vue'
 import { router } from '@inertiajs/vue3'
 
 interface ProductImage {
@@ -401,7 +400,7 @@ watch(searchQuery, () => {
   }, 500)
 })
 
-const addToCart = inject<(product: Product) => void>('addToCart')
+// const addToCart = inject<(product: Product) => void>('addToCart')
 
 const checkMobile = () => {
   isMobile.value = window.innerWidth < 1024

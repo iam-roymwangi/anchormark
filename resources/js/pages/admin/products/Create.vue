@@ -558,55 +558,52 @@ const handleSubmit = async () => {
         }
       })
 
-    // Use FormData for file uploads
-    const formData = new FormData()
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
-    if (csrfToken) {
-      formData.append('_token', csrfToken)
+    // Prepare form data - Inertia handles CSRF tokens automatically
+    const formData: any = {
+      name: form.name,
+      slug: form.slug,
+      category_id: form.category_id,
+      description: form.description,
+      price: form.price ?? '',
+      stock_quantity: form.stock_quantity,
+      re_order_level: form.re_order_level,
+      shelf_life: form.shelf_life,
+      sku: form.sku,
+      status: form.status,
+      specs_json: JSON.stringify(specsJson),
+      attributes: JSON.stringify(productAttributes),
     }
-    formData.append('name', form.name)
-    formData.append('slug', form.slug)
-    formData.append('category_id', form.category_id)
-    formData.append('description', form.description)
-    formData.append('price', String(form.price ?? ''))
-    formData.append('stock_quantity', String(form.stock_quantity))
-    formData.append('re_order_level', String(form.re_order_level))
-    formData.append('shelf_life', String(form.shelf_life))
-    formData.append('sku', form.sku)
-    formData.append('status', form.status)
-    formData.append('specs_json', JSON.stringify(specsJson))
-    form.images.forEach((file, idx) => {
-      formData.append(`images[${idx}]`, file)
-    })
-    formData.append('attributes', JSON.stringify(productAttributes))
 
-    // Actual API call
-    const response = await fetch('/admin/products', {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'Accept': 'application/json',
+    // Add images - Inertia will handle file uploads automatically
+    if (form.images.length > 0) {
+      formData.images = form.images
+    }
+
+    // Use Inertia router.post() which handles CSRF tokens automatically
+    router.post('/admin/products', formData, {
+      forceFormData: true, // Required for file uploads
+      onSuccess: () => {
+        alert('Product added successfully!')
+        router.visit('/admin/products') // Redirect to product index page
       },
-    })
-
-    if (!response.ok) {
-      const errorData = await response.json()
-      let errorMessage = 'Failed to add product.'
-      if (errorData && errorData.errors) {
-        errorMessage += '\n' + Object.values(errorData.errors).flat().join('\n')
-      } else if (errorData && errorData.message) {
-        errorMessage += '\n' + errorData.message
+      onError: (errors) => {
+        let errorMessage = 'Failed to add product.'
+        if (errors) {
+          const errorMessages = Object.values(errors).flat()
+          if (errorMessages.length > 0) {
+            errorMessage += '\n' + errorMessages.join('\n')
+          }
+        }
+        alert(errorMessage)
+      },
+      onFinish: () => {
+        isSubmitting.value = false
       }
-      throw new Error(errorMessage)
-    }
-
-    alert('Product added successfully!')
-    router.visit('/admin/products') // Redirect to product index page
+    })
 
   } catch (error: any) {
     console.error('Error submitting product:', error)
     alert(error.message || 'Failed to add product. Please try again.')
-  } finally {
     isSubmitting.value = false
   }
 }

@@ -146,10 +146,34 @@ class HomeController extends Controller
                     'verified' => true,
                 ],
             ],
+            'category' => [
+                'id' => $product->category->id,
+                'name' => $product->category->name,
+                'slug' => $product->category->slug,
+            ],
         ];
+
+        // Fetch similar products (same category, excluding current product)
+        $similarProducts = Product::with(['category', 'images'])
+            ->where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->where('status', 'active')
+            ->limit(4)
+            ->get()
+            ->map(function ($similarProduct) {
+                return [
+                    'id' => $similarProduct->id,
+                    'name' => $similarProduct->name,
+                    'slug' => $similarProduct->slug,
+                    'price' => (float) $similarProduct->price,
+                    'rating' => 4.5, // You can add actual rating logic later
+                    'image' => $similarProduct->images->first()?->image_url ?? '/placeholder.svg',
+                ];
+            });
 
         return Inertia::render('ProductDetails', [
             'product' => $transformedProduct,
+            'similarProducts' => $similarProducts,
         ]);
     }
 

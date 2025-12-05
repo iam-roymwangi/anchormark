@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Shopper\WhishlistController;
 
@@ -18,6 +19,10 @@ Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 
 Route::get('/product-details', [HomeController::class, 'showProductDetails'])->name('product-details');
+
+// Quote routes
+Route::post('/quotes/request', [QuoteController::class, 'store'])->name('quotes.request');
+Route::get('/quotes/{id}/invoice', [QuoteController::class, 'invoice'])->name('quotes.invoice');
 
 // Cart routes (public - guest and authenticated users)
 Route::middleware(['cart.session'])->group(function () {
