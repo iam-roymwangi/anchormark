@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\CartProduct;
 use App\Models\Product;
+use App\Models\Order; // Import Order Model
+use App\Models\OrderItem; // Import OrderItem Model
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str; // Import Str for order number generation
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -229,6 +233,104 @@ class CartController extends Controller
         if (!empty($priceChanges)) {
             return redirect()->route('cart.index')
                 ->with('warning', 'Some items have price changes. Please review your cart before checkout.');
+        }
+
+        // Validate checkout form data (for guest users or if additional details are needed)
+        $rules = [
+            // Default rules for all checkouts
+            'payment_method' => 'required|string|in:mpesa,cash',
+        ];
+
+        $shopperId = null;
+        $deliveryAddress = null;
+        $deliveryCity = null;
+        $deliveryCountry = null; // Assuming a default country for now
+        $deliveryPhone = null;
+        $customerEmail = null;
+
+        if (Auth::check() && Auth::user()->isShopper()) {
+            $shopper = Auth::user()->shopper;
+            $shopperId = $shopper->id;
+            $deliveryAddress = $shopper->address; // Assuming shopper has an address field
+            $deliveryCity = $shopper->city; // Assuming shopper has a city field
+            $deliveryCountry = $shopper->country ?? 'Kenya'; // Default country
+            $deliveryPhone = $shopper->phone_number;
+            $customerEmail = Auth::user()->email;
+        } else {
+            // Guest checkout validation rules
+            $rules = array_merge($rules, [
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'phone_number' => 'required|string|max:20',
+                'address' => 'required|string|max:255',
+                'city' => 'nullable|string|max:255',
+                'county' => 'nullable|string|max:255',
+                'town' => 'nullable|string|max:255',
+                'landmark' => 'nullable|string|max:255',
+            ]);
+        }
+
+        $validatedData = $request->validate($rules);
+
+        if (!Auth::check() || !Auth::user()->isShopper()) {
+            // For guest users, extract details from validated data
+            $customerEmail = $validatedData['email'];
+            // Combine address components for guest
+            $deliveryAddress = implode(', ', array_filter([
+                $validatedData['address'] ?? null,
+                $validatedData['town'] ?? null,
+                $validatedData['county'] ?? null,
+                $validatedData['city'] ?? null,
+                $validatedData['landmark'] ?? null,
+            ]));
+            $deliveryCity = $validatedData['city'] ?? null;
+            $deliveryCountry = 'Kenya'; // Default for guests for now
+            $deliveryPhone = $validatedData['phone_number'];
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $order = new Order();
+            $order->shopper_id = $shopperId; // Will be null for guests
+            $order->order_number = 'ORD-' . Str::upper(Str::random(10));
+            $order->total_amount = $cart->total_amount;
+            $order->order_status = 'pending'; // Initial status
+            $order->payment_status = ($validatedData['payment_method'] === 'cash') ? 'unpaid' : 'pending'; // Set based on payment method
+            $order->delivery_address = $deliveryAddress;
+            $order->delivery_city = $deliveryCity;
+            $order->delivery_country = $deliveryCountry;
+            $order->delivery_phone = $deliveryPhone;
+            $order->save();
+
+            foreach ($cart->cartProducts as $cartProduct) {
+                $orderItem = new OrderItem();
+                $orderItem->order_id = $order->id;
+                $orderItem->product_id = $cartProduct->product_id;
+                $orderItem->quantity = $cartProduct->quantity;
+                $orderItem->price = $cartProduct->unit_price;
+                $orderItem->subtotal = $cartProduct->subtotal;
+                $orderItem->save();
+
+                // Optionally, decrement product stock here
+                $product = $cartProduct->product;
+                $product->stock_quantity -= $cartProduct->quantity;
+                $product->save();
+            }
+
+            // Clear the cart after placing the order
+            $cart->clear();
+
+            DB::commit();
+
+            return redirect()->route('order.confirmation', $order->id) // Redirect to order confirmation page
+                ->with('success', 'Your order has been placed successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Order placement failed: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Failed to place your order. Please try again.');
         }
 
         // Store cart ID in session for checkout process

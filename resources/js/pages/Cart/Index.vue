@@ -59,7 +59,13 @@
               <button v-if="user" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
                 Update Prices
               </button>
-              <button class="px-6 py-2 bg-blue-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700">
+              <button 
+                ref="checkoutButton"
+                @click="proceedToQuote"
+                type="button"
+                class="px-6 py-2 bg-blue-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                :disabled="!hasItems"
+              >
                 Proceed to Checkout
               </button>
             </div>
@@ -102,8 +108,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { Head, usePage } from '@inertiajs/vue3'
+import { ref, computed, onMounted, nextTick } from 'vue'
+import { usePage, router } from '@inertiajs/vue3'
 
 interface User {
   id: number;
@@ -131,7 +137,7 @@ const page = usePage()
 const user = computed<User | null>(() => page.props.auth?.user as User | null)
 
 const props = defineProps<{
-  cart?: Object
+  cart?: object
   items?: CartItem[]
   priceChanges?: Array<any>
   totals?: {
@@ -139,11 +145,13 @@ const props = defineProps<{
     amount: number
     formatted_amount?: string
   }
-  canCheckout?: Boolean
+  canCheckout?: boolean
 }>()
 
 // For guest users, also check localStorage
 const guestCartItems = ref<CartItem[]>([])
+const checkoutButton = ref<HTMLButtonElement | null>(null)
+
 const displayItems = computed(() => {
   // If user is logged in, use backend items
   if (user.value && props.items) {
@@ -176,6 +184,12 @@ const hasItems = computed(() => {
 })
 
 onMounted(() => {
+  console.log('Cart component mounted!', {
+    hasItems: hasItems.value,
+    user: user.value,
+    displayItemsCount: displayItems.value.length
+  })
+  
   // Load guest cart from localStorage if user is not logged in
   if (!user.value) {
     try {
@@ -197,6 +211,21 @@ onMounted(() => {
   
   // Listen for cart updates
   window.addEventListener('cartUpdated', handleCartUpdate)
+  
+  // Add direct event listener as fallback (wait for DOM to be ready)
+  nextTick(() => {
+    if (checkoutButton.value) {
+      console.log('Adding direct event listener to checkout button')
+      checkoutButton.value.addEventListener('click', (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        console.log('Direct event listener triggered!')
+        proceedToQuote()
+      })
+    } else {
+      console.warn('Checkout button ref is null')
+    }
+  })
 })
 
 const handleCartUpdate = () => {
@@ -215,6 +244,49 @@ const handleCartUpdate = () => {
     } catch (error) {
       console.error('Error updating guest cart:', error)
     }
+  }
+}
+
+const proceedToQuote = () => {
+  console.log('=== proceedToQuote function called ===', { 
+    hasItems: hasItems.value,
+    router: typeof router,
+    displayItems: displayItems.value.length,
+    routerType: router?.constructor?.name
+  })
+  
+  // Navigate to quote page
+  if (!hasItems.value) {
+    console.warn('Cannot proceed to checkout: cart is empty')
+    alert('Your cart is empty. Please add items before proceeding to checkout.')
+    return
+  }
+  
+  console.log('Navigating to quote page...')
+  
+  // Use router.get() for GET requests (like other pages do)
+  try {
+    if (router && typeof router.get === 'function') {
+      router.get('/quote', {}, {
+        onStart: () => {
+          console.log('Navigation started')
+        },
+        onFinish: () => {
+          console.log('Navigation finished')
+        },
+        onError: (errors) => {
+          console.error('Error navigating to quote page:', errors)
+          alert('Error navigating to checkout. Please try again.')
+        }
+      })
+    } else {
+      console.warn('Router.get not available, using window.location')
+      window.location.href = '/quote'
+    }
+  } catch (error) {
+    console.error('Exception in proceedToQuote:', error)
+    // Fallback
+    window.location.href = '/quote'
   }
 }
 </script>

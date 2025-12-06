@@ -21,7 +21,9 @@ Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/product-details', [HomeController::class, 'showProductDetails'])->name('product-details');
 
 // Quote routes
+Route::get('/quote', [QuoteController::class, 'index'])->name('quote.index');
 Route::post('/quotes/request', [QuoteController::class, 'store'])->name('quotes.request');
+Route::post('/quotes/request-cart', [QuoteController::class, 'storeCart'])->name('quotes.request-cart');
 Route::get('/quotes/{id}/invoice', [QuoteController::class, 'invoice'])->name('quotes.invoice');
 
 // Cart routes (public - guest and authenticated users)

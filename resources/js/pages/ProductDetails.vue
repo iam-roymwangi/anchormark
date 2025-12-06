@@ -607,7 +607,7 @@
 
             <!-- Step 2: Review Details -->
             <div v-if="quoteStep === 2" class="space-y-6">
-              <h3 class="text-xl font-serif text-[#333333] mb-4">Review Your Quote Request</h3>
+              <h3 class="text-xl font-serif text-[#333333] mb-4">Review Your Order</h3>
 
               <!-- Product Details Section -->
               <div class="bg-[#F5F5F0] rounded-lg p-6">
@@ -712,7 +712,7 @@
                 </div>
                 <h3 class="text-2xl font-serif text-[#333333] mb-2">Ready to Submit?</h3>
                 <p class="text-[#666666] mb-6">
-                  Your quote request will be sent to our team. We'll contact you shortly with a detailed quote.
+                  Your order has been sent to our team. We'll contact you shortly with a detailed quote.
                 </p>
                 <div class="bg-[#F5F5F0] rounded-lg p-4 mb-6 text-left">
                   <p class="text-sm text-[#666666] mb-2">
@@ -732,7 +732,7 @@
                 <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Check :size="40" class="text-green-600" />
                 </div>
-                <h3 class="text-2xl font-serif text-[#333333] mb-2">Quote Request Submitted!</h3>
+                <h3 class="text-2xl font-serif text-[#333333] mb-2">Your order has been placed!</h3>
                 <p class="text-[#666666] mb-6">
                   Thank you for your request. We've sent a confirmation email to <strong>{{ quoteForm.email }}</strong>
                 </p>
@@ -775,7 +775,7 @@
                 >
                   <Loader2 v-if="isSubmittingQuote" :size="20" class="animate-spin" />
                   <Send v-else :size="20" />
-                  {{ isSubmittingQuote ? 'Submitting...' : 'Submit Quote Request' }}
+                  {{ isSubmittingQuote ? 'Submitting...' : 'Place Order' }}
                 </button>
                 <button
                   v-else
@@ -1218,7 +1218,7 @@ const submitQuote = async () => {
   try {
     await router.post('/quotes/request', quoteData, {
       onSuccess: (page: any) => {
-        console.log('Quote request submitted successfully', page)
+        console.log('Order placed successfully', page)
         
         // Mark as submitted
         quoteSubmitted.value = true
@@ -1233,7 +1233,7 @@ const submitQuote = async () => {
         
         // Show success notification
         showNotification(
-          'Quote request submitted successfully!',
+          'Order Placed successfully!',
           'Confirmation email has been sent to your inbox.',
           'success'
         )
@@ -1243,7 +1243,7 @@ const submitQuote = async () => {
       },
       onError: (errors) => {
         console.error('Error submitting quote request:', errors)
-        const errorMessage = errors?.message || 'There was an error submitting your quote request. Please try again.'
+        const errorMessage = errors?.message || 'There was an error placing your order. Please try again.'
         showNotification('Error submitting quote', errorMessage, 'error')
         isSubmittingQuote.value = false
       },
@@ -1252,7 +1252,7 @@ const submitQuote = async () => {
       }
     })
   } catch (error) {
-    console.error('Network error submitting quote request:', error)
+    console.error('Network error placing order:', error)
     showNotification('Network error', 'Please check your connection and try again.', 'error')
     isSubmittingQuote.value = false
   }
