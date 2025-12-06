@@ -110,8 +110,8 @@
                         <td>{{ $quote->size ?? 'N/A' }}</td>
                         <td>{{ $quote->color ?? 'N/A' }}</td>
                         <td>{{ $quote->quantity }}</td>
-                        <td>${{ number_format($quote->unit_price, 2) }}</td>
-                        <td>${{ number_format($quote->subtotal, 2) }}</td>
+                        <td>Ksh. {{ number_format($quote->unit_price, 2) }}</td>
+                        <td>Ksh. {{ number_format($quote->subtotal, 2) }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -125,7 +125,7 @@
 
         <div class="footer">
             <p>&copy; {{ date('Y') }} Anchormark. All rights reserved.</p>
-            <p>123 Hospitality Lane, Nairobi, Kenya</p>
+            <p>Mombasa Road, Nairobi, Kenya</p>
         </div>
     </div>
 </body>

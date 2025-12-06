@@ -129,7 +129,7 @@
                     </p>
                     <div class="mb-3 flex items-center justify-between sm:mb-4">
                       <span class="text-base font-medium text-[#333333] sm:text-lg">
-                        ${{ product.price.toFixed(2) }}
+                        Ksh. {{ product.price.toFixed(2) }}
                       </span>
                       <span
                         class="bg-opacity-10 rounded-full bg-[#AE8625] px-2.5 py-1 text-xs text-[#AE8625] sm:px-3"

@@ -19,8 +19,8 @@
     <li><strong>Quantity:</strong> {{ $quoteData["quantity"] }}</li>
     <li><strong>Item Description:</strong> {{ $quoteData["itemDescription"] }}</li>
     <li><strong>Expected Delivery Date:</strong> {{ \Carbon\Carbon::parse($quoteData["expectedDeliveryDate"])->format("M d, Y") }}</li>
-    <li><strong>Unit Price:</strong> ${{ number_format($quoteData["price"], 2) }}</li>
-    <li><strong>Subtotal:</strong> ${{ number_format(floatval(str_replace("$", "", $quoteData["subtotal"])), 2) }}</li>
+    <li><strong>Unit Price:</strong> Ksh. {{ number_format($quoteData["price"], 2) }}</li>
+    <li><strong>Subtotal:</strong> Ksh. {{ number_format(floatval(str_replace("$", "", $quoteData["subtotal"])), 2) }}</li>
 </ul>
 
 <p>Please review this request and provide a detailed quote to the customer as soon as possible.</p>

@@ -80,9 +80,9 @@
 
           <!-- Price -->
           <div class="flex items-baseline space-x-3">
-            <span class="text-4xl font-bold text-[#AE8625]">${{ product.price }}</span>
+            <span class="text-4xl font-bold text-[#AE8625]">Ksh. {{ product.price }}</span>
             <span v-if="product.originalPrice" class="text-xl text-gray-400 line-through">
-              ${{ product.originalPrice }}
+              Ksh. {{ product.originalPrice }}
             </span>
           </div>
 
@@ -316,15 +316,15 @@
             <div class="bg-white rounded-lg p-6">
               <h3 class="text-xl font-serif text-[#333333] mb-4">Shipping Information</h3>
               <div class="space-y-4 text-[#666666]">
-                <p>We offer free standard shipping on all orders over $500.</p>
+                <p>We offer free standard shipping on all orders over Ksh. 500.</p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <h4 class="font-medium text-[#333333] mb-2">Standard Shipping</h4>
-                    <p class="text-sm">5-7 business days - Free over $500</p>
+                    <p class="text-sm">5-7 business days - Free over Ksh. 500</p>
                   </div>
                   <div>
                     <h4 class="font-medium text-[#333333] mb-2">Express Shipping</h4>
-                    <p class="text-sm">2-3 business days - $49.99</p>
+                    <p class="text-sm">2-3 business days - Ksh. 1000</p>
                   </div>
                 </div>
               </div>
@@ -356,7 +356,7 @@
                 {{ similar.name }}
               </h3>
               <div class="flex items-center justify-between mb-3">
-                <span class="text-lg font-bold text-[#AE8625]">${{ similar.price }}</span>
+                <span class="text-lg font-bold text-[#AE8625]">Ksh. {{ similar.price }}</span>
                 <div class="flex">
                   <Star 
                     v-for="i in 5" 
@@ -625,7 +625,7 @@
                     <div>
                       <h5 class="font-medium text-[#333333]">{{ product.name }}</h5>
                       <p class="text-sm text-[#666666]">SKU: {{ product.sku }}</p>
-                      <p class="text-lg font-bold text-[#AE8625] mt-2">${{ product.price }}</p>
+                      <p class="text-lg font-bold text-[#AE8625] mt-2">Ksh. {{ product.price }}</p>
                     </div>
                   </div>
                   <div class="space-y-2 text-sm">
@@ -643,7 +643,7 @@
                     </div>
                     <div class="flex justify-between pt-2 border-t border-gray-300">
                       <span class="text-[#666666]">Subtotal:</span>
-                      <span class="font-bold text-[#333333]">${{ (product.price * quantity).toFixed(2) }}</span>
+                      <span class="font-bold text-[#333333]">Ksh. {{ (product.price * quantity).toFixed(2) }}</span>
                     </div>
                   </div>
                 </div>

@@ -17,7 +17,7 @@
             <h2 class="text-xl font-semibold text-gray-900 mb-4">Order Summary</h2>
             <p class="text-gray-700 mb-2"><strong>Order Number:</strong> {{ order.order_number }}</p>
             <p class="text-gray-700 mb-2"><strong>Order Date:</strong> {{ formatDate(order.created_at) }}</p>
-            <p class="text-gray-700 mb-2"><strong>Total Amount:</strong> ${{ order.total_amount }}</p>
+            <p class="text-gray-700 mb-2"><strong>Total Amount:</strong> Ksh. {{ order.total_amount }}</p>
             <p class="text-gray-700 mb-2"><strong>Payment Status:</strong> <span class="capitalize">{{ order.payment_status }}</span></p>
             <p class="text-gray-700 mb-2"><strong>Order Status:</strong> <span class="capitalize">{{ order.order_status }}</span></p>
           </div>
@@ -37,9 +37,9 @@
             <div v-for="item in order.items" :key="item.id" class="flex items-center justify-between bg-gray-50 p-4 rounded-lg">
               <div>
                 <p class="font-medium text-gray-900">{{ item.product?.name || 'Product Name' }}</p>
-                <p class="text-sm text-gray-600">Qty: {{ item.quantity }} x ${{ item.price }}</p>
+                <p class="text-sm text-gray-600">Qty: {{ item.quantity }} x Ksh. {{ item.price }}</p>
               </div>
-              <p class="font-semibold text-gray-900">${{ item.subtotal.toFixed(2) }}</p>
+              <p class="font-semibold text-gray-900">Ksh. {{ item.subtotal.toFixed(2) }}</p>
             </div>
           </div>
         </div>

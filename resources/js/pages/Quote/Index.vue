@@ -100,7 +100,7 @@
                     </p>
                     <p class="text-sm text-[#666666]">Quantity: {{ item.quantity }}</p>
                     <p class="text-sm font-medium text-[#AE8625]">
-                      {{ item.formatted_subtotal || `$${(item.price * item.quantity).toFixed(2)}` }}
+                      {{ item.formatted_subtotal || `Ksh. ${(item.price * item.quantity).toFixed(2)}` }}
                     </p>
                   </div>
                 </div>
@@ -270,13 +270,13 @@
                         <div class="flex justify-between">
                           <span class="text-[#666666]">Unit Price:</span>
                           <span class="font-medium text-[#333333]">
-                            {{ item.formatted_unit_price || `$${item.price.toFixed(2)}` }}
+                            {{ item.formatted_unit_price || `Ksh. ${item.price.toFixed(2)}` }}
                           </span>
                         </div>
                         <div class="flex justify-between pt-2 border-t border-gray-300">
                           <span class="text-[#666666]">Subtotal:</span>
                           <span class="font-bold text-[#333333]">
-                            {{ item.formatted_subtotal || `$${(item.price * item.quantity).toFixed(2)}` }}
+                            {{ item.formatted_subtotal || `Ksh. ${(item.price * item.quantity).toFixed(2)}` }}
                           </span>
                         </div>
                       </div>
@@ -555,8 +555,8 @@ onMounted(() => {
       cartItems.value = guestCart.map((item, index) => ({
         ...item,
         id: item.id || `guest-${Date.now()}-${index}`,
-        formatted_unit_price: `$${item.price.toFixed(2)}`,
-        formatted_subtotal: `$${(item.price * item.quantity).toFixed(2)}`,
+        formatted_unit_price: `Ksh. ${item.price.toFixed(2)}`,
+        formatted_subtotal: `Ksh. ${(item.price * item.quantity).toFixed(2)}`,
         product: {
           name: item.name
         }

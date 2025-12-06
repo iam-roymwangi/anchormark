@@ -101,7 +101,7 @@
                     </p>
                     <div class="flex items-center justify-between">
                       <span class="text-lg font-bold text-[#AE8625]">
-                        ${{ item.price }}
+                        Ksh. {{ item.price }}
                       </span>
 
                        <!-- Quantity Controls  -->
@@ -144,19 +144,19 @@
           <div class="space-y-3 mb-6">
             <div class="flex justify-between text-[#666666]">
               <span>Subtotal</span>
-              <span>${{ cartData.totals.amount.toFixed(2) }}</span>
+              <span>Ksh. {{ cartData.totals.amount.toFixed(2) }}</span>
             </div>
             <div class="flex justify-between text-[#666666]">
               <span>Shipping</span>
-              <span>{{ shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}` }}</span>
+              <span>{{ shipping === 0 ? 'Free' : `Ksh. ${shipping.toFixed(2)}` }}</span>
             </div>
             <div class="flex justify-between text-[#666666]">
               <span>Tax</span>
-              <span>${{ tax.toFixed(2) }}</span>
+              <span>Ksh. {{ tax.toFixed(2) }}</span>
             </div>
             <div class="border-t border-[#E0E0E0] pt-3 flex justify-between text-xl font-bold text-[#333333]">
               <span>Total</span>
-              <span class="text-[#AE8625]">${{ total.toFixed(2) }}</span>
+              <span class="text-[#AE8625]">Ksh. {{ total.toFixed(2) }}</span>
             </div>
           </div>
 
