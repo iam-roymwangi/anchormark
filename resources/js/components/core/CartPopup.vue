@@ -163,7 +163,10 @@
            <!-- Action Buttons  -->
           <div class="space-y-3">
             <button
-              class="w-full bg-[#AE8625] text-white py-4 rounded-lg font-semibold hover:bg-[#267347] transition-all transform hover:scale-[1.02] active:scale-[0.98]"
+              @click="proceedToCheckout"
+              type="button"
+              class="w-full bg-[#AE8625] text-white py-4 rounded-lg font-semibold hover:bg-[#267347] transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              :disabled="cartData.items.length === 0"
             >
               Proceed to Checkout
             </button>
@@ -195,7 +198,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { ShoppingCart, X, Minus, Plus, Trash2, Shield, Truck } from 'lucide-vue-next'
-import { usePage } from '@inertiajs/vue3' // Removed router import
+import { usePage, router } from '@inertiajs/vue3'
 import axios from 'axios' // Import axios
 
 const emit = defineEmits(['update:cartItemCount']) // Define emits
@@ -398,6 +401,42 @@ const removeItem = async (itemId: number | string) => {
     const updatedGuestCart = guestCart.filter(item => item.id !== itemId)
     localStorage.setItem('guestCart', JSON.stringify(updatedGuestCart))
     fetchCart()
+  }
+}
+
+const proceedToCheckout = () => {
+  console.log('Proceed to Checkout clicked from CartPopup', {
+    itemsCount: cartData.value.items.length,
+    hasItems: cartData.value.items.length > 0
+  })
+  
+  if (cartData.value.items.length === 0) {
+    console.warn('Cannot proceed to checkout: cart is empty')
+    alert('Your cart is empty. Please add items before proceeding to checkout.')
+    return
+  }
+  
+  // Close the cart popup
+  isOpen.value = false
+  
+  // Navigate to quote page
+  try {
+    router.get('/quote', {}, {
+      onStart: () => {
+        console.log('Navigation to quote page started')
+      },
+      onFinish: () => {
+        console.log('Navigation to quote page finished')
+      },
+      onError: (errors) => {
+        console.error('Error navigating to quote page:', errors)
+        alert('Error navigating to checkout. Please try again.')
+      }
+    })
+  } catch (error) {
+    console.error('Exception in proceedToCheckout:', error)
+    // Fallback to window location if router fails
+    window.location.href = '/quote'
   }
 }
 </script>

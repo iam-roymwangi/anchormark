@@ -670,8 +670,26 @@ const submitQuote = async () => {
       },
       onError: (errors) => {
         console.error('Error submitting quote request:', errors)
-        const errorMessage = errors?.message || 'There was an error placing your order. Please try again.'
-        alert(errorMessage)
+        console.error('Full error object:', JSON.stringify(errors, null, 2))
+        
+        // Get error message from various possible locations
+        let errorMessage = 'There was an error placing your order. Please try again.'
+        
+        if (errors?.message) {
+          errorMessage = errors.message
+        } else if (typeof errors === 'string') {
+          errorMessage = errors
+        } else if (errors && typeof errors === 'object') {
+          // Try to get first error message
+          const firstError = Object.values(errors)[0]
+          if (Array.isArray(firstError) && firstError.length > 0) {
+            errorMessage = firstError[0]
+          } else if (typeof firstError === 'string') {
+            errorMessage = firstError
+          }
+        }
+        
+        alert('Error: ' + errorMessage)
         isSubmittingQuote.value = false
       },
       onFinish: () => {

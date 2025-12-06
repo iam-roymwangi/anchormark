@@ -232,27 +232,45 @@ class QuoteController extends Controller
                 'quote_reference' => $quoteReference,
             ]);
 
-            // Send email to customer
-            Mail::to($validated['email'])->send(
-                new \App\Mail\QuoteConfirmation($quoteId, $quoteReference, $emailData)
-            );
+            // Send email to customer (wrap in try-catch to not fail quote submission)
+            try {
+                Mail::to($validated['email'])->send(
+                    new \App\Mail\QuoteConfirmation($quoteId, $quoteReference, $emailData)
+                );
+            } catch (\Exception $mailError) {
+                \Log::warning('Failed to send quote confirmation email: ' . $mailError->getMessage());
+                // Don't fail the quote submission if email fails
+            }
 
-            // Send email to company
-            $companyEmail = config('mail.company_email', config('mail.from.address'));
-            Mail::to($companyEmail)->send(
-                new \App\Mail\QuoteNotification($quoteId, $quoteReference, $emailData)
-            );
+            // Send email to company (wrap in try-catch to not fail quote submission)
+            try {
+                $companyEmail = config('mail.company_email', config('mail.from.address'));
+                Mail::to($companyEmail)->send(
+                    new \App\Mail\QuoteNotification($quoteId, $quoteReference, $emailData)
+                );
+            } catch (\Exception $mailError) {
+                \Log::warning('Failed to send quote notification email: ' . $mailError->getMessage());
+                // Don't fail the quote submission if email fails
+            }
 
             // Get cart for order creation (before clearing)
-            $cart = $this->getCurrentCart($request);
-            $cart->load('cartProducts.product');
-            
-            // Create order from cart items
-            $order = $this->createOrderFromCart($cart, $validated, $quoteId);
-            
-            // Clear cart after successful quote submission and order creation
-            if ($cart && !$cart->isEmpty()) {
-                $cart->clear();
+            try {
+                $cart = $this->getCurrentCart($request);
+                if ($cart) {
+                    $cart->load('cartProducts.product');
+                    
+                    // Create order from cart items
+                    $order = $this->createOrderFromCart($cart, $validated, $quoteId);
+                    
+                    // Clear cart after successful quote submission and order creation
+                    if (!$cart->isEmpty()) {
+                        $cart->clear();
+                    }
+                }
+            } catch (\Exception $cartError) {
+                \Log::warning('Error processing cart during quote submission: ' . $cartError->getMessage());
+                // Don't fail the quote submission if cart processing fails
+                $order = null;
             }
 
             return redirect()->back()->with([
@@ -262,10 +280,23 @@ class QuoteController extends Controller
                 'order_id' => $order->id ?? null,
             ]);
 
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Validation errors
+            \Log::error('Validation error storing cart quote: ' . json_encode($e->errors()));
+            return redirect()->back()->withErrors($e->errors());
         } catch (\Exception $e) {
+            // Log full error details
             \Log::error('Error storing cart quote: ' . $e->getMessage());
+            \Log::error('Error file: ' . $e->getFile() . ':' . $e->getLine());
+            \Log::error('Error trace: ' . $e->getTraceAsString());
+            
+            // Return more detailed error for debugging (remove in production)
+            $errorMessage = config('app.debug') 
+                ? 'Failed to submit quote request: ' . $e->getMessage() . ' (File: ' . basename($e->getFile()) . ':' . $e->getLine() . ')'
+                : 'Failed to submit quote request. Please try again.';
+            
             return redirect()->back()->withErrors([
-                'message' => 'Failed to submit quote request. Please try again.'
+                'message' => $errorMessage
             ]);
         }
     }
