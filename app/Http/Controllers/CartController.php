@@ -13,9 +13,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str; // Import Str for order number generation
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\JsonResponse; // Import JsonResponse
+use App\Mail\OrderConfirmation;
+use App\Mail\OrderNotification;
 
 class CartController extends Controller
 {
@@ -25,14 +29,14 @@ class CartController extends Controller
     public function index(Request $request): Response
     {
         $cart = $this->getCurrentCart($request);
-        
+
         $cart->load([
             'cartProducts.product',
             'cartProducts.product.images'
         ]);
 
         $priceChanges = $cart->checkForPriceChanges();
-        
+
         return Inertia::render('Cart/Index', [
             'cart' => $cart,
             'items' => $cart->cartProducts,
@@ -75,7 +79,7 @@ class CartController extends Controller
             ->where('product_id', $product->id)
             ->first();
 
-        $requestedQuantity = $existingItem ? 
+        $requestedQuantity = $existingItem ?
             $existingItem->quantity + $quantity : $quantity;
 
         if ($requestedQuantity > $product->stock_quantity) {
@@ -85,7 +89,7 @@ class CartController extends Controller
 
         try {
             $cart->addProduct($product, $quantity, $size, $color);
-            
+
             // Update session for guest carts
             if ($cart->is_guest_cart) {
                 Session::put('cart_session_id', $cart->session_id);
@@ -199,8 +203,8 @@ class CartController extends Controller
             $priceChanges = $cart->checkForPriceChanges();
             $cart->updatePricesToCurrent();
 
-            $message = count($priceChanges) > 0 
-                ? 'Prices updated successfully' 
+            $message = count($priceChanges) > 0
+                ? 'Prices updated successfully'
                 : 'All prices are already up to date';
 
             return redirect()->route('cart.index')
@@ -322,13 +326,50 @@ class CartController extends Controller
             // Clear the cart after placing the order
             $cart->clear();
 
+            // Prepare order data for emails
+            $orderData = [
+                'customer_name' => Auth::check() && Auth::user()->isShopper()
+                    ? Auth::user()->name
+                    : ($validatedData['first_name'] . ' ' . $validatedData['last_name']),
+                'customer_email' => $customerEmail,
+                'customer_phone' => $deliveryPhone,
+                'payment_method' => $validatedData['payment_method'],
+                'delivery_address' => $deliveryAddress,
+                'delivery_city' => $deliveryCity,
+                'delivery_country' => $deliveryCountry,
+            ];
+
+            // Load order items for email
+            $order->load('orderItems.product');
+
+            // Send confirmation email to customer
+            try {
+                Mail::to($customerEmail)->send(
+                    new OrderConfirmation($order, $orderData)
+                );
+            } catch (\Exception $mailError) {
+                Log::warning('Failed to send order confirmation email: ' . $mailError->getMessage());
+                // Don't fail the order if email fails
+            }
+
+            // Send notification email to company
+            try {
+                $companyEmail = config('mail.company_email', config('mail.from.address'));
+                Mail::to($companyEmail)->send(
+                    new OrderNotification($order, $orderData)
+                );
+            } catch (\Exception $mailError) {
+                Log::warning('Failed to send order notification email: ' . $mailError->getMessage());
+                // Don't fail the order if email fails
+            }
+
             DB::commit();
 
             return redirect()->route('order.confirmation', $order->id) // Redirect to order confirmation page
                 ->with('success', 'Your order has been placed successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
-            \Log::error('Order placement failed: ' . $e->getMessage());
+            Log::error('Order placement failed: ' . $e->getMessage());
             return redirect()->back()
                 ->with('error', 'Failed to place your order. Please try again.');
         }
@@ -350,7 +391,7 @@ class CartController extends Controller
         }
 
         $guestSessionId = Session::get('cart_session_id');
-        
+
         if (!$guestSessionId) {
             return redirect()->back()
                 ->with('info', 'No guest cart to merge');

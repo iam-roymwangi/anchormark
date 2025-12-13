@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -25,7 +26,7 @@ class QuoteController extends Controller
     public function index(Request $request): Response
     {
         $cart = $this->getCurrentCart($request);
-        
+
         $cart->load([
             'cartProducts.product',
             'cartProducts.product.images'
@@ -84,7 +85,7 @@ class QuoteController extends Controller
         try {
             // Generate unique quote reference
             $quoteReference = 'QT-' . strtoupper(uniqid());
-            
+
             // Store quote in database (you'll need to create a quotes table)
             $quoteId = DB::table('quotes')->insertGetId([
                 'quote_reference' => $quoteReference,
@@ -123,9 +124,8 @@ class QuoteController extends Controller
                 'quote_id' => $quoteId,
                 'invoice_url' => route('quotes.invoice', $quoteId),
             ]);
-
         } catch (\Exception $e) {
-            \Log::error('Error storing quote: ' . $e->getMessage());
+            Log::error('Error storing quote: ' . $e->getMessage());
             return redirect()->back()->withErrors([
                 'message' => 'Failed to submit quote request. Please try again.'
             ]);
@@ -175,10 +175,10 @@ class QuoteController extends Controller
         try {
             // Generate unique quote reference
             $quoteReference = 'QT-' . strtoupper(uniqid());
-            
+
             // Get first product for required product_id field
             $firstItem = $validated['cart_items'][0];
-            
+
             // Store quote in database with cart items
             // Use first product_id (required by table structure) but include all items in description
             $quoteId = DB::table('quotes')->insertGetId([
@@ -258,10 +258,10 @@ class QuoteController extends Controller
                 $cart = $this->getCurrentCart($request);
                 if ($cart) {
                     $cart->load('cartProducts.product');
-                    
+
                     // Create order from cart items
                     $order = $this->createOrderFromCart($cart, $validated, $quoteId);
-                    
+
                     // Clear cart after successful quote submission and order creation
                     if (!$cart->isEmpty()) {
                         $cart->clear();
@@ -279,7 +279,6 @@ class QuoteController extends Controller
                 'invoice_url' => route('quotes.invoice', $quoteId),
                 'order_id' => $order->id ?? null,
             ]);
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Validation errors
             \Log::error('Validation error storing cart quote: ' . json_encode($e->errors()));
@@ -289,12 +288,12 @@ class QuoteController extends Controller
             \Log::error('Error storing cart quote: ' . $e->getMessage());
             \Log::error('Error file: ' . $e->getFile() . ':' . $e->getLine());
             \Log::error('Error trace: ' . $e->getTraceAsString());
-            
+
             // Return more detailed error for debugging (remove in production)
-            $errorMessage = config('app.debug') 
+            $errorMessage = config('app.debug')
                 ? 'Failed to submit quote request: ' . $e->getMessage() . ' (File: ' . basename($e->getFile()) . ':' . $e->getLine() . ')'
                 : 'Failed to submit quote request. Please try again.';
-            
+
             return redirect()->back()->withErrors([
                 'message' => $errorMessage
             ]);
@@ -323,21 +322,21 @@ class QuoteController extends Controller
             if (Auth::check() && Auth::user()->isShopper()) {
                 $shopper = Auth::user()->shopper;
                 $shopperId = $shopper->id;
-                
+
                 // Build address from available shopper fields
                 $addressParts = array_filter([
                     $shopper->closest_landmark,
                     $shopper->town,
                     $shopper->county,
                 ]);
-                $deliveryAddress = !empty($addressParts) 
-                    ? implode(', ', $addressParts) 
+                $deliveryAddress = !empty($addressParts)
+                    ? implode(', ', $addressParts)
                     : 'Address to be confirmed';
                 $deliveryCity = $shopper->town ?? $shopper->county ?? null;
                 $deliveryPhone = Auth::user()->phone_number ?? $quoteData['telephone'];
             } else {
                 // For guest users, use company or name for address
-                $deliveryAddress = $quoteData['company'] 
+                $deliveryAddress = $quoteData['company']
                     ? $quoteData['company'] . ' - Address to be confirmed'
                     : $quoteData['name'] . ' - Address to be confirmed';
             }
@@ -378,7 +377,6 @@ class QuoteController extends Controller
             DB::commit();
 
             return $order;
-
         } catch (\Exception $e) {
             DB::rollBack();
             \Log::error('Error creating order from quote: ' . $e->getMessage());
@@ -388,4 +386,3 @@ class QuoteController extends Controller
         }
     }
 }
-

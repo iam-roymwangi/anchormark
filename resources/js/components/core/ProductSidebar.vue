@@ -21,20 +21,20 @@
         <Transition name="slide">
             <aside
                 v-if="isOpen || !isMobile"
-                class="fixed top-16 left-0 z-50 h-[calc(100vh-4rem)] w-80 overflow-y-auto bg-[#003366] text-white shadow-2xl lg:sticky lg:z-0 lg:shadow-none lg:mt-8"
+                class="fixed top-16 left-0 z-50 h-[calc(100vh-4rem)] w-80 overflow-y-auto bg-gray-50 text-gray-800 shadow-2xl lg:sticky lg:z-0 lg:mt-8 lg:shadow-none"
             >
                 <!-- Search Bar  -->
-                <div class="border-b border-white/10 p-4">
+                <div class="border-b border-gray-200 p-4">
                     <div class="relative">
                         <Search
-                            class="absolute top-1/2 left-3 -translate-y-1/2 transform text-white/50"
+                            class="absolute top-1/2 left-3 -translate-y-1/2 transform text-gray-400"
                             :size="18"
                         />
                         <input
                             v-model="searchQuery"
                             type="text"
                             placeholder="Search products..."
-                            class="w-full rounded-lg bg-white/10 py-2 pr-4 pl-10 text-white placeholder-white/50 transition-all focus:ring-2 focus:ring-[#AE8625] focus:outline-none"
+                            class="w-full rounded-lg border border-gray-200 bg-white py-2 pr-4 pl-10 text-gray-800 placeholder-gray-400 transition-all focus:ring-2 focus:ring-[#AE8625] focus:outline-none"
                         />
                     </div>
                 </div>
@@ -49,12 +49,17 @@
                                 'group flex w-full items-center justify-between rounded-lg px-4 py-3 text-left transition-all duration-200',
                                 selectedCategory === 'all'
                                     ? 'bg-[#AE8625] text-white'
-                                    : 'text-white/90 hover:bg-white/10',
+                                    : 'text-gray-700 hover:bg-gray-100',
                             ]"
                         >
                             <span class="font-medium">All Products</span>
                             <span
-                                class="rounded-full bg-white/20 px-2 py-1 text-xs"
+                                :class="[
+                                    'rounded-full px-2 py-1 text-xs',
+                                    selectedCategory === 'all'
+                                        ? 'bg-white/20'
+                                        : 'bg-gray-200 text-gray-600',
+                                ]"
                             >
                                 {{ getTotalProductCount() }}
                             </span>
@@ -73,7 +78,7 @@
                                     'group flex w-full items-center justify-between rounded-lg px-4 py-3 text-left transition-all duration-200',
                                     selectedCategory === category.id
                                         ? 'bg-[#AE8625] text-white'
-                                        : 'text-white/90 hover:bg-white/10',
+                                        : 'text-gray-700 hover:bg-gray-100',
                                 ]"
                             >
                                 <div class="flex items-center gap-3">
@@ -84,7 +89,12 @@
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <span
-                                        class="rounded-full bg-white/20 px-2 py-1 text-xs"
+                                        :class="[
+                                            'rounded-full px-2 py-1 text-xs',
+                                            selectedCategory === category.id
+                                                ? 'bg-white/20'
+                                                : 'bg-gray-200 text-gray-600',
+                                        ]"
                                     >
                                         {{ category.products.length }}
                                     </span>
@@ -116,7 +126,7 @@
                                         @click="
                                             $emit('select-product', product)
                                         "
-                                        class="group flex w-full items-center justify-between rounded-lg px-4 py-2 text-left text-sm text-white/80 transition-all duration-200 hover:bg-white/10 hover:text-white"
+                                        class="group flex w-full items-center justify-between rounded-lg px-4 py-2 text-left text-sm text-gray-600 transition-all duration-200 hover:bg-gray-100 hover:text-gray-800"
                                     >
                                         <span class="truncate">{{
                                             product.name
@@ -133,18 +143,18 @@
                 </nav>
 
                 <!-- Filters Section  -->
-                <div class="border-t border-white/10 p-4">
-                    <h3 class="mb-3 text-sm font-semibold text-white/70">
+                <div class="border-t border-gray-200 p-4">
+                    <h3 class="mb-3 text-sm font-semibold text-gray-500">
                         FILTERS
                     </h3>
                     <div class="space-y-3">
                         <!-- Price Range  -->
                         <div>
-                            <label class="mb-2 block text-sm text-white/80"
+                            <label class="mb-2 block text-sm text-gray-700"
                                 >Price Range</label
                             >
                             <select
-                                class="w-full rounded-lg bg-white/10 px-3 py-2 text-sm text-white focus:ring-2 focus:ring-[#AE8625] focus:outline-none"
+                                class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-800 focus:ring-2 focus:ring-[#AE8625] focus:outline-none"
                             >
                                 <option>All Prices</option>
                                 <option>Under $100</option>
@@ -157,11 +167,11 @@
                         <!-- Availability  -->
                         <div>
                             <label
-                                class="flex cursor-pointer items-center gap-2 text-sm text-white/80"
+                                class="flex cursor-pointer items-center gap-2 text-sm text-gray-700"
                             >
                                 <input
                                     type="checkbox"
-                                    class="rounded border-white/20 bg-white/10 text-[#AE8625] focus:ring-[#AE8625]"
+                                    class="rounded border-gray-300 bg-white text-[#AE8625] focus:ring-[#AE8625]"
                                 />
                                 <span>In Stock Only</span>
                             </label>
@@ -170,11 +180,11 @@
                         <!-- New Arrivals  -->
                         <div>
                             <label
-                                class="flex cursor-pointer items-center gap-2 text-sm text-white/80"
+                                class="flex cursor-pointer items-center gap-2 text-sm text-gray-700"
                             >
                                 <input
                                     type="checkbox"
-                                    class="rounded border-white/20 bg-white/10 text-[#AE8625] focus:ring-[#AE8625]"
+                                    class="rounded border-gray-300 bg-white text-[#AE8625] focus:ring-[#AE8625]"
                                 />
                                 <span>New Arrivals</span>
                             </label>
@@ -183,12 +193,12 @@
                 </div>
 
                 <!-- Help Section  -->
-                <div class="border-t border-white/10 p-4">
-                    <div class="rounded-lg bg-white/5 p-4">
-                        <h4 class="mb-2 font-semibold text-white">
+                <div class="border-t border-gray-200 p-4">
+                    <div class="rounded-lg bg-gray-100 p-4">
+                        <h4 class="mb-2 font-semibold text-gray-800">
                             Need Help?
                         </h4>
-                        <p class="mb-3 text-sm text-white/70">
+                        <p class="mb-3 text-sm text-gray-600">
                             Contact our team for bulk orders and custom
                             solutions.
                         </p>
@@ -266,16 +276,16 @@ aside::-webkit-scrollbar {
 }
 
 aside::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.05);
 }
 
 aside::-webkit-scrollbar-thumb {
-    background: rgba(46, 139, 87, 0.5);
+    background: rgba(174, 134, 37, 0.5);
     border-radius: 3px;
 }
 
 aside::-webkit-scrollbar-thumb:hover {
-    background: rgba(46, 139, 87, 0.7);
+    background: rgba(174, 134, 37, 0.7);
 }
 
 /* Transitions */
