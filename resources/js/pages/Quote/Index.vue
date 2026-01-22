@@ -99,16 +99,7 @@
                       {{ item.size }} {{ item.color ? '• ' + item.color : '' }}
                     </p>
                     <p class="text-sm text-[#666666]">Quantity: {{ item.quantity }}</p>
-                    <p class="text-sm font-medium text-[#AE8625]">
-                      {{ item.formatted_subtotal || `Ksh. ${(item.price * item.quantity).toFixed(2)}` }}
-                    </p>
                   </div>
-                </div>
-                <div class="pt-3 border-t border-gray-300 flex justify-between items-center">
-                  <span class="font-medium text-[#333333]">Total:</span>
-                  <span class="text-lg font-bold text-[#AE8625]">
-                    {{ formattedTotal }}
-                  </span>
                 </div>
               </div>
             </div>
@@ -267,25 +258,9 @@
                           <span class="text-[#666666]">Quantity:</span>
                           <span class="font-medium text-[#333333]">{{ item.quantity }}</span>
                         </div>
-                        <div class="flex justify-between">
-                          <span class="text-[#666666]">Unit Price:</span>
-                          <span class="font-medium text-[#333333]">
-                            {{ item.formatted_unit_price || `Ksh. ${item.price.toFixed(2)}` }}
-                          </span>
-                        </div>
-                        <div class="flex justify-between pt-2 border-t border-gray-300">
-                          <span class="text-[#666666]">Subtotal:</span>
-                          <span class="font-bold text-[#333333]">
-                            {{ item.formatted_subtotal || `Ksh. ${(item.price * item.quantity).toFixed(2)}` }}
-                          </span>
-                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="pt-4 border-t border-gray-300 flex justify-between items-center">
-                  <span class="text-lg font-medium text-[#333333]">Total:</span>
-                  <span class="text-2xl font-bold text-[#AE8625]">{{ formattedTotal }}</span>
                 </div>
               </div>
             </div>
@@ -453,7 +428,6 @@ interface CartItem {
   id: number | string
   product_id: number
   name: string
-  price: number
   quantity: number
   image?: string
   size?: string | null
@@ -462,8 +436,6 @@ interface CartItem {
     name: string
     sku?: string
   }
-  formatted_unit_price?: string
-  formatted_subtotal?: string
 }
 
 const page = usePage()
@@ -509,17 +481,6 @@ const minDeliveryDate = computed(() => {
   return today.toISOString().split('T')[0]
 })
 
-// Calculate total
-const formattedTotal = computed(() => {
-  if (props.totals?.formatted_amount) {
-    return props.totals.formatted_amount
-  }
-  const total = cartItems.value.reduce((sum, item) => {
-    return sum + (item.price * item.quantity)
-  }, 0)
-  return `$${total.toFixed(2)}`
-})
-
 // Generate item description from cart items
 const generateItemDescription = (): string => {
   if (cartItems.value.length === 0) return ''
@@ -536,11 +497,8 @@ const generateItemDescription = (): string => {
     if (item.color) {
       description += `   Color: ${item.color}\n`
     }
-    description += `   Quantity: ${item.quantity}\n`
-    description += `   Price: ${item.formatted_unit_price || `$${item.price.toFixed(2)}`}\n`
-    description += `   Subtotal: ${item.formatted_subtotal || `$${(item.price * item.quantity).toFixed(2)}`}\n\n`
+    description += `   Quantity: ${item.quantity}\n\n`
   })
-  description += `Total: ${formattedTotal.value}`
   return description
 }
 
@@ -555,8 +513,6 @@ onMounted(() => {
       cartItems.value = guestCart.map((item, index) => ({
         ...item,
         id: item.id || `guest-${Date.now()}-${index}`,
-        formatted_unit_price: `Ksh. ${item.price.toFixed(2)}`,
-        formatted_subtotal: `Ksh. ${(item.price * item.quantity).toFixed(2)}`,
         product: {
           name: item.name
         }
@@ -639,11 +595,8 @@ const submitQuote = async () => {
       sku: item.product?.sku || '',
       size: item.size || null,
       color: item.color || null,
-      quantity: item.quantity,
-      price: item.price,
-      subtotal: (item.price * item.quantity).toFixed(2)
-    })),
-    total_amount: props.totals?.amount || cartItems.value.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+      quantity: item.quantity
+    }))
   }
 
   try {

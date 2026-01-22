@@ -128,11 +128,11 @@
                       {{ product.description }}
                     </p>
                     <div class="mb-3 flex items-center justify-between sm:mb-4">
-                      <span class="text-base font-medium text-[#333333] sm:text-lg">
+                      <!-- <span class="text-base font-medium text-[#333333] sm:text-lg">
                         Ksh. {{ product.price.toFixed(2) }}
-                      </span>
+                      </span> -->
                       <span
-                        class="bg-opacity-10 rounded-full bg-[#AE8625] px-2.5 py-1 text-xs text-[#AE8625] sm:px-3"
+                        class="bg-opacity-10 rounded-full bg-[#AE8625] px-2.5 py-1 text-xs text-[#ffffff] sm:px-3"
                       >
                         {{ product.category.name }}
                       </span>

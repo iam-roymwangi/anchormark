@@ -78,14 +78,6 @@
             <span class="text-[#333333]">{{ product.rating }} ({{ product.reviewCount }} reviews)</span>
           </div>
 
-          <!-- Price -->
-          <div class="flex items-baseline space-x-3">
-            <span class="text-4xl font-bold text-[#AE8625]">Ksh. {{ product.price }}</span>
-            <span v-if="product.originalPrice" class="text-xl text-gray-400 line-through">
-              Ksh. {{ product.originalPrice }}
-            </span>
-          </div>
-
           <!-- Short Description -->
           <p class="text-[#666666] leading-relaxed">
             {{ product.shortDescription }}
@@ -356,7 +348,6 @@
                 {{ similar.name }}
               </h3>
               <div class="flex items-center justify-between mb-3">
-                <span class="text-lg font-bold text-[#AE8625]">Ksh. {{ similar.price }}</span>
                 <div class="flex">
                   <Star 
                     v-for="i in 5" 
@@ -625,7 +616,6 @@
                     <div>
                       <h5 class="font-medium text-[#333333]">{{ product.name }}</h5>
                       <p class="text-sm text-[#666666]">SKU: {{ product.sku }}</p>
-                      <p class="text-lg font-bold text-[#AE8625] mt-2">Ksh. {{ product.price }}</p>
                     </div>
                   </div>
                   <div class="space-y-2 text-sm">
@@ -640,10 +630,6 @@
                     <div class="flex justify-between">
                       <span class="text-[#666666]">Quantity:</span>
                       <span class="font-medium text-[#333333]">{{ quantity }}</span>
-                    </div>
-                    <div class="flex justify-between pt-2 border-t border-gray-300">
-                      <span class="text-[#666666]">Subtotal:</span>
-                      <span class="font-bold text-[#333333]">Ksh. {{ (product.price * quantity).toFixed(2) }}</span>
                     </div>
                   </div>
                 </div>
@@ -1052,7 +1038,6 @@ const addToCart = async () => {
     product_id: product.value.id,
     name: product.value.name,
     image: product.value.images[0],
-    price: product.value.price,
     size: selectedSize.value,
     color: selectedColor.value,
     quantity: quantity.value,
@@ -1210,9 +1195,7 @@ const submitQuote = async () => {
     sku: product.value.sku,
     size: selectedSize.value,
     color: selectedColor.value,
-    quantity: quantity.value,
-    price: product.value.price,
-    subtotal: (product.value.price * quantity.value).toFixed(2)
+    quantity: quantity.value
   }
 
   try {

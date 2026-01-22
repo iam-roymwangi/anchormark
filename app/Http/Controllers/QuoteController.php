@@ -78,8 +78,6 @@ class QuoteController extends Controller
             'size' => 'nullable|string',
             'color' => 'nullable|string',
             'quantity' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
-            'subtotal' => 'required|string',
         ]);
 
         try {
@@ -101,8 +99,8 @@ class QuoteController extends Controller
                 'size' => $validated['size'] ?? null,
                 'color' => $validated['color'] ?? null,
                 'quantity' => $validated['quantity'],
-                'unit_price' => $validated['price'],
-                'subtotal' => floatval(str_replace('$', '', $validated['subtotal'])),
+                'unit_price' => 0, // Price hidden from frontend
+                'subtotal' => 0, // Price hidden from frontend
                 'status' => 'pending',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -167,9 +165,6 @@ class QuoteController extends Controller
             'cart_items.*.size' => 'nullable|string',
             'cart_items.*.color' => 'nullable|string',
             'cart_items.*.quantity' => 'required|integer|min:1',
-            'cart_items.*.price' => 'required|numeric|min:0',
-            'cart_items.*.subtotal' => 'required|string',
-            'total_amount' => 'required|numeric|min:0',
         ]);
 
         try {
@@ -195,8 +190,8 @@ class QuoteController extends Controller
                 'size' => $firstItem['size'] ?? null,
                 'color' => $firstItem['color'] ?? null,
                 'quantity' => array_sum(array_column($validated['cart_items'], 'quantity')), // Total quantity
-                'unit_price' => $firstItem['price'], // Use first item price
-                'subtotal' => $validated['total_amount'],
+                'unit_price' => 0, // Price hidden from frontend
+                'subtotal' => 0, // Price hidden from frontend
                 'status' => 'pending',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -214,8 +209,8 @@ class QuoteController extends Controller
                         'size' => $item['size'] ?? null,
                         'color' => $item['color'] ?? null,
                         'quantity' => $item['quantity'],
-                        'unit_price' => $item['price'],
-                        'subtotal' => floatval(str_replace('$', '', $item['subtotal'])),
+                        'unit_price' => 0, // Price hidden from frontend
+                        'subtotal' => 0, // Price hidden from frontend
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);
@@ -345,7 +340,7 @@ class QuoteController extends Controller
             $order = new Order();
             $order->shopper_id = $shopperId;
             $order->order_number = 'ORD-' . Str::upper(Str::random(10));
-            $order->total_amount = $quoteData['total_amount'];
+            $order->total_amount = 0; // Price hidden from frontend
             $order->order_status = OrderStatus::Pending->value;
             $order->payment_status = PaymentStatus::Unpaid->value; // Quotes are unpaid until confirmed
             $order->delivery_address = $deliveryAddress;
@@ -360,8 +355,8 @@ class QuoteController extends Controller
                 $orderItem->order_id = $order->id;
                 $orderItem->product_id = $cartProduct->product_id;
                 $orderItem->quantity = $cartProduct->quantity;
-                $orderItem->price = $cartProduct->unit_price;
-                $orderItem->subtotal = $cartProduct->subtotal;
+                $orderItem->price = 0; // Price hidden from frontend
+                $orderItem->subtotal = 0; // Price hidden from frontend
                 $orderItem->save();
 
                 // Optionally, reserve stock (don't decrement yet for quotes, just reserve)
